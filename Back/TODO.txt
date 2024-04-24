@@ -1,0 +1,30 @@
+Modulo 1
+
+Registrar de docentes Listo
+Editar datos de docentes Listo
+Registrar laboratorios Listo
+Editar laboratorios Listo
+Solicitar uso de los laboratorios Listo
+Aprobar/rechazar solicitud de uso de los laboratorios Listo
+Notificar aprobación de uso de los laboratorios 
+
+
+Modulo 2
+
+Registrar administrativos Listo
+editar administrativos Listo
+Solicitar servicios de computo
+Solicitar servicios de tecnologia
+Registrar estado de servicio de tecnologia y computo
+
+
+
+Pendientes post presentacion
+
+Validaciones de horarios cuando ya estén aprobados, y que no coincidan de hora, agregar dia
+Verificar que el token no este caduco y en caso de que si que lo borre
+Mostrar nombre del usuario que inicio sesion
+Notificaciones y afirmaciones de eliminar, crear autualizar etc
+
+
+Revision general de requerimientos
