@@ -1,0 +1,175 @@
+body {
+  background-color: #e2e2e2;
+}
+
+.I-Horary {
+  max-width: 600px;
+  height: 260px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  pointer-events: none;
+}
+
+.I-LogIn {
+  max-width: 600px;
+  height: 260px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.I-Usr {
+  max-width: 700px;
+  height: 260px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 7%;
+}
+@media screen and (max-width: 768px) {
+
+  .I-Horary {
+    max-width: 600px;
+    height: 260px;
+    margin-right: auto;
+    pointer-events: none;
+  }
+
+  .I-LogIn {
+    max-width: 600px;
+    height: 260px;
+    margin-right: auto;
+  }
+  .I-Usr {
+    max-width: 600px;
+    height: 260px;
+  }
+
+  .Title{
+    font-size: large;
+  }
+
+  .sideBar {
+    display: none !important;
+  }
+  
+}
+
+.Horary-Select {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 100px;
+}
+
+.sidemenu {
+  width: 8%;
+  height: 100%;
+}
+
+.sideBar {
+  background-color: rgb(126.0, 34.0, 19);
+  display: inline;
+  position: fixed;
+  width: 8%;
+  height: 100%;
+  padding-top: 2%;
+}
+
+.Logo-Img {
+  position: fixed;
+  right: 2%;
+  top: 0;
+}
+
+nav {
+  max-width: 100px;
+  height: 20%;
+  margin: auto;
+  font-size: 20px;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  pointer-events: all;
+}
+
+.H-Menu {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  border-radius: 4px;
+
+}
+
+.H-Menu>li {
+  color: black;
+  margin-left: 20px;
+  text-decoration: none;
+  background-color: rgba(226,226,226, 0.9);
+}
+
+.H-Menu>li:first-child {
+  margin-left: 0;
+}
+
+.H-Menu>li:hover {
+  background-color: rgb(126.0, 34.0, 19);
+  border-radius: 4px;
+  transition: .3s ease background-color;
+  color: #e2e2e2;
+}
+
+.V-Menu>li:hover {
+  background-color: rgb(126.0, 34.0, 19);
+  border-radius: 4px;
+  transition: .3s ease background-color;
+  color: #e2e2e2;
+}
+
+.V-Menu {
+  position: absolute;
+  display: none;
+  list-style: none;
+  width: auto;
+  background-color: rgba(51, 51, 51, 0.5);
+  padding-right: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+
+}
+
+.H-Menu>li:hover .V-Menu {
+  display: block;
+}
+
+.Title{
+  font: verdana;
+  position: absolute;
+  margin-top: 60px;
+  margin-left: 110px;
+}
+
+.M-button{
+  background-color: rgb(126.0, 34.0, 19);
+  position: absolute;
+}
