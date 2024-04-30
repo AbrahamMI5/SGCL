@@ -71,4 +71,12 @@ public class RequestLaboratoryService {
         return requestLaboratoryRepository.getRequestLabById(id);
     }
 
+    public Optional<List<RequestLaboratoryVO>> getRequestInProcess(){
+        return requestLaboratoryRepository.getRequestLabInProcess();
+    }
+
+    public Optional<List<RequestLaboratoryVO>> getRequestAnswered(){
+        return requestLaboratoryRepository.getRequestLabAnswered();
+    }
+
 }

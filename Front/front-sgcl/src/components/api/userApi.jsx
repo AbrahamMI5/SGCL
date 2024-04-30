@@ -23,7 +23,10 @@ export const apiUrls = {
   updateRequestLab: `${apiUrl}/requestLaboratory/updateRequestLab`,
   getRequestLabById: `${apiUrl}/requestLaboratory/getRequestLabByID`,
   getRequestLab: `${apiUrl}/requestLaboratory/getRequest`,
+  getRequestLabAnswered: `${apiUrl}/requestLaboratory/getRequestAnswered`,
+  getRequestLabInProcess: `${apiUrl}/requestLaboratory/getRequestInProcess`,
   getNotificationByUsrId: `${apiUrl}/notification/getNotificationByIdUser`,
   deleteNotification: `${apiUrl}/notification/deleteNotificationById`,
+  
 
 };

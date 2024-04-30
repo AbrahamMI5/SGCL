@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sgcl.demo.models.RequestLaboratoryVO;
 import com.sgcl.demo.services.RequestLaboratoryService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/requestLaboratory")
@@ -58,5 +60,16 @@ public class RequestLaboratoryController {
     public Optional<List<RequestLaboratoryVO>> getRequestLabByID(@PathVariable Long id){
         return this.requestLaboratoryService.getRequestLabByID(id);
     }
+
+    @GetMapping("/getRequestInProcess")
+    public Optional<List<RequestLaboratoryVO>> getRequestInProcess() {
+        return this.requestLaboratoryService.getRequestInProcess();
+    }
+
+    @GetMapping("/getRequestAnswered")
+    public Optional<List<RequestLaboratoryVO>> getRequestAnswered() {
+        return this.requestLaboratoryService.getRequestAnswered();
+    }
+
     
 }

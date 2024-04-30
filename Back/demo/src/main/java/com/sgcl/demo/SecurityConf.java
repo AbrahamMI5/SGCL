@@ -32,14 +32,13 @@ public class SecurityConf {
                 authorize
                     //Url everyone    
                     .requestMatchers("/laboratory/getAllLaboratories", "/login/", "/user/logIn", "/user/getRoleByEmail", "/user/getUserByEmail").permitAll()
-                    .requestMatchers("/**").hasAnyAuthority("Admin", "Teacher")    
-                    .requestMatchers("/**").hasAuthority("Teacher")
-                    //url admin
-                    
-                        //url teacher
-                        
-                        //url managerial
-                        
+                    //Url Admin, Teacher, Managerial
+                    .requestMatchers("/**").hasAnyAuthority("Admin", "Teacher", "Managerial")
+                    //Url Admin, Teacher
+
+                    //Url Admin
+
+
                         .anyRequest().authenticated()
                         )
                 .sessionManagement(sessionManagement ->
