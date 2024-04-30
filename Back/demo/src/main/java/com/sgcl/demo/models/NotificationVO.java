@@ -15,6 +15,12 @@ public class NotificationVO {
     private String notifyMenssage;
     private Boolean todelete;
     private Long requestLaboratoryIdRequestLaboratory;
+    public Long getIdNotifications() {
+        return idNotifications;
+    }
+    public void setIdNotifications(Long idNotifications) {
+        this.idNotifications = idNotifications;
+    }
     private Long usersIdUsers;
 
     public String getNotifyMenssage() {

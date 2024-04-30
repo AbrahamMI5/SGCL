@@ -22,5 +22,8 @@ export const apiUrls = {
   getAllRequestLab: `${apiUrl}/requestLaboratory/getAllRequestLaboratory`,
   updateRequestLab: `${apiUrl}/requestLaboratory/updateRequestLab`,
   getRequestLabById: `${apiUrl}/requestLaboratory/getRequestLabByID`,
+  getRequestLab: `${apiUrl}/requestLaboratory/getRequest`,
+  getNotificationByUsrId: `${apiUrl}/notification/getNotificationByIdUser`,
+  deleteNotification: `${apiUrl}/notification/deleteNotificationById`,
 
 };

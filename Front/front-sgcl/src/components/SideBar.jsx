@@ -32,8 +32,8 @@ export function Sidebar() {
     }, []);
 
     const adminMenu = ['Home', 'RequestLabResponse', 'Laboratories', 'Users', 'LogOut'];
-    const adminManagerial = ['Home', 'LogOut'];
-    const adminTeacher = ['Home', 'RequestLab', 'LogOut'];
+    const adminManagerial = ['Home','Notification', 'LogOut'];
+    const adminTeacher = ['Home',  'RequestLab', 'Notification', 'LogOut', ];
     const defaultIcon = ['LogInIcon'];
 
     const typeUser = (role) => {

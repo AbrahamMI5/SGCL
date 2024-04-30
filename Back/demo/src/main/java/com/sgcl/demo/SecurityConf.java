@@ -28,15 +28,16 @@ public class SecurityConf {
                 .csrf(csrf -> 
                     csrf
                     .disable())
-                .authorizeHttpRequests(authRequest -> 
-                    authRequest
+                .authorizeHttpRequests(authorize -> 
+                authorize
                     //Url everyone    
                     .requestMatchers("/laboratory/getAllLaboratories", "/login/", "/user/logIn", "/user/getRoleByEmail", "/user/getUserByEmail").permitAll()
-                        //url admin
-                         .requestMatchers("/**").hasAuthority("Admin")
+                    .requestMatchers("/**").hasAnyAuthority("Admin", "Teacher")    
+                    .requestMatchers("/**").hasAuthority("Teacher")
+                    //url admin
+                    
                         //url teacher
-                        .requestMatchers("/laboratory/getNotificationByIdUser{id}", "/notification/deleteNotificationById{id}",
-                         "/requestLaboratory/createRequestLaboratory", "/requestLaboratory/deleteRequest{id}", "/requestLaboratory/getRequestLabByID{id}").hasAuthority("Teacher")
+                        
                         //url managerial
                         
                         .anyRequest().authenticated()

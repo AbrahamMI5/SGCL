@@ -5,6 +5,7 @@ import requestLab from './img/requestLab.svg'
 import userw from './img/userw.svg'
 import requestLabResponse from './img/requestLabResponse.svg'
 import logOut from './img/logOut.svg'
+import notification from './img/notification.svg'
 
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
@@ -28,6 +29,8 @@ export function Icon(prop) {
             return 'Solicitudes laboratorios'
         }if (name == 'LogOut'){
             return 'Cerrar Sesión'
+        }if (name == 'Notification'){
+            return 'Notificaciones'
         }
     }
 
@@ -46,6 +49,8 @@ export function Icon(prop) {
             return requestLabResponse
         }if (name == 'LogOut'){
             return logOut
+        }if (name == 'Notification'){
+            return notification
         }
     }
 
@@ -62,6 +67,8 @@ export function Icon(prop) {
             return '/Users'
         }if(name == 'RequestLabResponse'){
             return '/AnswereRequestLab'
+        }if (name == 'Notification'){
+            return '/Notifications'
         }
     }
 

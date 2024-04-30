@@ -10,6 +10,7 @@ import { FormLaboratory } from './components/FormLaboratories';
 import { FormRequestLaboratory } from './components/FormRequestLaboratory';
 import { usersApi, apiUrls } from "./components/api/userApi";
 import { LabRequestAns } from './components/LabRequestAns';
+import { Notifications } from './components/Notifications';
 
 import logo from '/logofcbiyt.png';
 
@@ -77,6 +78,7 @@ function App() {
         <Route path="/Laboratories" element={admin ? <div className='I-Usr'> <FormLaboratory /> </div> : <Navigate to="/LogIn"/>} />
         <Route path="/RequestLaboratory" element={teacher ? <div className='I-Usr'> <FormRequestLaboratory /> </div> : <Navigate to="/LogIn"/>} />
         <Route path='/AnswereRequestLab' element={admin ? <div className='I-Usr'> <LabRequestAns/> </div> : <Navigate to="/LogIn"/> } />
+        <Route path='/Notifications' element={admin || teacher || managerial  ? <div className='I-Usr'> <Notifications/> </div> : <Navigate to="/LogIn"/> } />
       </Routes>
     </>
   );

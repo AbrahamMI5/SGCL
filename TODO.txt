@@ -6,16 +6,19 @@ Registrar laboratorios Listo
 Editar laboratorios Listo
 Solicitar uso de los laboratorios Listo
 Aprobar/rechazar solicitud de uso de los laboratorios Listo
-Notificar aprobación de uso de los laboratorios 
+Notificar aprobación de uso de los laboratorios Listo
+
+Pendiente Lisa de aceptadas, rechazas y pebdientes.
 
 
 Modulo 2
 
 Registrar administrativos Listo
 editar administrativos Listo
-Solicitar servicios de computo
-Solicitar servicios de tecnologia
-Registrar estado de servicio de tecnologia y computo
+Solicitar servicios de computo 
+Solicitar servicios de tecnologia 
+Registrar estado de servicio de tecnologia y computo 
+
 
 
 

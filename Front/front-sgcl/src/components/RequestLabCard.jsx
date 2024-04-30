@@ -9,13 +9,17 @@ export function RequestLabCard(props) {
     const [teachername, setTeacherName] = useState('');
     const [labname, setLabName] = useState('');
     const [statusText, setStatusText] = useState('');
+    const [color, setColor] = useState('');
 
     useEffect(() => {
         console.log(status)
         if (status === true) {
             setStatusText('Solicitud aprobada');
+            setColor('green')
         } else if (status === false) {
             setStatusText('Solicitud rechazada');
+            setColor('red')
+
         }
     }, [status]);
 
@@ -129,7 +133,7 @@ export function RequestLabCard(props) {
 
                 {status === true || status === false ? (
                     <div style={{ width: '63%' }}>
-                        <label >{statusText}</label>
+                        <label style={{ color: color }}>{statusText}</label>
                     </div>
                 ) : null}
 

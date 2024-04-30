@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usersApi, apiUrls } from "./api/userApi";
 import { jwtDecode } from 'jwt-decode';
 import { RequestLaboratoryCard } from './RequestLaboratoryCard';
 
 export function FormRequestLaboratory() {
+    const [loading, setLoading] = useState(true);
     const [laboratories, setLaboratories] = useState([]);
     const [userId, setUserId] = useState([])
     const [selectedOptionDay, setSelectedOptionDay] = useState();
     const [selectedOptionGroup, setSelectedOptionGroup] = useState();
-    const [requests, setRequests] = useState();
+    const [requests, setRequests] = useState([]);
 
     const handleChangeDay = (event) => {
         setSelectedOptionDay(event.target.value);
@@ -19,41 +20,36 @@ export function FormRequestLaboratory() {
     };
 
     useEffect(() => {
-        let token = localStorage.getItem('token');
-        if (token) {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            const tokenDecod = jwtDecode(token);
-            const data = {
-                email: tokenDecod.sub,
-            };
-            usersApi.get(apiUrls.getAllLaboratories)
-                .then(respLaboratories => {
+        const fetchData = async () => {
+            let token = localStorage.getItem('token');
+            if (token) {
+                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                try {
+                    // Obtener laboratorios
+                    const respLaboratories = await usersApi.get(apiUrls.getAllLaboratories);
                     setLaboratories(respLaboratories.data);
-                })
-                .catch(error => {
-                    console.error('Error fetching laboratories:', error);
-                });
 
-            usersApi.post(apiUrls.getUserByEmail, data)
-                .then(responseUser => {
-                    setUserId(responseUser.data.id)
-                })
-                .catch(error => {
-                    console.error('Error fetching user id:', error);
-                })
+                    // Obtener ID de usuario
+                    const tokenDecod = jwtDecode(token);
+                    const data = {
+                        email: tokenDecod.sub,
+                    };
+                    const responseUser = await usersApi.post(apiUrls.getUserByEmail, data);
+                    setUserId(responseUser.data.id);
 
-
-            usersApi.get(apiUrls.getRequestLabById + userId)
-                .then(respReqLab => {
-                    console.log(respReqLab)
+                    // Obtener solicitudes
+                    const respReqLab = await usersApi.get(apiUrls.getRequestLabById + responseUser.data.id);
                     setRequests(respReqLab.data);
-                    console.log(requests)
-                })
-                .catch(error => {
-                    console.error('Error fetching requests:', error);
-                });
-        }
+                    setLoading(false); // Una vez que se cargan las solicitudes, establecemos loading en falso
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    setLoading(false); // En caso de error, establecemos loading en falso para detener el indicador de carga
+                }
+                console.log(requests)
+            }
+        };
 
+        fetchData();
     }, []);
 
     const createRequest = async (event) => {
@@ -64,7 +60,7 @@ export function FormRequestLaboratory() {
                 endHorary: document.getElementById("endHorary").value + ':00',
                 day: selectedOptionDay,
                 subject: document.getElementById("materia").value,
-                group: selectedOptionGroup,
+                groups: selectedOptionGroup,
                 studentNumber: document.getElementById("student").value,
                 laboratoriesIdLaboratories: document.getElementById("laboratory").value,
                 usersIdUsers: userId,
@@ -176,8 +172,10 @@ export function FormRequestLaboratory() {
                     <button className="bt"> Cancelar </button>
                 </div>
             </div>
-            <h1 className="RequestLab">Solicitudes</h1>
-            <RequestLaboratoryCard />
+            <h1 className="RequestLab">Solicitados</h1>
+            {requests.map(request=>(
+                <RequestLaboratoryCard key={request.idRequestLaboratory} labId={request.laboratoriesIdLaboratories} subject={request.subject} day={request.day} startHorary={request.startHorary} endHorary={request.endHorary}/>
+            ))}
             <div style={{ height: '50px' }}></div>
         </>
     )
