@@ -68,7 +68,6 @@ export function FormLaboratory() {
                     );
                 })}
 
-
             </div>
         </>
     )

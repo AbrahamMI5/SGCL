@@ -32,7 +32,7 @@ export function LogIn() {
             <div className="LogIn">
                 <img src={userImg} alt="Imagen Usuario" className='LI-Img' />
                 <div className='LI-data'>
-                    <p className='h4'>Iniciar Sesion</p>
+                    <p className='h4'>Iniciar Sesión</p>
                     <form>
                         <div>
                             <label className='LI-Input' htmlFor="Email">Usuario</label>

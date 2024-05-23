@@ -121,7 +121,7 @@
 
 .usrsCard {
     margin-bottom: 5%;
-    width: 110%;
+    width: 100%;
     background-color: white;
     padding: 10px;
     border-radius: 4px;
@@ -289,6 +289,25 @@
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
+.RequestService {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.RequestFormService{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+
+
+.RequestService>div {
+    width: 95%;
+    margin-bottom: 2%;
+    height: fit-content;
+}
+
+
 .RequestLabInput {
     display: flex;
     flex-direction: row;
@@ -351,7 +370,7 @@
     background-color: transparent;
     border: none;
     font-size: 150%;
-    
+
     .labBody {
         grid-template-columns: 1fr 1fr;
     }
@@ -365,3 +384,108 @@
     }
 }
 
+.Status{
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    margin-left: 25%;
+    border: 1px solid black;
+}
+
+.State-yellow{
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    border: 1px solid black;
+}
+.State-grey{
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    border: 1px solid black;
+}
+.State-green{
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    border: 1px solid black;
+}
+.State-red{
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    border: 1px solid black;
+}
+.State-yellow-s{
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    border: 1px solid black;
+    background-color: #FAFF00;
+}
+.State-grey-s{
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    border: 1px solid black;
+    background-color: #D9D9D9;
+}
+.State-green-s{
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    border: 1px solid black;
+    background-color: #6CE521;
+}
+.State-red-s{
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    border: 1px solid black;
+    background-color: #E81F1F;
+}
+.State-yellow:hover{
+    background-color: #FAFF00;
+}
+.State-grey:hover{
+    background-color: #D9D9D9;
+}
+.State-green:hover{
+    background-color: #6CE521;
+}
+.State-red:hover{
+    background-color: #E81F1F;
+}
+
+.State-Selected{
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    border: 2px solid black;
+}
+
+.Row-Space>label{
+    margin-bottom: 10px;
+}
+.Row-Space>input{
+    margin-bottom: 5px;
+}
+
+@media screen and (max-width: 900px) {
+
+    .RequestService {
+        display: grid;
+        grid-template-columns: 1fr;
+    
+    }
+    
+  }

@@ -27,6 +27,12 @@ export const apiUrls = {
   getRequestLabInProcess: `${apiUrl}/requestLaboratory/getRequestInProcess`,
   getNotificationByUsrId: `${apiUrl}/notification/getNotificationByIdUser`,
   deleteNotification: `${apiUrl}/notification/deleteNotificationById`,
-  
-
+  createRequestCompService: `${apiUrl}/requestService/createRequestServ`,
+  getComputerRequest: `${apiUrl}/requestService/getComputerService`,
+  getTechnologyRequest: `${apiUrl}/requestService/getTechnologyService`,
+  getTechnologyServiceWithoutStatus: `${apiUrl}/requestService/getTechnologyWithoutStatus`,
+  getTechnologyServiceWithStatus: `${apiUrl}/requestService/getTechnologyWithStatus`,
+  getComputerServiceWithoutStatus: `${apiUrl}/requestService/getComputerWithoutStatus`,
+  getComputerServiceWithStatus: `${apiUrl}/requestService/getComputerWithStatus`,
+  setRequestServiceStatus: `${apiUrl}/requestService/setStatus`
 };

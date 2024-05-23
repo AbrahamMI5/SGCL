@@ -45,7 +45,7 @@ export function Horary() {
                 <div style={{ backgroundColor: 'white' }}></div>
                 <div className='Horary-Titles'>Lunes</div>
                 <div className='Horary-Titles'>Martes</div>
-                <div className='Horary-Titles'>Miercoles</div>
+                <div className='Horary-Titles'>Miércoles</div>
                 <div className='Horary-Titles'>Jueves</div>
                 <div className='Horary-Titles'>Viernes</div>
                 <div className='Horary-Titles'>12:00 - 2:00</div>

@@ -41,34 +41,6 @@ body {
   margin-right: auto;
   margin-top: 7%;
 }
-@media screen and (max-width: 768px) {
-
-  .I-Horary {
-    max-width: 600px;
-    height: 260px;
-    margin-right: auto;
-    pointer-events: none;
-  }
-
-  .I-LogIn {
-    max-width: 600px;
-    height: 260px;
-    margin-right: auto;
-  }
-  .I-Usr {
-    max-width: 600px;
-    height: 260px;
-  }
-
-  .Title{
-    font-size: large;
-  }
-
-  .sideBar {
-    display: none !important;
-  }
-  
-}
 
 .Horary-Select {
   display: flex;
@@ -76,9 +48,14 @@ body {
   margin-bottom: 100px;
 }
 
-.sidemenu {
+.sidemenu-open {
   width: 8%;
   height: 100%;
+  z-index: 998 !important;
+}
+
+.sidemenu-close {
+  display: none
 }
 
 .sideBar {
@@ -88,6 +65,7 @@ body {
   width: 8%;
   height: 100%;
   padding-top: 2%;
+  z-index: 998 !important;
 }
 
 .Logo-Img {
@@ -125,7 +103,7 @@ nav {
   color: black;
   margin-left: 20px;
   text-decoration: none;
-  background-color: rgba(226,226,226, 0.9);
+  background-color: rgba(226, 226, 226, 0.9);
 }
 
 .H-Menu>li:first-child {
@@ -162,14 +140,64 @@ nav {
   display: block;
 }
 
-.Title{
+.Title {
   font: verdana;
   position: absolute;
   margin-top: 60px;
   margin-left: 110px;
 }
 
-.M-button{
+.M-button {
   background-color: rgb(126.0, 34.0, 19);
   position: absolute;
+  display: none;
+  z-index: 99;
+}
+
+@media screen and (max-width: 900px) {
+
+  .I-Horary {
+    max-width: 600px;
+    height: 260px;
+    margin-right: auto;
+    pointer-events: none;
+  }
+
+  .I-LogIn {
+    max-width: 600px;
+    height: 260px;
+    margin-right: auto;
+  }
+
+  .I-Usr {
+    max-width: 600px;
+    height: 260px;
+  }
+
+  .Title {
+    font-size: large;
+  }
+
+  .M-button {
+    background-color: rgb(126.0, 34.0, 19);
+    display: inline;
+    position: fixed;
+  }
+
+  .sideBar {
+    background-color: rgb(126.0, 34.0, 19);
+    display: inline;
+    position: fixed;
+    width: 20%;
+    height: 100%;
+    padding-top: 2%;
+    z-index: 998 !important;
+  }
+
+  .sidemenu-open {
+    width: 20%;
+    height: 100%;
+    z-index: 998 !important;
+  }
+
 }

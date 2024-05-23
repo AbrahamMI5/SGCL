@@ -110,7 +110,7 @@ export function FormRequestLaboratory() {
                             <option ></option>
                             <option value="Lu">Lunes</option>
                             <option value="Ma">Martes</option>
-                            <option value="Mi">Miercoles</option>
+                            <option value="Mi">Miércoles</option>
                             <option value="Ju">Jueves</option>
                             <option value="Vi">Viernes</option>
 

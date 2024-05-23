@@ -8,18 +8,29 @@ Solicitar uso de los laboratorios Listo
 Aprobar/rechazar solicitud de uso de los laboratorios Listo
 Notificar aprobación de uso de los laboratorios Listo
 
-Pendiente Lisa de aceptadas, rechazas y pebdientes.
+Pendiente Lisa de aceptadas, rechazas y pebdientes. Listo
 
 
 Modulo 2
 
 Registrar administrativos Listo
-editar administrativos Listo
-Solicitar servicios de computo 
-Solicitar servicios de tecnologia 
-Registrar estado de servicio de tecnologia y computo 
+Editar administrativos Listo
+Solicitar servicios de computo Listo
+Solicitar servicios de tecnologia Listo
+Ver aceptados y rechazados Listo
+Registrar estado de servicio de tecnologia y computo Listo
 
+(Quitar parentesis y agregar la informacion como titulo) Listo
+(Ortografia) Listo
 
+Modulo 3
+
+Documentos de planeacion de mantenimiento anual 
+Documento de planeacion de mantenimiento semestral 
+Registrar uso de laboratorios 
+Visualizar horarios 
+Generar reporte de uso de laboratorios 
+Cambiar semestre 
 
 
 Pendientes post presentacion
@@ -28,6 +39,7 @@ Validaciones de horarios cuando ya estén aprobados, y que no coincidan de hora,
 Verificar que el token no este caduco y en caso de que si que lo borre
 Mostrar nombre del usuario que inicio sesion
 Notificaciones y afirmaciones de eliminar, crear autualizar etc
+Peticiones que tengan los objetos dentro para no resolicitarlos (creando nuevas respuestas)
 
 
 Revision general de requerimientos

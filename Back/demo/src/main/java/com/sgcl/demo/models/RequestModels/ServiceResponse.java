@@ -1,20 +1,11 @@
-package com.sgcl.demo.models;
+package com.sgcl.demo.models.RequestModels;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import java.util.Optional;
 
-import java.math.BigInteger;
-import java.util.Date;
+import com.sgcl.demo.models.LaboratoryVO;
+import com.sgcl.demo.models.UserVO;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "requestService")
-public class RequestServiceVO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ServiceResponse {
     private Long idRequestService;
     private String applicantArea;
     private String position;
@@ -32,36 +23,9 @@ public class RequestServiceVO {
     private String labName;
     private String rejection;
     private Long requestServiceStatus;
-    private BigInteger usersIdUsers;
-    private BigInteger laboratoriesIdLaboratories;
-    private Date requestDate;
-    private Date answerDate;
-    private Date finishDate;
+    private Optional<UserVO> usersIdUsers;
+    private Optional<LaboratoryVO> laboratoriesIdLaboratories;
 
-    public Date getRequestDate() {
-        return requestDate;
-    }
-    public void setRequestDate(Date requestDate) {
-        this.requestDate = requestDate;
-    }
-    public Date getAnswerDate() {
-        return answerDate;
-    }
-    public void setAnswerDate(Date answerDate) {
-        this.answerDate = answerDate;
-    }
-    public Date getFinishDate() {
-        return finishDate;
-    }
-    public void setFinishDate(Date finishDate) {
-        this.finishDate = finishDate;
-    }
-    public String getRejection() {
-        return rejection;
-    }
-    public void setRejection(String rejection) {
-        this.rejection = rejection;
-    }
     public Long getIdRequestService() {
         return idRequestService;
     }
@@ -152,23 +116,28 @@ public class RequestServiceVO {
     public void setLabName(String labName) {
         this.labName = labName;
     }
+    public String getRejection() {
+        return rejection;
+    }
+    public void setRejection(String rejection) {
+        this.rejection = rejection;
+    }
     public Long getRequestServiceStatus() {
         return requestServiceStatus;
     }
     public void setRequestServiceStatus(Long requestServiceStatus) {
         this.requestServiceStatus = requestServiceStatus;
     }
-    public BigInteger getUsersIdUsers() {
+    public Optional<UserVO> getUsersIdUsers() {
         return usersIdUsers;
     }
-    public void setUsersIdUsers(BigInteger usersIdUsers) {
+    public void setUsersIdUsers(Optional<UserVO> usersIdUsers) {
         this.usersIdUsers = usersIdUsers;
     }
-    public BigInteger getLaboratoriesIdLaboratories() {
+    public Optional<LaboratoryVO> getLaboratoriesIdLaboratories() {
         return laboratoriesIdLaboratories;
     }
-    public void setLaboratoriesIdLaboratories(BigInteger laboratoriesIdLaboratories) {
+    public void setLaboratoriesIdLaboratories(Optional<LaboratoryVO> laboratoriesIdLaboratories) {
         this.laboratoriesIdLaboratories = laboratoriesIdLaboratories;
     }
-
 }

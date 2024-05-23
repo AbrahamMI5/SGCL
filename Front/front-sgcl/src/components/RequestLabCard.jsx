@@ -19,7 +19,6 @@ export function RequestLabCard(props) {
         } else if (status === false) {
             setStatusText('Solicitud rechazada');
             setColor('red')
-
         }
     }, [status]);
 

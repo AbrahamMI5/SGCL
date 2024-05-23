@@ -31,9 +31,9 @@ export function Sidebar() {
 
     }, []);
 
-    const adminMenu = ['Home', 'RequestLabResponse', 'Laboratories', 'Users', 'LogOut'];
-    const adminManagerial = ['Home','Notification', 'LogOut'];
-    const adminTeacher = ['Home',  'RequestLab', 'Notification', 'LogOut', ];
+    const adminMenu = ['Home', 'RequestLabResponse', 'Laboratories', 'Users', 'RequestService', 'LogOut'];
+    const adminManagerial = ['Home','RequestComputer', 'LogOut', ];
+    const adminTeacher = ['Home',  'RequestLab', 'Notification','RequestComputer', 'RequestTechnology', 'LogOut' ];
     const defaultIcon = ['LogInIcon'];
 
     const typeUser = (role) => {
