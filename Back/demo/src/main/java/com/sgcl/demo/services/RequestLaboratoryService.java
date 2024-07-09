@@ -6,9 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sgcl.demo.models.LabHoraryVO;
 import com.sgcl.demo.models.NotificationVO;
 import com.sgcl.demo.models.RequestLaboratoryVO;
 import com.sgcl.demo.repositories.RequestLaboratoryRepository;
+import com.sgcl.demo.repositories.LabHoraryRepository;
 
 @Service
 public class RequestLaboratoryService {
@@ -17,6 +19,9 @@ public class RequestLaboratoryService {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private LabHoraryRepository labHoraryRepository;
 
     public List<RequestLaboratoryVO> getRequestLaboratories() {
         return (List<RequestLaboratoryVO>) requestLaboratoryRepository.findAll();
@@ -50,20 +55,24 @@ public class RequestLaboratoryService {
 
         if (!request.getStatus()) {
             NotificationVO notification = new NotificationVO();
-            notification.setNotifyMenssage("La solicitud de laboratorio con ID " + id + " ha sido rechazada.\n"+request.getrRejection());
+            notification.setNotifyMenssage("La solicitud de laboratorio ha sido rechazada.\n"+request.getrRejection());
             notification.setTodelete(false);
             notification.setRequestLaboratoryIdRequestLaboratory(requestLab.getIdRequestLaboratory());
             notification.setUsersIdUsers((long) requestLab.getUsersIdUsers());
             notificationService.createNotification(notification);
         } else {
             NotificationVO notification = new NotificationVO();
-            notification.setNotifyMenssage("La solicitud de laboratorio con ID " + id + " ha sido aceptada.");
+            notification.setNotifyMenssage("La solicitud de laboratorio ha sido aceptada.");
             notification.setTodelete(false);
             notification.setRequestLaboratoryIdRequestLaboratory(requestLab.getIdRequestLaboratory());
             notification.setUsersIdUsers((long) requestLab.getUsersIdUsers());
             notificationService.createNotification(notification);
-        }
 
+            LabHoraryVO horary = new LabHoraryVO();
+            horary.setRequestLaboratoryIdRequestLaboratory(id);
+            horary.setSemesterIdSemester((long)1);
+            labHoraryRepository.save(horary);
+        }
         return requestLaboratoryRepository.save(requestLab);
     }
 

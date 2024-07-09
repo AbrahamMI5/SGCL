@@ -1,0 +1,49 @@
+Modulo 1
+
+Registrar de docentes Listo
+Editar datos de docentes Listo
+Registrar laboratorios Listo
+Editar laboratorios Listo
+Solicitar uso de los laboratorios Listo
+Aprobar/rechazar solicitud de uso de los laboratorios Listo
+Notificar aprobación de uso de los laboratorios Listo
+
+Pendiente Lisa de aceptadas, rechazas y pebdientes. Listo
+
+
+Modulo 2
+
+Registrar administrativos Listo
+Editar administrativos Listo
+Solicitar servicios de computo Listo
+Solicitar servicios de tecnologia Listo
+Ver aceptados y rechazados Listo
+Registrar estado de servicio de tecnologia y computo Listo
+
+(Quitar parentesis y agregar la informacion como titulo) Listo
+(Ortografia) Listo
+
+
+
+Modulo 3
+
+Documentos de planeacion de mantenimiento anual 
+Documento de planeacion de mantenimiento semestral 
+Registrar uso de laboratorios 
+Visualizar horarios Listo
+Generar reporte de uso de laboratorios 
+Cambiar semestre 
+
+
+Pendientes post presentacion
+
+Validaciones de horarios cuando ya estén aprobados, y que no coincidan de hora, agregar dia
+Verificar que el token no este caduco y en caso de que si que lo borre
+Mostrar nombre del usuario que inicio sesion
+Notificaciones y afirmaciones de eliminar, crear autualizar etc
+Peticiones que tengan los objetos dentro para no resolicitarlos (creando nuevas respuestas)
+Buscador en solicitudes de computo
+buscador en solicitudes de tecnologia
+
+
+Revision general de requerimientos

@@ -34,5 +34,8 @@ export const apiUrls = {
   getTechnologyServiceWithStatus: `${apiUrl}/requestService/getTechnologyWithStatus`,
   getComputerServiceWithoutStatus: `${apiUrl}/requestService/getComputerWithoutStatus`,
   getComputerServiceWithStatus: `${apiUrl}/requestService/getComputerWithStatus`,
-  setRequestServiceStatus: `${apiUrl}/requestService/setStatus`
+  setRequestServiceStatus: `${apiUrl}/requestService/setStatus`,
+  getClassrooms: `${apiUrl}/labHorary/getClassrooms`,
+  getLabHorarybyGroup: `${apiUrl}/labHorary/getByGroup`,
+  getLabHorarybyLab: `${apiUrl}/labHorary/getByLab`,
 };

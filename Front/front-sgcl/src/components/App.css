@@ -20,7 +20,7 @@
 
 .Horary-Titles {
     background-color: rgb(255, 255, 255);
-    height: 4rem;
+    height: 5rem;
     vertical-align: text-bottom;
     display: flex;
     align-items: center;
@@ -30,6 +30,8 @@
 .Horary-dates {
     border: 1px solid black;
     background-color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: smaller;
 }
 
 

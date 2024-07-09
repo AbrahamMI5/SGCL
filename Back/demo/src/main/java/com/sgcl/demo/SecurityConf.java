@@ -31,7 +31,7 @@ public class SecurityConf {
                 .authorizeHttpRequests(authorize -> 
                 authorize
                     //Url everyone    
-                    .requestMatchers("/laboratory/getAllLaboratories", "/login/", "/user/logIn", "/user/getRoleByEmail", "/user/getUserByEmail").permitAll()
+                    .requestMatchers("/laboratory/getAllLaboratories", "/login/", "/user/logIn", "/user/getRoleByEmail", "/user/getUserByEmail", "/labHorary/*").permitAll()
                     //Url Admin, Teacher, Managerial
                     .requestMatchers("/**").hasAnyAuthority("Admin", "Teacher", "Managerial")
                     //Url Admin, Teacher
