@@ -1,5 +1,5 @@
 import { RequestServiceStatus } from "./RequestServiceStatus"
-import { apiUrls, usersApi } from "./api/userApi";
+import { apiUrls, usersApi, security } from "./api/userApi";
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from "react"
 
@@ -16,9 +16,7 @@ export function RequestTechnologyService() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        if (token) {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
+        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
         const tokenDecod = jwtDecode(token);
         const data = {
             email: tokenDecod.sub,
@@ -43,9 +41,7 @@ export function RequestTechnologyService() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        if (token) {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
+        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
         if (userId.id != undefined) {
             usersApi.get(`${apiUrls.getTechnologyRequest}${userId.id}`)
                 .then(response => {
@@ -107,9 +103,7 @@ export function RequestTechnologyService() {
             };
             console.log(requestServData)
             let token = localStorage.getItem('token');
-            if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            }
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
             const response = await usersApi.post(`${apiUrls.createRequestCompService}`, requestServData);
             //window.location.reload();
         } catch (error) {

@@ -1,4 +1,4 @@
-import { usersApi, apiUrls } from "./api/userApi";
+import { usersApi, apiUrls, security } from "./api/userApi";
 import { useEffect, useState } from "react";
 
 import { AddLabCard } from './AddLabCard'
@@ -17,9 +17,7 @@ export function FormLaboratory() {
             };
             if (labData.labName != null && labData.labName != '') {
                 let token = localStorage.getItem('token');
-                if (token) {
-                    usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                }
+                usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
                 const response = await usersApi.post(`${apiUrls.createLab}`, labData);
             } else {
                 throw new SyntaxError("dato incompleto");
@@ -34,9 +32,7 @@ export function FormLaboratory() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        if (token) {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
+        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
         usersApi.get(apiUrls.getAllLaboratories)
             .then(respLabs => {
                 setLabs(respLabs.data);

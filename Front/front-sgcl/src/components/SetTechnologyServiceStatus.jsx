@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { apiUrls, usersApi } from "./api/userApi";
+import { apiUrls, usersApi, security } from "./api/userApi";
 
 export function SetTechnologyServiceStatus(props) {
     const { techr } = props;
@@ -19,9 +19,7 @@ export function SetTechnologyServiceStatus(props) {
                 requestServiceStatus: status,
             };
             let token = localStorage.getItem('token');
-            if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            }
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
             const response = await usersApi.post(`${apiUrls.setRequestServiceStatus}`, statusData);
             setCurrentStatus(status);  // Update the local status state
         } catch (error) {

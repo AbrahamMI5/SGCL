@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { usersApi, apiUrls } from "./api/userApi";
+import { usersApi, apiUrls, security } from "./api/userApi";
 
 export function RequestLaboratoryCard(props) {
     const { labId, subject, day, startHorary, endHorary } = props;
@@ -21,9 +21,7 @@ export function RequestLaboratoryCard(props) {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        if (token) {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
+        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
         console.log("lab id")
         console.log(labId)
         usersApi.get(apiUrls.getLab + labId)

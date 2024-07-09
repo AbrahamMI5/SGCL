@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NotificationReqLab } from './NotificationReqLab';
 import { jwtDecode } from 'jwt-decode';
-import { usersApi, apiUrls } from './api/userApi';
+import { usersApi, apiUrls, security } from './api/userApi';
 
 export function Notifications() {
     const [userId, setUserId] = useState([]);
@@ -11,7 +11,7 @@ export function Notifications() {
         const fetchData = async () => {
             const token = localStorage.getItem('token');
             if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
                 try {
                     // Obtener ID de usuario
                     const tokenDecod = jwtDecode(token);

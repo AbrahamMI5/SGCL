@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { usersApi, apiUrls } from "./api/userApi";
+import { usersApi, apiUrls, security } from "./api/userApi";
 
 
 export function RequestLabCard(props) {
@@ -39,9 +39,7 @@ export function RequestLabCard(props) {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        if (token) {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
+        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
         usersApi.get(`${apiUrls.getUserById}${idteacher}`)
             .then(response => {
                 console.log(response.data); // Aquí puedes ver la respuesta del servidor
@@ -68,9 +66,7 @@ export function RequestLabCard(props) {
                 status: 1
             };
             let token = localStorage.getItem('token');
-            if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            }
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
             const response = await usersApi.put(`${apiUrls.updateRequestLab}${idRequestLab}`, updateData);
             window.location.reload()
         } catch (error) {
@@ -86,9 +82,7 @@ export function RequestLabCard(props) {
                 status: 0
             };
             let token = localStorage.getItem('token');
-            if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            }
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
             const response = await usersApi.put(`${apiUrls.updateRequestLab}${idRequestLab}`, updateData);
             window.location.reload()
         } catch (error) {

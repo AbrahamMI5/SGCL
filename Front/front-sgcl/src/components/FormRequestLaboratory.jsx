@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { usersApi, apiUrls } from "./api/userApi";
+import { usersApi, apiUrls, security } from "./api/userApi";
 import { jwtDecode } from 'jwt-decode';
 import { RequestLaboratoryCard } from './RequestLaboratoryCard';
 
@@ -23,13 +23,11 @@ export function FormRequestLaboratory() {
         const fetchData = async () => {
             let token = localStorage.getItem('token');
             if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
                 try {
-                    // Obtener laboratorios
                     const respLaboratories = await usersApi.get(apiUrls.getAllLaboratories);
                     setLaboratories(respLaboratories.data);
 
-                    // Obtener ID de usuario
                     const tokenDecod = jwtDecode(token);
                     const data = {
                         email: tokenDecod.sub,
@@ -37,13 +35,12 @@ export function FormRequestLaboratory() {
                     const responseUser = await usersApi.post(apiUrls.getUserByEmail, data);
                     setUserId(responseUser.data.id);
 
-                    // Obtener solicitudes
                     const respReqLab = await usersApi.get(apiUrls.getRequestLabById + responseUser.data.id);
                     setRequests(respReqLab.data);
-                    setLoading(false); // Una vez que se cargan las solicitudes, establecemos loading en falso
+                    setLoading(false); 
                 } catch (error) {
                     console.error('Error fetching data:', error);
-                    setLoading(false); // En caso de error, establecemos loading en falso para detener el indicador de carga
+                    setLoading(false);
                 }
                 console.log(requests)
             }
@@ -69,9 +66,7 @@ export function FormRequestLaboratory() {
             };
             console.log(requestData)
             let token = localStorage.getItem('token');
-            if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            }
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
             const response = await usersApi.post(`${apiUrls.creageRequestLaboratory}`, requestData);
             window.location.reload()
         } catch (error) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { usersApi, apiUrls } from "./api/userApi";
+import { usersApi, apiUrls, security } from "./api/userApi";
 
 export function NotificationReqLab(props) {
     const { msg, reqLabId, idNotifications } = props;
@@ -24,10 +24,7 @@ export function NotificationReqLab(props) {
 
         event.preventDefault();
         try {
-            let token = localStorage.getItem('token');
-            if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            }
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
             const response = await usersApi.get(`${apiUrls.deleteNotification}${idNotifications}`);
             window.location.reload();
         } catch (error) {
@@ -39,18 +36,14 @@ export function NotificationReqLab(props) {
     useEffect(() => {
         let token = localStorage.getItem('token');
         console.log(reqLabId)
-        if (token) {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
-
+        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
         usersApi.get(apiUrls.getRequestLab + reqLabId)
             .then(response => {
-                console.log(response.data); // Aquí puedes ver la respuesta del servidor
-                setRequest(response.data); // Asumiendo que la respuesta del servidor contiene el nombre del docente
-
+                console.log(response.data);
+                setRequest(response.data); 
                 usersApi.get(`${apiUrls.getLab}${response.data.laboratoriesIdLaboratories}`)
                     .then(responselab => {
-                        console.log(responselab.data); // Aquí puedes ver la respuesta del servidor
+                        console.log(responselab.data);
                         setLabName(responselab.data.labName);
                     })
                     .catch(error => {

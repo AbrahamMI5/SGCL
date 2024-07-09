@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { SetComputerServiceStatus } from "./SetComputerServiceStatus";
 import { SetTechnologyServiceStatus } from "./SetTechnologyServiceStatus";
-import { apiUrls, usersApi } from './api/userApi';
+import { apiUrls, usersApi, security } from './api/userApi';
 import { jwtDecode } from "jwt-decode";
 
 export function RequestService() {
@@ -22,9 +22,7 @@ export function RequestService() {
             const data = {
                 email: tokenDecod.sub,
             };
-            if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            }
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
             usersApi.get(apiUrls.getComputerServiceWithStatus)
                 .then(response =>
                     setResponseCompWS(response.data)

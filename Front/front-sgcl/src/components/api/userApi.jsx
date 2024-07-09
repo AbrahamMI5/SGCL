@@ -1,8 +1,30 @@
 import axios from "axios";
+import {jwtDecode} from 'jwt-decode';
 
-export const usersApi= axios.create();
+export const usersApi = axios.create();
 
 const apiUrl = 'http://localhost:8080';
+
+export const security = () => {
+  let token = localStorage.getItem('token');
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (decodedToken.exp && decodedToken.exp > currentTime) {
+        return token;
+      } else {
+        localStorage.clear()
+        window.location.reload()
+        return null
+      }
+    } catch (error) {
+      return null;
+    }
+  } else {
+    return null;
+  }
+};
 
 export const apiUrls = {
   getAllLaboratories: `${apiUrl}/laboratory/getAllLaboratories`,
@@ -14,7 +36,7 @@ export const apiUrls = {
   createLab: `${apiUrl}/laboratory/createLaboratory`,
   deleteLab: `${apiUrl}/laboratory/deleteLaboratory`,
   updateLab: `${apiUrl}/laboratory/updateLaboratory`,
-  getLab :`${apiUrl}/laboratory/getLaboratory`,
+  getLab: `${apiUrl}/laboratory/getLaboratory`,
   login: `${apiUrl}/user/logIn`,
   getRoleByEmail: `${apiUrl}/user/getRoleByEmail`,
   getUserByEmail: `${apiUrl}/user/getUserByEmail`,

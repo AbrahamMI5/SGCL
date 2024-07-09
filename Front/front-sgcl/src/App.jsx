@@ -8,7 +8,7 @@ import { LogIn } from './components/LogIn';
 import { GridUser } from './components/FormUser';
 import { FormLaboratory } from './components/FormLaboratories';
 import { FormRequestLaboratory } from './components/FormRequestLaboratory';
-import { usersApi, apiUrls } from "./components/api/userApi";
+import { usersApi, apiUrls, security } from "./components/api/userApi";
 import { LabRequestAns } from './components/LabRequestAns';
 import { Notifications } from './components/Notifications';
 import { RequestService } from './components/RequestService';
@@ -34,9 +34,7 @@ function App() {
       const data = {
         email: tokenDecod.sub,
       };
-      if (token) {
-        usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      }
+      usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
       usersApi.post(`${apiUrls.getRoleByEmail}`, data)
         .then(respRole => {
           setRole(respRole.data);

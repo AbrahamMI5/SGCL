@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { usersApi, apiUrls } from "./api/userApi";
+import { usersApi, apiUrls, security } from "./api/userApi";
 
 export function RequestServiceStatus(props) {
     const {reciverName, observation, usersIdUsers, status} = props
@@ -7,9 +7,7 @@ export function RequestServiceStatus(props) {
     
     useEffect(()=>{
         let token = localStorage.getItem('token');
-        if (token) {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
+        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
         usersApi.get(`${apiUrls.getUserById}${usersIdUsers}`)
             .then(response => {
                 setUserName(response.data.userName); // Asumiendo que la respuesta del servidor contiene el nombre del docente

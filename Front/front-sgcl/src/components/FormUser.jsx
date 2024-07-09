@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UsersCard } from './UsersCard';
 import { AddUserCard } from './AddUserCard'
-import { usersApi, apiUrls } from "./api/userApi";
+import { usersApi, apiUrls, security } from "./api/userApi";
 
 export function GridUser() {
     const [users, setUsers] = useState([]);
@@ -17,9 +17,7 @@ export function GridUser() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        if (token) {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
+        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
         usersApi.get(apiUrls.getAllUser)
             .then(respUsers => {
                 setUsers(respUsers.data);

@@ -1,7 +1,7 @@
 import './App.css'
 import userImg from './img/user.svg'
 import { useNavigate } from 'react-router-dom';
-import { usersApi, apiUrls } from "./api/userApi";
+import { usersApi, apiUrls, security } from "./api/userApi";
 
 export function LogIn() {
 
@@ -10,9 +10,7 @@ export function LogIn() {
     const logIn = async () => {
         try {
             let token = localStorage.getItem('token');
-            if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            }
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
             const userData = {
                 email: document.getElementById("email").value,
                 password: document.getElementById("password").value,

@@ -1,5 +1,4 @@
-import { usersApi, apiUrls } from "./api/userApi";
-import { useEffect, useState } from "react";
+import { usersApi, apiUrls, security } from "./api/userApi";
 
 export function AddLabCard(props) {
 
@@ -13,9 +12,7 @@ export function AddLabCard(props) {
                 labName: document.getElementById("labName" + idLaboratories).value,
             };
             let token = localStorage.getItem('token');
-            if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            }
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
             const response = await usersApi.put(`${apiUrls.updateLab}${idLaboratories}`, labData);
             window.location.reload()
         } catch (error) {
@@ -27,9 +24,7 @@ export function AddLabCard(props) {
         event.preventDefault();
         try {
             let token = localStorage.getItem('token');
-            if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            }
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
             const response = await usersApi.put(`${apiUrls.deleteLab}${idLaboratories}`);
             window.location.reload();
         } catch (error) {

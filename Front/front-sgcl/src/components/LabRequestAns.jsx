@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { RequestLabCard } from "./RequestLabCard"
-import { usersApi, apiUrls } from "./api/userApi";
+import { usersApi, apiUrls, security } from "./api/userApi";
 
 
 export function LabRequestAns() {
@@ -10,9 +10,7 @@ export function LabRequestAns() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        if (token) {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
+        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
         usersApi.get(apiUrls.getRequestLabInProcess)
             .then(respLabResq => {
                 setLabResp(respLabResq.data);

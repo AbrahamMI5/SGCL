@@ -1,5 +1,5 @@
 import './App.css'
-import { usersApi, apiUrls } from "./api/userApi";
+import { usersApi, apiUrls, security } from "./api/userApi";
 import { useEffect, useState } from 'react';
 
 
@@ -12,9 +12,7 @@ export function Horary() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        if (token) {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
+        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
         usersApi.get(apiUrls.getAllLaboratories)
             .then(respLaboratories => {
                 setLaboratories(respLaboratories.data);

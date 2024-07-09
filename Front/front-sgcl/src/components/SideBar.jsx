@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import {usersApi, apiUrls} from './api/userApi'
+import {usersApi, apiUrls, security} from './api/userApi'
 import './App.css'
 import Icon from './Icon';
 import { jwtDecode } from 'jwt-decode';
@@ -15,9 +15,7 @@ export function Sidebar() {
             const data = {
                 email: tokenDecod.sub,
             };
-            if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            }
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
             usersApi.post(`${apiUrls.getRoleByEmail}`, data)
                 .then(respRole => {
                     setRole(respRole.data);

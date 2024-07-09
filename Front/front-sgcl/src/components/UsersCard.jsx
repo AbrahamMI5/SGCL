@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { apiUrls, usersApi } from "./api/userApi";
+import { apiUrls, usersApi, security } from "./api/userApi";
 
 export function UsersCard(props) {
     const { userName, role, password, email, numberEmployee, userId } = props;
@@ -21,9 +21,7 @@ export function UsersCard(props) {
                 role: selectedOption
             };
             let token = localStorage.getItem('token');
-            if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            }
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
             const response = await usersApi.put(`${apiUrls.updateUser}${userId}`, userData);
         } catch (error) {
             console.error('Error al actualizar el usuario:', error);

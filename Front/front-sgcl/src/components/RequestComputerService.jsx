@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { RequestServiceStatus } from "./RequestServiceStatus"
-import { apiUrls, usersApi } from "./api/userApi";
+import { apiUrls, usersApi, security } from "./api/userApi";
 import { jwtDecode } from 'jwt-decode';
 
 export function RequestComputerService() {
@@ -11,9 +11,7 @@ export function RequestComputerService() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        if (token) {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
+        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
         const tokenDecod = jwtDecode(token);
         const data = {
             email: tokenDecod.sub,
@@ -30,9 +28,7 @@ export function RequestComputerService() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        if (token) {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
+        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
         if (userId.id != undefined) {
             usersApi.get(`${apiUrls.getComputerRequest}${userId.id}`)
                 .then(response => {
@@ -82,9 +78,7 @@ export function RequestComputerService() {
                 observations: "Computo: " + document.getElementById("Observation").value + " Descripcion: " + document.getElementById("Description").value + " No. inventario: " + document.getElementById("NoInv").value + " Modelo: " + document.getElementById("Model").value + " Marca: " + document.getElementById("Brand").value + " Numero de serie: " + document.getElementById("SeriNu").value
             };
             let token = localStorage.getItem('token');
-            if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            }
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
             const response = await usersApi.post(`${apiUrls.createRequestCompService}`, requestServData);
 
             window.location.reload();
