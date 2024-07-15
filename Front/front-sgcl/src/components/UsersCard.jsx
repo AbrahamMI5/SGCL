@@ -21,7 +21,7 @@ export function UsersCard(props) {
                 role: selectedOption
             };
             let token = localStorage.getItem('token');
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.put(`${apiUrls.updateUser}${userId}`, userData);
         } catch (error) {
             console.error('Error al actualizar el usuario:', error);

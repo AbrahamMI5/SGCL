@@ -39,7 +39,7 @@ export function RequestLabCard(props) {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         usersApi.get(`${apiUrls.getUserById}${idteacher}`)
             .then(response => {
                 console.log(response.data); // Aquí puedes ver la respuesta del servidor
@@ -66,7 +66,7 @@ export function RequestLabCard(props) {
                 status: 1
             };
             let token = localStorage.getItem('token');
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.put(`${apiUrls.updateRequestLab}${idRequestLab}`, updateData);
             window.location.reload()
         } catch (error) {
@@ -82,7 +82,7 @@ export function RequestLabCard(props) {
                 status: 0
             };
             let token = localStorage.getItem('token');
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.put(`${apiUrls.updateRequestLab}${idRequestLab}`, updateData);
             window.location.reload()
         } catch (error) {

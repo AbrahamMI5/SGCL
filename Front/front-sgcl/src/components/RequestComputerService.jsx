@@ -11,7 +11,7 @@ export function RequestComputerService() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         const tokenDecod = jwtDecode(token);
         const data = {
             email: tokenDecod.sub,
@@ -28,7 +28,7 @@ export function RequestComputerService() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         if (userId.id != undefined) {
             usersApi.get(`${apiUrls.getComputerRequest}${userId.id}`)
                 .then(response => {
@@ -78,7 +78,7 @@ export function RequestComputerService() {
                 observations: "Computo: " + document.getElementById("Observation").value + " Descripcion: " + document.getElementById("Description").value + " No. inventario: " + document.getElementById("NoInv").value + " Modelo: " + document.getElementById("Model").value + " Marca: " + document.getElementById("Brand").value + " Numero de serie: " + document.getElementById("SeriNu").value
             };
             let token = localStorage.getItem('token');
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.post(`${apiUrls.createRequestCompService}`, requestServData);
 
             window.location.reload();

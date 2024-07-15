@@ -13,6 +13,7 @@ export function RequestService() {
     const [computerS, setComputerS] = useState(true);
     const [bgcolorC, setBgcolorC] = useState('#FFF');
     const [bgcolorT, setBgcolorT] = useState('#D9D9D9');
+    const [search, setSearch] = useState("");
 
 
     useEffect(() => {
@@ -22,7 +23,7 @@ export function RequestService() {
             const data = {
                 email: tokenDecod.sub,
             };
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             usersApi.get(apiUrls.getComputerServiceWithStatus)
                 .then(response =>
                     setResponseCompWS(response.data)
@@ -32,10 +33,11 @@ export function RequestService() {
             usersApi.get(apiUrls.getComputerServiceWithoutStatus)
                 .then(response =>
                     setResponseCompWOS(response.data)
+                    
                 ).catch(e => {
                     console.log(`Error al obtener solicitudes de computo con estatus`, e)
                 });
-            console.log(apiUrls.getTechnologyServiceWithStatus)
+                
             usersApi.get(apiUrls.getTechnologyServiceWithStatus)
                 .then(response =>
                     setResponseTechWS(response.data)
@@ -64,6 +66,11 @@ export function RequestService() {
         setBgcolorT('#FFF')
     }
 
+    const filter = (event) =>{
+        console.log(event.target.value)
+        setSearch(event.target.value)
+    }
+
     return (
         <>
             <h1>Solicitudes de servicio</h1>
@@ -71,21 +78,48 @@ export function RequestService() {
                 <button style={{ backgroundColor: `${bgcolorC}`, border: '1px solid black' }} onClick={handleComputer}>Cómputo</button>
                 <button style={{ backgroundColor: `${bgcolorT}`, border: '1px solid black' }} onClick={handleTechnology}>Tecnología</button>
             </div>
+            <div style={{marginTop: "2%", paddingBottom: "2%"}} className="AddRequest">
+                <input type="Buscar" style={{width: "100%"}} placeholder="Buscar por nombre o correo de solicitante o usuario final" onChange={filter}/>
+            </div>
 
             {computerS &&
                 <>
                     <h2>Servicio de cómputo</h2>
                     <h3>Pendientes</h3>
                     {responseCompWOS.map((comp) => {
-                        return (
-                            <SetComputerServiceStatus key={comp.idRequestService} compr={comp} />
-                        );
+                        if(search == ""){
+                            console.log("Total")
+                            return (
+                                <SetComputerServiceStatus key={comp.idRequestService} compr={comp} />
+                            );
+                            
+                        }else{
+                            if(comp.usersIdUsers.userName.includes(search) || comp.reciverName.includes(search) || comp.usersIdUsers.email.includes(search) || comp.reciverEmail.includes(search)){
+                                console.log("Datos con filtro", search)
+                                return (
+                                    <SetComputerServiceStatus key={comp.idRequestService} compr={comp} />
+                                );
+                            }
+                        }
+                        
                     })}
+
                     <h3>Resueltas</h3>
                     {responseCompWS.map((comp) => {
-                        return (
-                            <SetComputerServiceStatus key={comp.idRequestService} compr={comp} />
-                        );
+                        if(search == ""){
+                            console.log("Total")
+                            return (
+                                <SetComputerServiceStatus key={comp.idRequestService} compr={comp} />
+                            );
+                            
+                        }else{
+                            if(comp.usersIdUsers.userName.includes(search) || comp.reciverName.includes(search) || comp.usersIdUsers.email.includes(search) || comp.reciverEmail.includes(search)){
+                                console.log("Datos con filtro", search)
+                                return (
+                                    <SetComputerServiceStatus key={comp.idRequestService} compr={comp} />
+                                );
+                            }
+                        }
                     })}
                 </>}
             {!computerS &&
@@ -93,15 +127,38 @@ export function RequestService() {
                     <h2>Servicio de tecnología</h2>
                     <h3>Pendientes</h3>
                     {responseTechWOS.map((tech) => {
-                        return (
-                            <SetTechnologyServiceStatus key={tech.idRequestService} techr={tech} />
-                        );
+                        if(search == ""){
+                            console.log("Total")
+                            return (
+                                <SetComputerServiceStatus key={tech.idRequestService} compr={tech} />
+                            );
+                            
+                        }else{
+                            if(tech.usersIdUsers.userName.includes(search) || tech.reciverName.includes(search) || tech.usersIdUsers.email.includes(search) || tech.reciverEmail.includes(search)){
+                                console.log("Datos con filtro", search)
+                                return (
+                                    <SetComputerServiceStatus key={tech.idRequestService} compr={tech} />
+                                );
+                            }
+                        }
+                        
                     })}
                     <h3>Resueltas</h3>
                     {responseTechWS.map((tech) => {
-                        return (
-                            <SetTechnologyServiceStatus key={tech.idRequestService} techr={tech}/>
-                        );
+                        if(search == ""){
+                            console.log("Total")
+                            return (
+                                <SetComputerServiceStatus key={tech.idRequestService} compr={tech} />
+                            );
+                            
+                        }else{
+                            if(tech.usersIdUsers.userName.includes(search) || tech.reciverName.includes(search) || tech.usersIdUsers.email.includes(search) || tech.reciverEmail.includes(search)){
+                                console.log("Datos con filtro", search)
+                                return (
+                                    <SetComputerServiceStatus key={tech.idRequestService} compr={tech} />
+                                );
+                            }
+                        }
                     })}
                 </>}
         </>

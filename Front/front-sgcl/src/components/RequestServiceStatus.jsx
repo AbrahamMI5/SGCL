@@ -7,7 +7,7 @@ export function RequestServiceStatus(props) {
     
     useEffect(()=>{
         let token = localStorage.getItem('token');
-        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         usersApi.get(`${apiUrls.getUserById}${usersIdUsers}`)
             .then(response => {
                 setUserName(response.data.userName); // Asumiendo que la respuesta del servidor contiene el nombre del docente

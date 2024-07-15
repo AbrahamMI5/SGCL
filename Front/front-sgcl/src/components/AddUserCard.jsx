@@ -22,7 +22,7 @@ export function AddUserCard(props) {
                 role: selectedOption
             };
             let token = localStorage.getItem('token');
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.post(`${apiUrls.createUser}`, userData);
             window.location.reload();
         } catch (error) {

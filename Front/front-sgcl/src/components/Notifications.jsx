@@ -11,7 +11,7 @@ export function Notifications() {
         const fetchData = async () => {
             const token = localStorage.getItem('token');
             if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+                security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
                 try {
                     // Obtener ID de usuario
                     const tokenDecod = jwtDecode(token);

@@ -23,7 +23,7 @@ export function FormRequestLaboratory() {
         const fetchData = async () => {
             let token = localStorage.getItem('token');
             if (token) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+                security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
                 try {
                     const respLaboratories = await usersApi.get(apiUrls.getAllLaboratories);
                     setLaboratories(respLaboratories.data);
@@ -66,7 +66,7 @@ export function FormRequestLaboratory() {
             };
             console.log(requestData)
             let token = localStorage.getItem('token');
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.post(`${apiUrls.creageRequestLaboratory}`, requestData);
             window.location.reload()
         } catch (error) {

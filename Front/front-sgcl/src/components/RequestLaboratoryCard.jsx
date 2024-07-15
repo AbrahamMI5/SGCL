@@ -21,13 +21,10 @@ export function RequestLaboratoryCard(props) {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
-        console.log("lab id")
-        console.log(labId)
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         usersApi.get(apiUrls.getLab + labId)
             .then(response => {
-                console.log(response.data); // Aquí puedes ver la respuesta del servidor
-                setLabName(response.data.labName); // Asumiendo que la respuesta del servidor contiene el nombre del docente
+                setLabName(response.data.labName);
             })
             .catch(error => {
                 console.error('Error fetching laboratory name:', error);

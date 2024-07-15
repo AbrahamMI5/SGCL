@@ -17,7 +17,7 @@ export function GridUser() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         usersApi.get(apiUrls.getAllUser)
             .then(respUsers => {
                 setUsers(respUsers.data);

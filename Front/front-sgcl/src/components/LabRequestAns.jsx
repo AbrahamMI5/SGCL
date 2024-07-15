@@ -10,7 +10,7 @@ export function LabRequestAns() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         usersApi.get(apiUrls.getRequestLabInProcess)
             .then(respLabResq => {
                 setLabResp(respLabResq.data);

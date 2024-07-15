@@ -15,7 +15,7 @@ export function Sidebar() {
             const data = {
                 email: tokenDecod.sub,
             };
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             usersApi.post(`${apiUrls.getRoleByEmail}`, data)
                 .then(respRole => {
                     setRole(respRole.data);

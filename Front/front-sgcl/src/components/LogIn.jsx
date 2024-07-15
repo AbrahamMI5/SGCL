@@ -10,7 +10,7 @@ export function LogIn() {
     const logIn = async () => {
         try {
             let token = localStorage.getItem('token');
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const userData = {
                 email: document.getElementById("email").value,
                 password: document.getElementById("password").value,

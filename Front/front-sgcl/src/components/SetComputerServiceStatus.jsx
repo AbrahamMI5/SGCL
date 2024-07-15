@@ -19,7 +19,7 @@ export function SetComputerServiceStatus(props) {
                 requestServiceStatus: status,
             };
             let token = localStorage.getItem('token');
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.post(`${apiUrls.setRequestServiceStatus}`, statusData);
             setCurrentStatus(status);  // Update the local status state
         } catch (error) {

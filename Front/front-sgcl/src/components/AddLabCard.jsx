@@ -12,7 +12,7 @@ export function AddLabCard(props) {
                 labName: document.getElementById("labName" + idLaboratories).value,
             };
             let token = localStorage.getItem('token');
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;
             const response = await usersApi.put(`${apiUrls.updateLab}${idLaboratories}`, labData);
             window.location.reload()
         } catch (error) {
@@ -24,7 +24,7 @@ export function AddLabCard(props) {
         event.preventDefault();
         try {
             let token = localStorage.getItem('token');
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.put(`${apiUrls.deleteLab}${idLaboratories}`);
             window.location.reload();
         } catch (error) {

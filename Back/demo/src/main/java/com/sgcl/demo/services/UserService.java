@@ -4,7 +4,9 @@ import com.sgcl.demo.models.UserVO;
 import com.sgcl.demo.models.RequestModels.EmailRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +18,9 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public List<UserVO> getUsers() {
         return (List<UserVO>) userRepository.findAll();
@@ -35,7 +40,11 @@ public class UserService {
         teacher.setUserName(request.getUserName());
         teacher.setEmail(request.getEmail());
         teacher.setNumberEmployee(request.getNumberEmployee());
-        teacher.setPassword(request.getPassword());
+        if(request.getPassword().length() != 60){
+            teacher.setPassword(passwordEncoder.encode(request.getPassword()));
+        }else{
+            teacher.setPassword(request.getPassword());
+        }
         teacher.setRole(request.getRole());
 
         return userRepository.save(teacher);

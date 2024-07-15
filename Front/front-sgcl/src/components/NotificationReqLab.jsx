@@ -24,7 +24,7 @@ export function NotificationReqLab(props) {
 
         event.preventDefault();
         try {
-            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.get(`${apiUrls.deleteNotification}${idNotifications}`);
             window.location.reload();
         } catch (error) {
@@ -36,7 +36,7 @@ export function NotificationReqLab(props) {
     useEffect(() => {
         let token = localStorage.getItem('token');
         console.log(reqLabId)
-        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         usersApi.get(apiUrls.getRequestLab + reqLabId)
             .then(response => {
                 console.log(response.data);

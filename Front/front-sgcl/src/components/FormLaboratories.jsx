@@ -17,7 +17,7 @@ export function FormLaboratory() {
             };
             if (labData.labName != null && labData.labName != '') {
                 let token = localStorage.getItem('token');
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+                security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
                 const response = await usersApi.post(`${apiUrls.createLab}`, labData);
             } else {
                 throw new SyntaxError("dato incompleto");
@@ -32,7 +32,7 @@ export function FormLaboratory() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         usersApi.get(apiUrls.getAllLaboratories)
             .then(respLabs => {
                 setLabs(respLabs.data);

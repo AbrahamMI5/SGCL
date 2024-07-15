@@ -12,7 +12,7 @@ export function Horary() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         usersApi.get(apiUrls.getAllLaboratories)
             .then(respLaboratories => {
                 setLaboratories(respLaboratories.data);
