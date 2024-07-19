@@ -1,12 +1,12 @@
 import { usersApi, apiUrls, security } from "./api/userApi";
 import { useEffect, useState } from "react";
-
-import { AddLabCard } from './AddLabCard'
+import { AddLabCard } from './AddLabCard';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function FormLaboratory() {
 
     const [labs, setLabs] = useState([]);
-
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -19,12 +19,15 @@ export function FormLaboratory() {
                 let token = localStorage.getItem('token');
                 security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
                 const response = await usersApi.post(`${apiUrls.createLab}`, labData);
+                localStorage.setItem('toastMessage', 'Laboratorio creado');
             } else {
+                toast.error("Faltan datos")
                 throw new SyntaxError("dato incompleto");
             }
             window.location.reload();
         } catch (error) {
             console.error('Error al crear el laboratorio:', error);
+            toast.error("Error al crear el laboratorio")
         }
 
 
@@ -42,8 +45,32 @@ export function FormLaboratory() {
             });
     }, []);
 
+    useEffect(() => {
+        console.log("sduhfo")
+        setTimeout(() => {
+            const toastMessage = localStorage.getItem('toastMessage');
+            const toastMessageW = localStorage.getItem('toastMessageW');
+
+            console.log(toastMessage)
+            
+            if (toastMessage) {
+                toast.success(toastMessage)
+                localStorage.removeItem('toastMessage');
+                console.log('Toast notification displayed');
+            }
+            if(toastMessageW){
+                toast.warn(toastMessageW)
+                localStorage.removeItem('toastMessageW');
+                console.log('Toast notification displayed');
+            }
+        }, 1000);
+    },[]);
+
+    
+
     return (
-        <>
+        <>  
+            <ToastContainer />
             <div className='labHeader'>
                 <h1>Laboratorios</h1>
                 <div className="I-AddLab">

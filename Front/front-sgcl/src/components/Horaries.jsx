@@ -1,7 +1,7 @@
 import './App.css'
 import { usersApi, apiUrls, security } from "./api/userApi";
 import { useEffect, useState } from 'react';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 export function Horary() {
     const [laboratories, setLaboratories] = useState([]);
@@ -11,8 +11,13 @@ export function Horary() {
     const [horaries, setHoraries] = useState([]);
 
     useEffect(() => {
+        const toastMessage = localStorage.getItem('toastMessage');
+        if (toastMessage) {
+            toast.success(toastMessage);
+            localStorage.removeItem('toastMessage');
+        }
         let token = localStorage.getItem('token');
-        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
         usersApi.get(apiUrls.getAllLaboratories)
             .then(respLaboratories => {
                 setLaboratories(respLaboratories.data);
@@ -74,6 +79,7 @@ export function Horary() {
 
     return (
         <>
+            <ToastContainer />
             <nav className='Horary-Select'>
                 <ul className='H-Menu'>
                     <li tabIndex="0">Laboratorios
@@ -113,8 +119,8 @@ export function Horary() {
                 <div className='Horary-dates'><b>{horaries[13] ? groupName(horaries[13].header) : ''} </b> <br /> {horaries[13] && horaries[13].subject ? horaries[13].subject : ''}</div>
                 <div className='Horary-dates'><b>{horaries[17] ? groupName(horaries[17].header) : ''} </b> <br /> {horaries[17] && horaries[17].subject ? horaries[17].subject : ''}</div>
                 <div className='Horary-Titles'>4:00 - 6:00</div>
-                <div className='Horary-dates'><b>{horaries[2] ? groupName(horaries[2].header ): ''} </b> <br /> {horaries[2] && horaries[2].subject ? horaries[2].subject : ''}</div>
-                <div className='Horary-dates'><b>{horaries[6] ? groupName(horaries[6].header ): ''} </b> <br /> {horaries[6] && horaries[6].subject ? horaries[6].subject : ''}</div>
+                <div className='Horary-dates'><b>{horaries[2] ? groupName(horaries[2].header) : ''} </b> <br /> {horaries[2] && horaries[2].subject ? horaries[2].subject : ''}</div>
+                <div className='Horary-dates'><b>{horaries[6] ? groupName(horaries[6].header) : ''} </b> <br /> {horaries[6] && horaries[6].subject ? horaries[6].subject : ''}</div>
                 <div className='Horary-dates'><b>{horaries[10] ? groupName(horaries[10].header) : ''} </b> <br /> {horaries[10] && horaries[10].subject ? horaries[10].subject : ''}</div>
                 <div className='Horary-dates'><b>{horaries[14] ? groupName(horaries[14].header) : ''} </b> <br /> {horaries[14] && horaries[14].subject ? horaries[14].subject : ''}</div>
                 <div className='Horary-dates'><b>{horaries[18] ? groupName(horaries[18].header) : ''} </b> <br /> {horaries[18] && horaries[18].subject ? horaries[18].subject : ''}</div>

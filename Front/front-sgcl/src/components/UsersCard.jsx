@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { apiUrls, usersApi, security } from "./api/userApi";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function UsersCard(props) {
     const { userName, role, password, email, numberEmployee, userId } = props;
@@ -21,9 +23,11 @@ export function UsersCard(props) {
                 role: selectedOption
             };
             let token = localStorage.getItem('token');
-            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
             const response = await usersApi.put(`${apiUrls.updateUser}${userId}`, userData);
+            toast.success("Usuario actualizado")
         } catch (error) {
+            toast.error("Error al actualizar usuario")
             console.error('Error al actualizar el usuario:', error);
         }
     };
@@ -32,16 +36,20 @@ export function UsersCard(props) {
         event.preventDefault();
         try {
             const response = await usersApi.put(`${apiUrls.deleteUser}${userId}`);
+            localStorage.setItem('toastMessageW', 'Usuario eliminado');
+            window.location.reload();
+
         } catch (error) {
             console.error('Error al eliminar el usuario:', error);
+            toast.error("Error al eliminar usuario")
         }
-        window.location.reload();
     };
 
     const [selectedOption, setSelectedOption] = useState(role);
 
     return (
         <>
+            <ToastContainer/>
             <form className="usrsCard">
                 <div>
                     <label htmlFor="Name">Nombre</label>

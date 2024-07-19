@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { apiUrls, usersApi, security } from "./api/userApi";
 
 export function SetComputerServiceStatus(props) {
-    const { compr } = props;
+    const { compr, onStatusChange } = props;
     const [currentStatus, setCurrentStatus] = useState(compr.requestServiceStatus);
     const [rejection, setRejection] = useState(compr.rejection || "");
 
-    const status_grey = (status) => status == null ? 'State-grey-s' : 'State-grey';
+    const status_grey = (status) => (status == null || status == 0) ? 'State-grey-s' : 'State-grey';
     const status_yellow = (status) => status === 1 ? 'State-yellow-s' : 'State-yellow';
     const status_red = (status) => status === 2 ? 'State-red-s' : 'State-red';
     const status_green = (status) => status === 3 ? 'State-green-s' : 'State-green';
@@ -18,12 +18,14 @@ export function SetComputerServiceStatus(props) {
                 rejection: document.getElementById("reject").value,
                 requestServiceStatus: status,
             };
-            let token = localStorage.getItem('token');
             security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.post(`${apiUrls.setRequestServiceStatus}`, statusData);
-            setCurrentStatus(status);  // Update the local status state
+            setCurrentStatus(status); 
+            onStatusChange(status)
+
         } catch (error) {
             console.error('Error al asignar status el usuario:', error);
+            localStorage.setItem('toastMessage', 'Error al actualizar estatus');
         }
     };
 
@@ -106,7 +108,7 @@ export function SetComputerServiceStatus(props) {
                     <h4>Asignar estado:</h4>
                     <div style={{ display: "flex", justifyContent: "center" }}>
                         <div className="Row-Space" style={{ display: "flex", width: '70%', justifyContent: "space-between" }}>
-                            <div className={status_grey(currentStatus)} title="Pendiente" onClick={() => setStatus(null)} />
+                            <div className={status_grey(currentStatus)} title="Pendiente" onClick={() => setStatus(0)} />
                             <div className={status_yellow(currentStatus)} title="En proceso" onClick={() => setStatus(1)} />
                             <div className={status_red(currentStatus)} title="Rechazada" onClick={() => setStatus(2)} />
                             <div className={status_green(currentStatus)} title="Finalizada" onClick={() => setStatus(3)} />

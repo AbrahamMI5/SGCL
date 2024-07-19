@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { apiUrls, usersApi } from './api/userApi';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function AddUserCard(props) {
     const [selectedOption, setSelectedOption] = useState();
@@ -24,8 +26,10 @@ export function AddUserCard(props) {
             let token = localStorage.getItem('token');
             security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.post(`${apiUrls.createUser}`, userData);
+            localStorage.setItem('toastMessage', 'Usuario agregado');
             window.location.reload();
         } catch (error) {
+            toast.error("Error al crear usuario")
             console.error('Error al crear el usuario:', error);
         }
 
@@ -37,7 +41,10 @@ export function AddUserCard(props) {
     };
 
     return (
+        <>
+        <ToastContainer/>
         <form className="usrsCard" onSubmit={handleSubmit}>
+            
             <div>
                 <label htmlFor="Name">Nombre</label>
                 <input type="text" id="Name" name="name" placeholder="Nombre completo" />
@@ -67,6 +74,8 @@ export function AddUserCard(props) {
                 <button type="button" onClick={handleCancel}>Cancelar</button>
             </div>
         </form>
+        </>
+        
     );
 }
 

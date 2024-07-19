@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { UsersCard } from './UsersCard';
 import { AddUserCard } from './AddUserCard'
 import { usersApi, apiUrls, security } from "./api/userApi";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function GridUser() {
     const [users, setUsers] = useState([]);
@@ -17,7 +19,7 @@ export function GridUser() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
         usersApi.get(apiUrls.getAllUser)
             .then(respUsers => {
                 setUsers(respUsers.data);
@@ -25,10 +27,29 @@ export function GridUser() {
             .catch(error => {
                 console.error('Error fetching users:', error);
             });
+
+        setTimeout(() => {
+            const toastMessage = localStorage.getItem('toastMessage');
+            const toastMessageW = localStorage.getItem('toastMessageW');
+
+            console.log(toastMessage)
+            if (toastMessage) {
+                toast.success(toastMessage)
+                localStorage.removeItem('toastMessage');
+                console.log('Toast notification displayed');
+            }
+            if (toastMessageW) {
+                toast.warn(toastMessageW)
+                localStorage.removeItem('toastMessageW');
+                console.log('Toast notification displayed');
+            }
+        }, 1000);
+
     }, []);
 
     return (
         <div>
+            <ToastContainer/>
             <div className='ursHeader'>
                 <h1>Usuarios</h1>
                 <button className='bt adUsr' onClick={handleMostrarComponente}>

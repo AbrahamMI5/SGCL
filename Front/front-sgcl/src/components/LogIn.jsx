@@ -2,6 +2,8 @@ import './App.css'
 import userImg from './img/user.svg'
 import { useNavigate } from 'react-router-dom';
 import { usersApi, apiUrls, security } from "./api/userApi";
+import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 export function LogIn() {
 
@@ -18,10 +20,13 @@ export function LogIn() {
 
             const response = await usersApi.post(`${apiUrls.login}`, userData);
             localStorage.setItem('token', response.data.token);
-            window.location.reload()
+            localStorage.setItem('toastMessage', 'Inicio de sesión exitoso');
             window.location.assign("/")
+            
         } catch (error) {
             console.log(error)
+            toast.error('Error al iniciar sesión');
+
         }
     }
 
@@ -31,6 +36,7 @@ export function LogIn() {
                 <img src={userImg} alt="Imagen Usuario" className='LI-Img' />
                 <div className='LI-data'>
                     <p className='h4'>Iniciar Sesión</p>
+                    <ToastContainer />
                     <form>
                         <div>
                             <label className='LI-Input' htmlFor="Email">Usuario</label>

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { usersApi, apiUrls, security } from "./api/userApi";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function RequestLabCard(props) {
-
     const { startHorary, endHorary, day, idteacher, idLaboratory, requiredsoft, idRequestLab, status } = props;
 
     const [teachername, setTeacherName] = useState('');
@@ -12,51 +12,46 @@ export function RequestLabCard(props) {
     const [color, setColor] = useState('');
 
     useEffect(() => {
-        console.log(status)
         if (status === true) {
             setStatusText('Solicitud aprobada');
-            setColor('green')
+            setColor('green');
         } else if (status === false) {
             setStatusText('Solicitud rechazada');
-            setColor('red')
+            setColor('red');
         }
     }, [status]);
 
-
     const dia = (day) => {
-        if (day == "Lu") {
-            return "Lunes"
-        } if (day == "Ma") {
-            return "Martes"
-        } if (day == "Mi") {
-            return "Miercoles"
-        } if (day == "Ju") {
-            return "Juves"
-        } if (day == "Vi") {
-            return "Viernes"
+        switch (day) {
+            case "Lu": return "Lunes";
+            case "Ma": return "Martes";
+            case "Mi": return "Miércoles";
+            case "Ju": return "Jueves";
+            case "Vi": return "Viernes";
+            default: return day;
         }
-    }
+    };
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
+        if (security()) {
+            usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+        }
         usersApi.get(`${apiUrls.getUserById}${idteacher}`)
             .then(response => {
-                console.log(response.data); // Aquí puedes ver la respuesta del servidor
-                setTeacherName(response.data.userName); // Asumiendo que la respuesta del servidor contiene el nombre del docente
+                setTeacherName(response.data.userName);
             })
             .catch(error => {
                 console.error('Error fetching teacher name:', error);
             });
         usersApi.get(`${apiUrls.getLab}${idLaboratory}`)
             .then(responselab => {
-                console.log(responselab.data); // Aquí puedes ver la respuesta del servidor
                 setLabName(responselab.data.labName);
             })
             .catch(error => {
-                console.error('Error fetching teacher name:', error);
+                console.error('Error fetching lab name:', error);
             });
-    }, []);
+    }, [idteacher, idLaboratory]);
 
     const accept = async (event) => {
         event.preventDefault();
@@ -65,12 +60,17 @@ export function RequestLabCard(props) {
                 rRejection: document.getElementById("reyection" + idRequestLab).value,
                 status: 1
             };
-            let token = localStorage.getItem('token');
-            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
+
+            if (security()) {
+                usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            }
+
             const response = await usersApi.put(`${apiUrls.updateRequestLab}${idRequestLab}`, updateData);
-            window.location.reload()
+            localStorage.setItem('toastMessage', 'Solicitud aceptada');
+            window.location.reload();
         } catch (error) {
-            console.error('Error al actualizar el usuario:', error);
+            console.error('Error al actualizar la solicitud:', error);
+            // toast.error('Error al aceptar la solicitud');
         }
     };
 
@@ -81,17 +81,42 @@ export function RequestLabCard(props) {
                 rRejection: document.getElementById("reyection" + idRequestLab).value,
                 status: 0
             };
+
             let token = localStorage.getItem('token');
-            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
+            if (security()) {
+                usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+            }
+
             const response = await usersApi.put(`${apiUrls.updateRequestLab}${idRequestLab}`, updateData);
-            window.location.reload()
+            localStorage.setItem('toastMessageW', 'Solicitud rechazada');
+            window.location.reload();
         } catch (error) {
-            console.error('Error al actualizar el usuario:', error);
+            console.error('Error al actualizar la solicitud:', error);
+            toast.error('Error al rechazar la solicitud');
         }
     };
 
+    useEffect(() => {
+        setTimeout(() => {
+            const toastMessage = localStorage.getItem('toastMessage');
+            const toastMessageW = localStorage.getItem('toastMessageW');
+
+            if (toastMessage) {
+                toast.success(toastMessage)
+                localStorage.removeItem('toastMessage');
+                console.log('Toast notification displayed');
+            }
+            if(toastMessageW){
+                toast.warn(toastMessageW)
+                localStorage.removeItem('toastMessageW');
+                console.log('Toast notification displayed');
+            }
+        }, 1000);
+    });
+
     return (
         <>
+            <ToastContainer />
             <form className="usrsCard">
                 <div>
                     <label htmlFor="Name">Nombre del docente</label>
@@ -103,19 +128,17 @@ export function RequestLabCard(props) {
                 </div>
                 <div>
                     <label htmlFor="NoEmployee">Horario</label>
-                    <input readOnly type="text" id="NoEmployee" value={dia(day) + " " + startHorary + "-" + endHorary} name="employeeNumber" placeholder="Numero de empleado" />
+                    <input readOnly type="text" id="NoEmployee" value={`${dia(day)} ${startHorary} - ${endHorary}`} name="employeeNumber" placeholder="Numero de empleado" />
                 </div>
-
                 <div style={{ width: '95%' }}>
                     <label htmlFor="software">Software solicitado</label>
                     <textarea readOnly name="software" id="software" cols="15" rows="2" className="RequestLabTextArea" value={requiredsoft}></textarea>
                 </div>
-
                 {status === null && (
                     <>
                         <div style={{ width: '63%' }}>
                             <label htmlFor="reyection">Motivo de rechazo (opcional)</label>
-                            <textarea name="reyection" id={"reyection" + idRequestLab} cols="15" rows="2" className="RequestLabTextArea"></textarea>
+                            <textarea name="reyection" id={`reyection${idRequestLab}`} cols="15" rows="2" className="RequestLabTextArea"></textarea>
                         </div>
                         <div className="usrs-button">
                             <button type="submit" onClick={accept}>Aceptar</button>
@@ -123,15 +146,12 @@ export function RequestLabCard(props) {
                         </div>
                     </>
                 )}
-
-                {status === true || status === false ? (
+                {(status === true || status === false) && (
                     <div style={{ width: '63%' }}>
-                        <label style={{ color: color }}>{statusText}</label>
+                        <label style={{ color }}>{statusText}</label>
                     </div>
-                ) : null}
-
+                )}
             </form>
         </>
-
-    )
+    );
 }
