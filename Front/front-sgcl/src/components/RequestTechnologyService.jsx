@@ -2,6 +2,8 @@ import { RequestServiceStatus } from "./RequestServiceStatus"
 import { apiUrls, usersApi, security } from "./api/userApi";
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from "react"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function RequestTechnologyService() {
 
@@ -15,6 +17,21 @@ export function RequestTechnologyService() {
 
 
     useEffect(() => {
+        setTimeout(() => {
+            const toastMessage = localStorage.getItem('toastMessage');
+            const toastMessageW = localStorage.getItem('toastMessageW');
+
+            console.log(toastMessage)
+            
+            if (toastMessage) {
+                toast.success(toastMessage)
+                localStorage.removeItem('toastMessage');
+            }
+            if(toastMessageW){
+                toast.warn(toastMessageW)
+                localStorage.removeItem('toastMessageW');
+            }
+        }, 1000);
         let token = localStorage.getItem('token');
         security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         const tokenDecod = jwtDecode(token);
@@ -43,6 +60,7 @@ export function RequestTechnologyService() {
         let token = localStorage.getItem('token');
         security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         if (userId.id != undefined) {
+            console.log(userId.id)
             usersApi.get(`${apiUrls.getTechnologyRequest}${userId.id}`)
                 .then(response => {
                     console.log(response.data);
@@ -105,15 +123,18 @@ export function RequestTechnologyService() {
             let token = localStorage.getItem('token');
             security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.post(`${apiUrls.createRequestCompService}`, requestServData);
-            //window.location.reload();
+            localStorage.setItem('toastMessage', 'Solicitud enviada');
+            window.location.reload();
         } catch (error) {
             console.error('Error al crear el usuario:', error);
+            toast.error("Error al enviaf la solicitar")
         }
     };
 
     return (
 
         <>
+            <ToastContainer/>
             <h1>Solicitar servicio de tecnología</h1>
             <div className="AddRequest RequestService">
                 <div>

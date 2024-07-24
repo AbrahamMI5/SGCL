@@ -6,7 +6,6 @@ export function RequestServiceStatus(props) {
     const [userName, setUserName] = useState();
     
     useEffect(()=>{
-        let token = localStorage.getItem('token');
         security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         usersApi.get(`${apiUrls.getUserById}${usersIdUsers}`)
             .then(response => {

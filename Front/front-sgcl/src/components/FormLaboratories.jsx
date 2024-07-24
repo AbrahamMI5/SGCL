@@ -34,7 +34,6 @@ export function FormLaboratory() {
     };
 
     useEffect(() => {
-        let token = localStorage.getItem('token');
         security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         usersApi.get(apiUrls.getAllLaboratories)
             .then(respLabs => {
@@ -46,7 +45,6 @@ export function FormLaboratory() {
     }, []);
 
     useEffect(() => {
-        console.log("sduhfo")
         setTimeout(() => {
             const toastMessage = localStorage.getItem('toastMessage');
             const toastMessageW = localStorage.getItem('toastMessageW');

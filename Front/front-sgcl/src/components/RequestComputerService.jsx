@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { RequestServiceStatus } from "./RequestServiceStatus"
 import { apiUrls, usersApi, security } from "./api/userApi";
 import { jwtDecode } from 'jwt-decode';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function RequestComputerService() {
     const [userId, setUserId] = useState('');
@@ -10,6 +12,21 @@ export function RequestComputerService() {
     const [computerRequest, setComputerRequest] = useState([]);
 
     useEffect(() => {
+        setTimeout(() => {
+            const toastMessage = localStorage.getItem('toastMessage');
+            const toastMessageW = localStorage.getItem('toastMessageW');
+
+            console.log(toastMessage)
+            
+            if (toastMessage) {
+                toast.success(toastMessage)
+                localStorage.removeItem('toastMessage');
+            }
+            if(toastMessageW){
+                toast.warn(toastMessageW)
+                localStorage.removeItem('toastMessageW');
+            }
+        }, 1000);
         let token = localStorage.getItem('token');
         security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         const tokenDecod = jwtDecode(token);
@@ -76,19 +93,24 @@ export function RequestComputerService() {
                 basicFunction: selectedOptionBasic ? selectedOptionBasic : null,
                 specialFunction: selectedOptionSpecial ? selectedOptionSpecial : null,
                 observations: "Computo: " + document.getElementById("Observation").value + " Descripcion: " + document.getElementById("Description").value + " No. inventario: " + document.getElementById("NoInv").value + " Modelo: " + document.getElementById("Model").value + " Marca: " + document.getElementById("Brand").value + " Numero de serie: " + document.getElementById("SeriNu").value
+
             };
             let token = localStorage.getItem('token');
             security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.post(`${apiUrls.createRequestCompService}`, requestServData);
-
+            localStorage.setItem('toastMessage', 'Solicitud enviada');
             window.location.reload();
         } catch (error) {
-            console.error('Error al crear el usuario:', error);
+            console.error('Error al enviar la solicitud:', error);
+            toast.error("Error al enviaf la solicitar")
         }
     };
 
+    //TODO: validacion de los datos de entrada y no crer petticiones vacias
+
     return (
         <>
+            <ToastContainer/>
             <h1>Solicitar servicio de cómputo</h1>
             <div className="AddRequest RequestService">
                 <div>

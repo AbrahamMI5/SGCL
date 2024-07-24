@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { usersApi, apiUrls, security } from "./api/userApi";
 import { jwtDecode } from 'jwt-decode';
 import { RequestLaboratoryCard } from './RequestLaboratoryCard';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function FormRequestLaboratory() {
     const [loading, setLoading] = useState(true);
@@ -20,6 +22,24 @@ export function FormRequestLaboratory() {
     };
 
     useEffect(() => {
+        setTimeout(() => {
+            const toastMessage = localStorage.getItem('toastMessage');
+            const toastMessageW = localStorage.getItem('toastMessageW');
+
+            console.log(toastMessage)
+            
+            if (toastMessage) {
+                toast.success(toastMessage)
+                localStorage.removeItem('toastMessage');
+                console.log('Toast notification displayed');
+            }
+            if(toastMessageW){
+                toast.warn(toastMessageW)
+                localStorage.removeItem('toastMessageW');
+                console.log('Toast notification displayed');
+            }
+        }, 1000);
+
         const fetchData = async () => {
             let token = localStorage.getItem('token');
             if (token) {
@@ -68,15 +88,18 @@ export function FormRequestLaboratory() {
             let token = localStorage.getItem('token');
             security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.post(`${apiUrls.creageRequestLaboratory}`, requestData);
+            localStorage.setItem('toastMessage', 'Solicitud realizada');
             window.location.reload()
         } catch (error) {
             console.error('Error al solicitar laboratorio:', error);
+            toast.error("Error al solicitar laboratorio")
         }
 
     }
 
     return (
         <>
+            <ToastContainer />
             <h1 className="RequestLab">Solicitar laboratorios</h1>
             <div className="AddRequest">
                 <div className="RequestLabInput">
@@ -164,7 +187,7 @@ export function FormRequestLaboratory() {
                 </div>
                 <div className="RequesLabButtons ">
                     <button className="bt" onClick={createRequest}> Solicitar </button>
-                    <button className="bt"> Cancelar </button>
+                    <button className="bt" onClick={()=>window.location.reload()}> Cancelar </button>
                 </div>
             </div>
             <h1 className="RequestLab">Solicitados</h1>

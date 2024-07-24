@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { usersApi, apiUrls, security } from "./api/userApi";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function NotificationReqLab(props) {
     const { msg, reqLabId, idNotifications } = props;
@@ -27,8 +29,10 @@ export function NotificationReqLab(props) {
             security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const response = await usersApi.get(`${apiUrls.deleteNotification}${idNotifications}`);
             window.location.reload();
+            localStorage.setItem('toastMessageW', 'Notificacion eliminada');
         } catch (error) {
-            console.error('Error al eliminar el usuario:', error);
+            toast.error("Error al eliminar la notificacion")
+            console.error('Error al eliminar la notificacion:', error);
         }
 
     }
@@ -59,6 +63,7 @@ export function NotificationReqLab(props) {
 
     return (
         <>
+            <ToastContainer/>
             <form className="usrsCard">
                 <button className="N-LabReqBt" onClick={deleteNotification}>X</button>
                 <div style={{ width: '100%' }}>
