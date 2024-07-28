@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { apiUrls, usersApi, security } from "./api/userApi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
 
 export function UsersCard(props) {
     const { userName, role, password, email, numberEmployee, userId } = props;
@@ -32,8 +33,7 @@ export function UsersCard(props) {
         }
     };
 
-    const deleteUser = async (event) => {
-        event.preventDefault();
+    const deleteUser = async () => {
         try {
             const response = await usersApi.put(`${apiUrls.deleteUser}${userId}`);
             localStorage.setItem('toastMessageW', 'Usuario eliminado');
@@ -44,6 +44,25 @@ export function UsersCard(props) {
             toast.error("Error al eliminar usuario")
         }
     };
+
+    const alert = (event)=>{
+        event.preventDefault();
+        Swal.fire({
+            title: '¿Estas seguro que lo quieres eliminar?',
+            text: 'Al eliminar el usuario se eliminaran sus solicitudes, horarios, solicitudes de servicios y todos sus datos relacionados.',
+            icon: 'warning',
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            showDenyButton: true,
+            confirmButtonText: 'Eliminar',
+            denyButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log("deleted")
+                    deleteUser();
+                }
+        })
+    }
 
     const [selectedOption, setSelectedOption] = useState(role);
 
@@ -85,7 +104,7 @@ export function UsersCard(props) {
                         Actualizar
                     </button>
 
-                    <button onClick={deleteUser}>
+                    <button onClick={alert}>
                         Eliminar
                     </button>
                 </div>

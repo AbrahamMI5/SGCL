@@ -33,7 +33,6 @@ export function RequestLabCard(props) {
     };
 
     useEffect(() => {
-        let token = localStorage.getItem('token');
         if (security()) {
             usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
         }

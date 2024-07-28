@@ -1,6 +1,7 @@
 import { usersApi, apiUrls, security } from "./api/userApi";
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
 
 export function AddLabCard(props) {
 
@@ -24,8 +25,7 @@ export function AddLabCard(props) {
         }
     };
 
-    const deleteLab = async (event) => {
-        event.preventDefault();
+    const deleteLab = async () => {
         try {
             let token = localStorage.getItem('token');
             security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
@@ -38,6 +38,25 @@ export function AddLabCard(props) {
         }
     };
 
+    const alert = (event)=>{
+        event.preventDefault();
+        Swal.fire({
+            title: '¿Estas seguro que lo quieres eliminar?',
+            text: 'Al eliminar el laboratorio se eliminaran sus solicitudes, horarios, estadisticas y todos sus datos relacionados.',
+            icon: 'warning',
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            showDenyButton: true,
+            confirmButtonText: 'Eliminar',
+            denyButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log("deleted")
+                    deleteLab();
+                }
+        })
+    }
+
     return (
         <div className="addLab">
             <ToastContainer />
@@ -49,7 +68,7 @@ export function AddLabCard(props) {
             </div>
             <div className="addLab-Buttons">
                 <button className="bt" onClick={update}>Actualizar</button>
-                <button className="bt" onClick={deleteLab}>Eliminar</button>
+                <button className="bt" onClick={alert}>Eliminar</button>
             </div>
         </div>
     )
