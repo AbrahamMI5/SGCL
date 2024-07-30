@@ -109,12 +109,21 @@ export function SetTechnologyServiceStatus(props) {
                     ></textarea>
                     <h4>Asignar estado:</h4>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                        <div className="Row-Space" style={{ display: "flex", width: '70%', justifyContent: "space-between" }}>
-                            <div className={status_grey(currentStatus)} title="Pendiente" onClick={() => setStatus(0)} />
-                            <div className={status_yellow(currentStatus)} title="En proceso" onClick={() => setStatus(1)} />
-                            <div className={status_red(currentStatus)} title="Rechazada" onClick={() => setStatus(2)} />
-                            <div className={status_green(currentStatus)} title="Finalizada" onClick={() => setStatus(3)} />
-                        </div>
+                        {currentStatus === 2 || currentStatus === 3 ?
+                            <div className="Row-Space" style={{ display: "flex", width: '70%', justifyContent: "space-between" }}>
+                                <div className={status_grey(currentStatus)} style={{cursor: "default", pointerEvents: "none"}} title="Pendiente" />
+                                <div className={status_yellow(currentStatus)} style={{cursor: "default", pointerEvents: "none"}} title="En proceso" />
+                                <div className={status_red(currentStatus)} style={{cursor: "default", pointerEvents: "none"}} title="Rechazada" />
+                                <div className={status_green(currentStatus)} style={{cursor: "default", pointerEvents: "none"}} title="Finalizada" />
+                            </div>
+                            :
+                            <div className="Row-Space" style={{ display: "flex", width: '70%', justifyContent: "space-between" }}>
+                                <div className={status_grey(currentStatus)} title="Pendiente" onClick={() => setStatus(0)} />
+                                <div className={status_yellow(currentStatus)} title="En proceso" onClick={() => setStatus(1)} />
+                                <div className={status_red(currentStatus)} title="Rechazada" onClick={() => setStatus(2)} />
+                                <div className={status_green(currentStatus)} title="Finalizada" onClick={() => setStatus(3)} />
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

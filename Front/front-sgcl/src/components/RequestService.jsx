@@ -118,14 +118,13 @@ export function RequestService() {
                     <h3>Resueltas</h3>
                     {responseCompWS.map((comp) => {
                         if (search == "") {
-                            console.log("Total")
                             return (
                                 <SetComputerServiceStatus key={comp.idRequestService} compr={comp} onStatusChange={handleStatusChangeT}/>
                             );
 
                         } else {
                             if (comp.usersIdUsers.userName.toLowerCase().includes(search.toLowerCase()) || comp.reciverName.toLowerCase().includes(search.toLowerCase()) || comp.usersIdUsers.email.toLowerCase().includes(search.toLowerCase()) || comp.reciverEmail.toLowerCase().includes(search.toLowerCase())) {
-                                console.log("Datos con filtro", search)
+                                
                                 return (
                                     <SetComputerServiceStatus key={comp.idRequestService} compr={comp} onStatusChange={handleStatusChangeT}/>
                                 );

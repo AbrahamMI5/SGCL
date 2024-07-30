@@ -52,24 +52,78 @@ export function RequestLabCard(props) {
             });
     }, [idteacher, idLaboratory]);
 
-    const accept = async (event) => {
-        event.preventDefault();
+    const freeLab = async () => {
+        const laboratoryId = idLaboratory;
+
         try {
-            const updateData = {
-                rRejection: document.getElementById("reyection" + idRequestLab).value,
-                status: 1
+            const horaryResp = await usersApi.get(apiUrls.getLabHorarybyLab + laboratoryId);
+            const data = horaryResp.data;
+            console.log(data)
+            console.log(day)
+            console.log(startHorary)
+            const dayIndices = {
+                "Lu": 0,
+                "Ma": 4,
+                "Mi": 8,
+                "Ju": 12,
+                "Vi": 16
             };
 
-            if (security()) {
-                usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
-            }
+            const hourIndices = {
+                "12:00:00": 0,
+                "14:00:00": 1,
+                "16:00:00": 2,
+                "18:00:00": 3
+            };
 
-            const response = await usersApi.put(`${apiUrls.updateRequestLab}${idRequestLab}`, updateData);
-            localStorage.setItem('toastMessage', 'Solicitud aceptada');
-            window.location.reload();
+            const dayIndex = dayIndices[day];
+            const hourIndex = hourIndices[startHorary];
+
+            console.log(dayIndex)
+            console.log(hourIndex)
+
+            if (dayIndex !== undefined && hourIndex !== undefined) {
+                const dataIndex = dayIndex + hourIndex;
+
+                if (dataIndex < data.length) {
+                    console.log(!data[dataIndex].startdate);
+                    return !data[dataIndex].startdate;
+                } else {
+                    console.error('Índice fuera de rango:', dataIndex);
+                    return false;
+                }
+            } else {
+                console.error('Día u hora no válidos:', day, startHorary);
+                return false;
+            }
         } catch (error) {
-            console.error('Error al actualizar la solicitud:', error);
-            // toast.error('Error al aceptar la solicitud');
+            console.error('Error fetching horariesByLab:', error);
+            return false;
+        }
+    };
+
+    const accept = async (event) => {
+        event.preventDefault();
+        const result = await freeLab();
+        if (result) {
+            try {
+                const updateData = {
+                    rRejection: document.getElementById("reyection" + idRequestLab).value,
+                    status: 1
+                };
+
+                if (security()) {
+                    usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`;
+                }
+
+                const response = await usersApi.put(`${apiUrls.updateRequestLab}${idRequestLab}`, updateData);
+                localStorage.setItem('toastMessage', 'Solicitud aceptada');
+                window.location.reload();
+            } catch (error) {
+                console.error('Error al actualizar la solicitud:', error);
+            }
+        } else {
+            toast.error("Horario no disponible")
         }
     };
 
@@ -105,7 +159,7 @@ export function RequestLabCard(props) {
                 localStorage.removeItem('toastMessage');
                 console.log('Toast notification displayed');
             }
-            if(toastMessageW){
+            if (toastMessageW) {
                 toast.warn(toastMessageW)
                 localStorage.removeItem('toastMessageW');
                 console.log('Toast notification displayed');

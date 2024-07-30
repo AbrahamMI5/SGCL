@@ -18,9 +18,9 @@ export function SetComputerServiceStatus(props) {
                 rejection: document.getElementById("reject").value,
                 requestServiceStatus: status,
             };
-            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
             const response = await usersApi.post(`${apiUrls.setRequestServiceStatus}`, statusData);
-            setCurrentStatus(status); 
+            setCurrentStatus(status);
             onStatusChange(status)
 
         } catch (error) {
@@ -54,7 +54,7 @@ export function SetComputerServiceStatus(props) {
                     </form>
                     <p>Funcionalidad:</p>
                     <div style={{ display: "flex", flexDirection: "row" }}>
-                        <input readOnly type="text" value={compr.basicFunction ? "Básica: "+compr.basicFunction: "Especial: "+compr.specialFunction} />
+                        <input readOnly type="text" value={compr.basicFunction ? "Básica: " + compr.basicFunction : "Especial: " + compr.specialFunction} />
                     </div>
                     <h4 style={{ marginTop: '30px' }}>Autoriza</h4>
                     <form className='RequestFormService' action="" style={{ marginBottom: "20px" }}>
@@ -97,22 +97,32 @@ export function SetComputerServiceStatus(props) {
                         </div>
                     </form>
                     <label htmlFor="">Razón de rechazo:</label> <br />
-                    <textarea 
-                        name="" 
-                        defaultValue={rejection} 
-                        readOnly={currentStatus === 2 || currentStatus === 3} 
-                        id="reject" 
+                    <textarea
+                        name=""
+                        defaultValue={rejection}
+                        readOnly={currentStatus === 2 || currentStatus === 3}
+                        id="reject"
                         cols={35}
                         onChange={(e) => setRejection(e.target.value)}
                     ></textarea>
                     <h4>Asignar estado:</h4>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                        <div className="Row-Space" style={{ display: "flex", width: '70%', justifyContent: "space-between" }}>
-                            <div className={status_grey(currentStatus)} title="Pendiente" onClick={() => setStatus(0)} />
-                            <div className={status_yellow(currentStatus)} title="En proceso" onClick={() => setStatus(1)} />
-                            <div className={status_red(currentStatus)} title="Rechazada" onClick={() => setStatus(2)} />
-                            <div className={status_green(currentStatus)} title="Finalizada" onClick={() => setStatus(3)} />
-                        </div>
+                        {currentStatus === 2 || currentStatus === 3 ?
+                            <div className="Row-Space" style={{ display: "flex", width: '70%', justifyContent: "space-between" }}>
+                                <div className={status_grey(currentStatus)} style={{cursor: "default", pointerEvents: "none"}} title="Pendiente" />
+                                <div className={status_yellow(currentStatus)} style={{cursor: "default" , pointerEvents: "none"}} title="En proceso" />
+                                <div className={status_red(currentStatus)} style={{cursor: "default" , pointerEvents: "none"}} title="Rechazada" />
+                                <div className={status_green(currentStatus)} style={{cursor: "default" , pointerEvents: "none"}} title="Finalizada" />
+                            </div>
+                            :
+                            <div className="Row-Space" style={{ display: "flex", width: '70%', justifyContent: "space-between" }}>
+                                <div className={status_grey(currentStatus)} title="Pendiente" onClick={() => setStatus(0)} />
+                                <div className={status_yellow(currentStatus)} title="En proceso" onClick={() => setStatus(1)} />
+                                <div className={status_red(currentStatus)} title="Rechazada" onClick={() => setStatus(2)} />
+                                <div className={status_green(currentStatus)} title="Finalizada" onClick={() => setStatus(3)} />
+                            </div>
+                        }
+
                     </div>
                 </div>
             </div>

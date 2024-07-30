@@ -12,9 +12,30 @@ export function FormRequestLaboratory() {
     const [selectedOptionDay, setSelectedOptionDay] = useState();
     const [selectedOptionGroup, setSelectedOptionGroup] = useState();
     const [requests, setRequests] = useState([]);
+    const [startHorary, setStartHorary] = useState();
+    const [endHorary, setEndHorary] = useState();
+
 
     const handleChangeDay = (event) => {
         setSelectedOptionDay(event.target.value);
+    };
+
+    const handleChangeStartHorary = (event) => {
+        setStartHorary(event.target.value);
+        let [hours, minutes, seconds] = event.target.value.split(":");
+
+        setEndHorary(parseInt(hours) + 2 + ":" + minutes)
+
+
+    };
+
+    const handleChangeEndHorary = (event) => {
+        setEndHorary(event.target.value);
+        let [hours, minutes, seconds] = event.target.value.split(":");
+
+        setStartHorary(parseInt(hours) - 2 + ":" + minutes)
+
+
     };
 
     const handleChangeGroup = (event) => {
@@ -27,13 +48,13 @@ export function FormRequestLaboratory() {
             const toastMessageW = localStorage.getItem('toastMessageW');
 
             console.log(toastMessage)
-            
+
             if (toastMessage) {
                 toast.success(toastMessage)
                 localStorage.removeItem('toastMessage');
                 console.log('Toast notification displayed');
             }
-            if(toastMessageW){
+            if (toastMessageW) {
                 toast.warn(toastMessageW)
                 localStorage.removeItem('toastMessageW');
                 console.log('Toast notification displayed');
@@ -43,7 +64,7 @@ export function FormRequestLaboratory() {
         const fetchData = async () => {
             let token = localStorage.getItem('token');
             if (token) {
-                security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
+                security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
                 try {
                     const respLaboratories = await usersApi.get(apiUrls.getAllLaboratories);
                     setLaboratories(respLaboratories.data);
@@ -57,7 +78,7 @@ export function FormRequestLaboratory() {
 
                     const respReqLab = await usersApi.get(apiUrls.getRequestLabById + responseUser.data.id);
                     setRequests(respReqLab.data);
-                    setLoading(false); 
+                    setLoading(false);
                 } catch (error) {
                     console.error('Error fetching data:', error);
                     setLoading(false);
@@ -69,31 +90,85 @@ export function FormRequestLaboratory() {
         fetchData();
     }, []);
 
+    const freeLab = async () => {
+        console.log()
+        const laboratoryId = document.getElementById("laboratory").value;
+        const startHorary = document.getElementById("startHorary").value;
+        const day = selectedOptionDay; // Asegúrate de que esto esté definido
+    
+        try {
+            const horaryResp = await usersApi.get(apiUrls.getLabHorarybyLab + laboratoryId);
+            const data = horaryResp.data;
+
+            const dayIndices = {
+                "Lu": 0,
+                "Ma": 4,
+                "Mi": 8,
+                "Ju": 12,
+                "Vi": 16
+            };
+    
+            const hourIndices = {
+                "12:00": 0,
+                "14:00": 1,
+                "16:00": 2,
+                "18:00": 3
+            };
+    
+            const dayIndex = dayIndices[day];
+            const hourIndex = hourIndices[startHorary];
+    
+            if (dayIndex !== undefined && hourIndex !== undefined) {
+                const dataIndex = dayIndex + hourIndex; 
+    
+                if (dataIndex < data.length) {
+                    console.log(!data[dataIndex].startdate);
+                    return !data[dataIndex].startdate;
+                } else {
+                    console.error('Índice fuera de rango:', dataIndex);
+                    return false;
+                }
+            } else {
+                console.error('Día u hora no válidos:', day, startHorary);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error fetching horariesByLab:', error);
+            return false;
+        }
+    };
+    
+
     const createRequest = async (event) => {
         event.preventDefault();
-        try {
-            const requestData = {
-                startHorary: document.getElementById("startHorary").value + ':00',
-                endHorary: document.getElementById("endHorary").value + ':00',
-                day: selectedOptionDay,
-                subject: document.getElementById("materia").value,
-                groups: selectedOptionGroup,
-                studentNumber: document.getElementById("student").value,
-                laboratoriesIdLaboratories: document.getElementById("laboratory").value,
-                usersIdUsers: userId,
-                semesterIdSemester: 1,
-                requiredSoftware: document.getElementById("software").value
-            };
-            console.log(requestData)
-            let token = localStorage.getItem('token');
-            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
-            const response = await usersApi.post(`${apiUrls.creageRequestLaboratory}`, requestData);
-            localStorage.setItem('toastMessage', 'Solicitud realizada');
-            window.location.reload()
-        } catch (error) {
-            console.error('Error al solicitar laboratorio:', error);
-            toast.error("Error al solicitar laboratorio")
-        }
+        const result = await freeLab();
+            if (result) {
+                try {
+                    const requestData = {
+                        startHorary: document.getElementById("startHorary").value + ':00',
+                        endHorary: document.getElementById("endHorary").value + ':00',
+                        day: selectedOptionDay,
+                        subject: document.getElementById("materia").value,
+                        groups: selectedOptionGroup,
+                        studentNumber: document.getElementById("student").value,
+                        laboratoriesIdLaboratories: document.getElementById("laboratory").value,
+                        usersIdUsers: userId,
+                        semesterIdSemester: 1,
+                        requiredSoftware: document.getElementById("software").value
+                    };
+                    console.log(requestData)
+                    let token = localStorage.getItem('token');
+                    security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
+                    const response = await usersApi.post(`${apiUrls.creageRequestLaboratory}`, requestData);
+                    localStorage.setItem('toastMessage', 'Solicitud realizada');
+                    window.location.reload()
+                } catch (error) {
+                    console.error('Error al solicitar laboratorio:', error);
+                    toast.error("Error al solicitar laboratorio")
+                }
+            } else {
+                toast.error("Horario no disponible")
+            }
 
     }
 
@@ -114,13 +189,23 @@ export function FormRequestLaboratory() {
                     </div>
                     <div className="RequestLabSm">
                         <label htmlFor="day">Hora inicio</label>
-                        <input type="time" name="day" id="startHorary" className="RequestLabInput-S">
-                        </input>
+                        <select value={startHorary} name="startHorary" id="startHorary" className="RequestLabInput-L" onChange={handleChangeStartHorary}>
+                            <option value=""></option>
+                            <option value="12:00">12:00</option>
+                            <option value="14:00">02:00</option>
+                            <option value="16:00">04:00</option>
+                            <option value="18:00">06:00</option>
+                        </select>
                     </div>
                     <div className="RequestLabSm">
                         <label htmlFor="day">Hora fin</label>
-                        <input type="time" name="day" id="endHorary" className="RequestLabInput-S">
-                        </input>
+                        <select value={endHorary} name="endHorary" id="endHorary" className="RequestLabInput-L" onChange={handleChangeEndHorary}>
+                            <option value=""></option>
+                            <option value="14:00">02:00</option>
+                            <option value="16:00">04:00</option>
+                            <option value="18:00">06:00</option>
+                            <option value="20:00">08:00</option>
+                        </select>
                     </div>
                     <div className="RequestLabSm">
                         <label htmlFor="day">Dia</label>
@@ -187,12 +272,12 @@ export function FormRequestLaboratory() {
                 </div>
                 <div className="RequesLabButtons ">
                     <button className="bt" onClick={createRequest}> Solicitar </button>
-                    <button className="bt" onClick={()=>window.location.reload()}> Cancelar </button>
+                    <button className="bt" onClick={() => window.location.reload()}> Cancelar </button>
                 </div>
             </div>
             <h1 className="RequestLab">Solicitados</h1>
-            {requests.map(request=>(
-                <RequestLaboratoryCard key={request.idRequestLaboratory} labId={request.laboratoriesIdLaboratories} subject={request.subject} day={request.day} startHorary={request.startHorary} endHorary={request.endHorary}/>
+            {requests.map(request => (
+                <RequestLaboratoryCard key={request.idRequestLaboratory} labId={request.laboratoriesIdLaboratories} subject={request.subject} day={request.day} startHorary={request.startHorary} endHorary={request.endHorary} />
             ))}
             <div style={{ height: '50px' }}></div>
         </>

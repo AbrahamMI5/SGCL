@@ -49,8 +49,17 @@ export function UsersCard(props) {
         event.preventDefault();
         Swal.fire({
             title: '¿Estas seguro que lo quieres eliminar?',
-            text: 'Al eliminar el usuario se eliminaran sus solicitudes, horarios, solicitudes de servicios y todos sus datos relacionados.',
+            html: '<span style="font-size: 20px;">Al eliminar el usuario se eliminaran sus solicitudes, horarios, solicitudes de servicios y todos sus datos relacionados.</span>',
             icon: 'warning',
+            width: '70%',
+            customClass: {
+                title: 'custom-title',
+                htmlContainer: 'custom-html-container',
+                popup: 'custom-popup',
+                confirmButton: 'custom-confirm-button',
+                denyButton: 'custom-deny-button',
+                icon: 'custom-icon'
+            },
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             showDenyButton: true,
@@ -59,7 +68,7 @@ export function UsersCard(props) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     console.log("deleted")
-                    deleteUser();
+                    deleteLab();
                 }
         })
     }

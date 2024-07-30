@@ -57,6 +57,7 @@ export function Horary() {
         setgroup(lab.idLaboratories)
         usersApi.get(apiUrls.getLabHorarybyLab + lab.idLaboratories)
             .then(horaryResp => {
+                console.log(horaryResp)
                 setHoraries(horaryResp.data)
             })
             .catch(error => {

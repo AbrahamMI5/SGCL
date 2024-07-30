@@ -39,8 +39,8 @@ Pendientes post presentacion
 
 Validaciones de horarios cuando ya estén aprobados, y que no coincidan de hora, agregar dia
 *Verificar que el token no este caduco y en caso de que si que lo borre  Listo
-Mostrar nombre del usuario que inicio sesion
-Notificaciones y afirmaciones de eliminar, crear autualizar etc
+*Mostrar nombre del usuario que inicio sesion Listo
+*Notificaciones y afirmaciones de eliminar, crear autualizar etc Listo
 Peticiones que tengan los objetos dentro para no resolicitarlos (creando nuevas respuestas)
 *Buscador en solicitudes de computo Listo
 *buscador en solicitudes de tecnologia Listo

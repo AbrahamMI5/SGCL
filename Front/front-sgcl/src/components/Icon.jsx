@@ -40,6 +40,9 @@ export function Icon(prop) {
             return 'Solicitudes de cómputo'
         } if (name == 'RequestTechnology') {
             return 'Solicitudes de tecnología'
+        } else {
+            console.log("null")
+            return null
         }
     }
 
@@ -69,57 +72,58 @@ export function Icon(prop) {
         }
     }
 
-const IconRef = (name) => {
-    if (name == 'Home') {
-        return '/'
-    } if (name == 'LogInIcon') {
-        return '/LogIn'
-    } if (name == 'Laboratories') {
-        return '/Laboratories'
-    } if (name == 'RequestLab') {
-        return '/RequestLaboratory'
-    } if (name == 'Users') {
-        return '/Users'
-    } if (name == 'RequestLabResponse') {
-        return '/AnswereRequestLab'
-    } if (name == 'Notification') {
-        return '/Notifications'
-    } if (name == 'RequestService') {
-        return '/RequestService'
-    } if (name == 'RequestComputer') {
-        return '/ComputerService'
-    } if (name == 'RequestTechnology') {
-        return '/TechnologyService'
+    const IconRef = (name) => {
+        if (name == 'Home') {
+            return '/'
+        } if (name == 'LogInIcon') {
+            return '/LogIn'
+        } if (name == 'Laboratories') {
+            return '/Laboratories'
+        } if (name == 'RequestLab') {
+            return '/RequestLaboratory'
+        } if (name == 'Users') {
+            return '/Users'
+        } if (name == 'RequestLabResponse') {
+            return '/AnswereRequestLab'
+        } if (name == 'Notification') {
+            return '/Notifications'
+        } if (name == 'RequestService') {
+            return '/RequestService'
+        } if (name == 'RequestComputer') {
+            return '/ComputerService'
+        } if (name == 'RequestTechnology') {
+            return '/TechnologyService'
+        }
     }
-}
 
-function handleLogoutClick() {
-    console.log("Log Out")
-    if (name.name === 'LogOut') {
-        console.log(name)
+    function handleLogoutClick() {
+        console.log("Log Out")
+        if (name.name === 'LogOut') {
+            localStorage.clear();
+            window.location.reload();
+            navigate('/')
 
-        localStorage.clear();
-        window.location.reload();
-        navigate('/')
-
+        }
     }
-}
 
-return (
-    <>
-        <Link to={IconRef(name.name)} onClick={handleLogoutClick}>
-            <div className='M-Button'>
-                <div className="M-Icon">
-                    <img src={Icons(name.name)} alt="icon" className='M-Img' />
-                </div>
-                <div className='M-Option'>
-                    {IconName(name.name)}
-                </div>
-            </div>
-        </Link>
+    return (
+        <>
+            {IconName(name.name) ?
+                <Link to={IconRef(name.name)} onClick={handleLogoutClick}>
+                    <div className='M-Button'>
+                        <div className="M-Icon">
+                            <img src={Icons(name.name)} alt="icon" className='M-Img' />
+                        </div>
+                        <div className='M-Option'>
+                            {IconName(name.name)}
+                        </div>
+                    </div>
+                </Link>
+                : <div className='M-Option' style={{ marginBottom: "20px" }}><b>¡Bienvenido!</b> <br />{name.name}</div>}
 
-    </>
-)
+
+        </>
+    )
 }
 
 export default Icon;

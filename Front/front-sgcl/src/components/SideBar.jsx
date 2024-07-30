@@ -7,6 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 
 export function Sidebar() {
     const [role, setRole] = useState();
+    const [name, setname] = useState();
 
     useEffect(() => {
         let token = localStorage.getItem('token');
@@ -15,10 +16,11 @@ export function Sidebar() {
             const data = {
                 email: tokenDecod.sub,
             };
-            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
-            usersApi.post(`${apiUrls.getRoleByEmail}`, data)
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;
+            usersApi.post(apiUrls.getUserByEmail, data)
                 .then(respRole => {
-                    setRole(respRole.data);
+                    setRole(respRole.data.role);
+                    setname(respRole.data.userName)
                 })
                 .catch(error => {
                     console.error('Error fetching role:', error);
@@ -29,9 +31,9 @@ export function Sidebar() {
 
     }, []);
 
-    const adminMenu = ['Home', 'RequestLabResponse', 'Laboratories', 'Users', 'RequestService', 'LogOut'];
-    const adminManagerial = ['Home','RequestComputer', 'LogOut', ];
-    const adminTeacher = ['Home',  'RequestLab', 'Notification','RequestComputer', 'RequestTechnology', 'LogOut' ];
+    const adminMenu = [name,'Home', 'RequestLabResponse', 'Laboratories', 'Users', 'RequestService', 'LogOut'];
+    const adminManagerial = [name,'Home','RequestComputer', 'LogOut', ];
+    const adminTeacher = [name,'Home',  'RequestLab', 'Notification','RequestComputer', 'RequestTechnology', 'LogOut' ];
     const defaultIcon = ['LogInIcon'];
 
     const typeUser = (role) => {

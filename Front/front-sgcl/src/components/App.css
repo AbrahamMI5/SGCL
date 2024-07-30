@@ -296,7 +296,7 @@
     grid-template-columns: 1fr 1fr;
 }
 
-.RequestFormService{
+.RequestFormService {
     display: grid;
     grid-template-columns: 1fr 2fr;
 }
@@ -386,7 +386,7 @@
     }
 }
 
-.Status{
+.Status {
     width: 25px;
     height: 25px;
     border-radius: 15px;
@@ -394,35 +394,39 @@
     border: 1px solid black;
 }
 
-.State-yellow{
+.State-yellow {
     width: 25px;
     height: 25px;
     border-radius: 15px;
     cursor: pointer;
     border: 1px solid black;
 }
-.State-grey{
+
+.State-grey {
     width: 25px;
     height: 25px;
     border-radius: 15px;
     cursor: pointer;
     border: 1px solid black;
 }
-.State-green{
+
+.State-green {
     width: 25px;
     height: 25px;
     border-radius: 15px;
     cursor: pointer;
     border: 1px solid black;
 }
-.State-red{
+
+.State-red {
     width: 25px;
     height: 25px;
     border-radius: 15px;
     cursor: pointer;
     border: 1px solid black;
 }
-.State-yellow-s{
+
+.State-yellow-s {
     width: 25px;
     height: 25px;
     border-radius: 15px;
@@ -430,7 +434,8 @@
     border: 1px solid black;
     background-color: #FAFF00;
 }
-.State-grey-s{
+
+.State-grey-s {
     width: 25px;
     height: 25px;
     border-radius: 15px;
@@ -438,7 +443,8 @@
     border: 1px solid black;
     background-color: #D9D9D9;
 }
-.State-green-s{
+
+.State-green-s {
     width: 25px;
     height: 25px;
     border-radius: 15px;
@@ -446,28 +452,33 @@
     border: 1px solid black;
     background-color: #6CE521;
 }
-.State-red-s{
+
+.State-red-s {
     width: 25px;
     height: 25px;
     border-radius: 15px;
     cursor: pointer;
     border: 1px solid black;
-    background-color: #E81F1F;
-}
-.State-yellow:hover{
-    background-color: #FAFF00;
-}
-.State-grey:hover{
-    background-color: #D9D9D9;
-}
-.State-green:hover{
-    background-color: #6CE521;
-}
-.State-red:hover{
     background-color: #E81F1F;
 }
 
-.State-Selected{
+.State-yellow:hover {
+    background-color: #FAFF00;
+}
+
+.State-grey:hover {
+    background-color: #D9D9D9;
+}
+
+.State-green:hover {
+    background-color: #6CE521;
+}
+
+.State-red:hover {
+    background-color: #E81F1F;
+}
+
+.State-Selected {
     width: 25px;
     height: 25px;
     border-radius: 15px;
@@ -475,11 +486,33 @@
     border: 2px solid black;
 }
 
-.Row-Space>label{
+.Row-Space>label {
     margin-bottom: 10px;
 }
-.Row-Space>input{
+
+.Row-Space>input {
     margin-bottom: 5px;
+}
+
+.custom-title {
+    margin-top: -20px;
+    font-size: 3em;
+}
+
+.custom-popup {
+    height: 60vh; 
+    max-height: 60vh; 
+    overflow-y: auto; 
+    
+}
+
+.custom-confirm-button, .custom-deny-button {
+    font-size: 1.5em; 
+    padding: 10px 20px; 
+}
+
+.custom-popup .swal2-icon {
+    font-size: 145%; 
 }
 
 @media screen and (max-width: 900px) {
@@ -487,7 +520,7 @@
     .RequestService {
         display: grid;
         grid-template-columns: 1fr;
-    
+
     }
-    
-  }
+
+}
