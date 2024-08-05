@@ -30,7 +30,7 @@ public class RequestLaboratoryVO {
     private String rRejection;
     private int laboratoriesIdLaboratories;
     private int usersIdUsers;
-    private int semesterIdSemester;
+    private Long semesterIdSemester;
     
     public Long getIdRequestLaboratory() {
         return idRequestLaboratory;
@@ -44,10 +44,10 @@ public class RequestLaboratoryVO {
     public void setGroups(String groups) {
         this.groups = groups;
     }
-    public int getSemesterIdSemester() {
+    public Long getSemesterIdSemester() {
         return semesterIdSemester;
     }
-    public void setSemesterIdSemester(int semesterIdSemester) {
+    public void setSemesterIdSemester(Long semesterIdSemester) {
         this.semesterIdSemester = semesterIdSemester;
     }
     public Time getStartHorary() {

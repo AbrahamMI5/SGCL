@@ -11,11 +11,15 @@ import com.sgcl.demo.models.NotificationVO;
 import com.sgcl.demo.models.RequestLaboratoryVO;
 import com.sgcl.demo.repositories.RequestLaboratoryRepository;
 import com.sgcl.demo.repositories.LabHoraryRepository;
+import com.sgcl.demo.repositories.SemesterRepository;;
 
 @Service
 public class RequestLaboratoryService {
     @Autowired
     RequestLaboratoryRepository requestLaboratoryRepository;
+
+    @Autowired
+    SemesterRepository semesterRepository;
 
     @Autowired
     private NotificationService notificationService;
@@ -28,6 +32,7 @@ public class RequestLaboratoryService {
     }
 
     public RequestLaboratoryVO createRequestLaboratory(RequestLaboratoryVO requestLaboratoryVO) {
+        requestLaboratoryVO.setSemesterIdSemester(semesterRepository.getActiveSemester().get().getIdSemester());
         return requestLaboratoryRepository.save(requestLaboratoryVO);
     }
 
@@ -70,22 +75,22 @@ public class RequestLaboratoryService {
 
             LabHoraryVO horary = new LabHoraryVO();
             horary.setRequestLaboratoryIdRequestLaboratory(id);
-            horary.setSemesterIdSemester((long)1);
+            horary.setSemesterIdSemester(semesterRepository.getActiveSemester().get().getIdSemester());
             labHoraryRepository.save(horary);
         }
         return requestLaboratoryRepository.save(requestLab);
     }
 
     public Optional<List<RequestLaboratoryVO>> getRequestLabByID(long id) {
-        return requestLaboratoryRepository.getRequestLabById(id);
+        return requestLaboratoryRepository.getRequestLabById(id, semesterRepository.getActiveSemester().get().getIdSemester());
     }
 
     public Optional<List<RequestLaboratoryVO>> getRequestInProcess(){
-        return requestLaboratoryRepository.getRequestLabInProcess();
+        return requestLaboratoryRepository.getRequestLabInProcess(semesterRepository.getActiveSemester().get().getIdSemester());
     }
 
     public Optional<List<RequestLaboratoryVO>> getRequestAnswered(){
-        return requestLaboratoryRepository.getRequestLabAnswered();
+        return requestLaboratoryRepository.getRequestLabAnswered(semesterRepository.getActiveSemester().get().getIdSemester());
     }
 
 }

@@ -23,12 +23,15 @@ public class LabHoraryService {
     @Autowired
     LaboratoryService laboratoryService;
 
+    @Autowired
+    SemesterService semesterService;
+
     public List<String> getClassrooms(){
-        return (labHoraryRepository.getClassrooms());
+        return (labHoraryRepository.getClassrooms(semesterService.getActiveSemester().getIdSemester()));
     }
 
     public List<HoraryResponse> getHoraryByGroup(String group){
-        List<Object[]> objectList = labHoraryRepository.getHoraryByGroup(group);
+        List<Object[]> objectList = labHoraryRepository.getHoraryByGroup(group, semesterService.getActiveSemester().getIdSemester());
         List<HoraryResponse> response =  new ArrayList<>();;
 
         List<String> timeStrings = List.of("12:00:00", "14:00:00", "16:00:00", "18:00:00");
@@ -79,7 +82,7 @@ public class LabHoraryService {
     }
 
     public List<HoraryResponse> getHoraryByLab(Long lab){
-        List<Object[]> objectList = labHoraryRepository.getHoraryByLab(lab);
+        List<Object[]> objectList = labHoraryRepository.getHoraryByLab(lab, semesterService.getActiveSemester().getIdSemester());
         List<HoraryResponse> response =  new ArrayList<>();;
 
         List<String> timeStrings = List.of("12:00:00", "14:00:00", "16:00:00", "18:00:00");

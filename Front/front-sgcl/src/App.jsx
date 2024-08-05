@@ -14,6 +14,7 @@ import { Notifications } from './components/Notifications';
 import { RequestService } from './components/RequestService';
 import { RequestComputerService } from './components/RequestComputerService';
 import { RequestTechnologyService } from './components/RequestTechnologyService';
+import { SemesterPage } from './components/SemesterPage';
 
 import bars from './components/img/bars.svg';
 import logo from '/logofcbiyt.png';
@@ -106,6 +107,8 @@ function App() {
         <Route path='/TechnologyService' element={teacher  ? <div className='I-Usr'> <RequestTechnologyService/> </div> :  <Navigate to="/"/>}/>
         <Route path='/ComputerService' element={teacher || managerial ? <div className='I-Usr'> <RequestComputerService/> </div> :  <Navigate to="/"/>}/>
         <Route path='/RequestService' element={admin ? <div className='I-Usr'> <RequestService/> </div> : <Navigate to="/"/>} />
+        <Route path='/Semester' element={admin ? <div className='I-Usr'> <SemesterPage/> </div> : <Navigate to="/"/>} />
+
       </Routes>
     </>
   );

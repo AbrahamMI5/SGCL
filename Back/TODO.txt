@@ -32,12 +32,12 @@ Documento de planeacion de mantenimiento semestral
 Registrar uso de laboratorios 
 *Visualizar horarios Listo
 Generar reporte de uso de laboratorios 
-Cambiar semestre 
+* Cambiar semestre 
 
 
 Pendientes post presentacion
 
-Validaciones de horarios cuando ya estén aprobados, y que no coincidan de hora, agregar dia
+*Validaciones de horarios cuando ya estén aprobados, y que no coincidan de hora, agregar dia
 *Verificar que el token no este caduco y en caso de que si que lo borre  Listo
 *Mostrar nombre del usuario que inicio sesion Listo
 *Notificaciones y afirmaciones de eliminar, crear autualizar etc Listo

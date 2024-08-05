@@ -60,4 +60,11 @@ export const apiUrls = {
   getClassrooms: `${apiUrl}/labHorary/getClassrooms`,
   getLabHorarybyGroup: `${apiUrl}/labHorary/getByGroup`,
   getLabHorarybyLab: `${apiUrl}/labHorary/getByLab`,
+  createSemester: `${apiUrl}/semester/create`,
+  getAllSemester: `${apiUrl}/semester/getAll`,
+  deleteSemester: `${apiUrl}/semester/delete`,
+  updateSemester: `${apiUrl}/semester/update`,
+  activeSemester: `${apiUrl}/semester/setActive`,
+
+
 };
