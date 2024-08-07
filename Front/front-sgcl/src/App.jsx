@@ -15,6 +15,7 @@ import { RequestService } from './components/RequestService';
 import { RequestComputerService } from './components/RequestComputerService';
 import { RequestTechnologyService } from './components/RequestTechnologyService';
 import { SemesterPage } from './components/SemesterPage';
+import { MainteinanceSemester } from './components/MainteinanceSemester'
 
 import bars from './components/img/bars.svg';
 import logo from '/logofcbiyt.png';
@@ -108,6 +109,8 @@ function App() {
         <Route path='/ComputerService' element={teacher || managerial ? <div className='I-Usr'> <RequestComputerService/> </div> :  <Navigate to="/"/>}/>
         <Route path='/RequestService' element={admin ? <div className='I-Usr'> <RequestService/> </div> : <Navigate to="/"/>} />
         <Route path='/Semester' element={admin ? <div className='I-Usr'> <SemesterPage/> </div> : <Navigate to="/"/>} />
+        <Route path='/MainteinanceSemester' element={admin ? <div className='I-Usr'> <MainteinanceSemester/> </div> : <Navigate to="/"/>} />
+
 
       </Routes>
     </>
