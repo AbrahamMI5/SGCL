@@ -16,7 +16,6 @@ export function Horary() {
             toast.success(toastMessage);
             localStorage.removeItem('toastMessage');
         }
-        let token = localStorage.getItem('token');
         security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
         usersApi.get(apiUrls.getAllLaboratories)
             .then(respLaboratories => {
