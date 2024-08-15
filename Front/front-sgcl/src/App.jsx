@@ -110,8 +110,8 @@ function App() {
         <Route path='/ComputerService' element={teacher || managerial ? <div className='I-Usr'> <RequestComputerService/> </div> :  <Navigate to="/"/>}/>
         <Route path='/RequestService' element={admin ? <div className='I-Usr'> <RequestService/> </div> : <Navigate to="/"/>} />
         <Route path='/Semester' element={admin ? <div className='I-Usr'> <SemesterPage/> </div> : <Navigate to="/"/>} />
-        <Route path='/Mainteinance' element={admin ? <div className='I-Usr'> <MainteinanceSemester/> </div> : <Navigate to="/"/>} />
-        <Route path='/Mainteinance/Preview' element={admin ? <div className='I-Usr'> <Previewpdf/> </div> : <Navigate to="/"/>} />
+        <Route path='/Maintenance' element={admin ? <div className='I-Usr'> <MainteinanceSemester/> </div> : <Navigate to="/"/>} />
+        <Route path='/Maintenance/Preview' element={admin ? <div className='I-Usr'> <Previewpdf/> </div> : <Navigate to="/"/>} />
 
 
 

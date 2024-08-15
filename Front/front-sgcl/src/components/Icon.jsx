@@ -10,6 +10,7 @@ import rcomputer from './img/rcomputer.svg'
 import rtechnology from './img/rtechnology.svg'
 import rservice from './img/rservice.svg'
 import semester from './img/semester.svg'
+import Maintenance from './img/Maintenance.svg'
 
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
@@ -43,6 +44,8 @@ export function Icon(prop) {
             return 'Solicitudes de tecnología'
         } if ( name == 'Semester'){
             return 'Semestre'
+        }if ( name == 'Maintenance'){
+            return 'Mantenimiento'
         }
          else {
             console.log("null")
@@ -75,6 +78,8 @@ export function Icon(prop) {
             return rtechnology
         } if ( name == 'Semester'){
             return semester
+        }if ( name == 'Maintenance'){
+            return Maintenance
         }
     }
 
@@ -101,6 +106,8 @@ export function Icon(prop) {
             return '/TechnologyService'
         } if ( name == 'Semester'){
             return '/Semester'
+        }if ( name == 'Maintenance'){
+            return '/Maintenance'
         }
     }
 

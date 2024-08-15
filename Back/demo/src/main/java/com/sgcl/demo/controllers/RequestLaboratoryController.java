@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sgcl.demo.models.RequestLaboratoryVO;
 import com.sgcl.demo.services.RequestLaboratoryService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController

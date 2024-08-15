@@ -59,12 +59,6 @@ export function MainteinanceSemester() {
                 "action": "SOPLETEADO DE MONITORES Y CPU´S EN PARTE INTERNA. LIMPIEZA EN PARTES EXTERNAS. REVISION DEL CORRECTO FUNCIONAMIENTO DE LOS MISMOS.",
                 "responsibleName": "MANUEL ARTURO SANDOVAL GUTIÉRREZ",
                 "observation": ""
-            },
-            {
-                "labName": "Inteligentes",
-                "action": "SOPLETEADO DE MONITORES Y CPU´S EN PARTE INTERNA. LIMPIEZA EN PARTES EXTERNAS. REVISION DEL CORRECTO FUNCIONAMIENTO DE LOS MISMOS.",
-                "responsibleName": "MANUEL ARTURO SANDOVAL GUTIÉRREZ",
-                "observation": ""
             }
         ]
     }
@@ -110,14 +104,18 @@ export function MainteinanceSemester() {
         ]
     }
 
-    const yourData ={
+    const yourData=(data) =>{
+        return {
         "anual": true,
-        "data": data1
+        "data": data
+        }
     }
 
-    const yourDataS ={
+    const yourDataS=(data) =>{
+        return{
         "anual": false,
         "data": data
+        }
     }
 
 
@@ -144,11 +142,11 @@ export function MainteinanceSemester() {
                         <tbody>
                             <tr>
                                 <td>Mantenimiento anual 2024.pdf</td>
-                                <td style={{textAlign: "center", padding: "5px"}}><Link to={'/Mainteinance/Preview'} state={yourData}><img src={pdf} alt="ver pdf" className='M-Img' style={{cursor: "pointer"}} /></Link></td>
+                                <td style={{textAlign: "center", padding: "5px"}}><Link to={'/Maintenance/Preview'} state={yourData(data)}><img src={pdf} alt="ver pdf" className='M-Img' style={{cursor: "pointer"}} /></Link></td>
                             </tr>
                             <tr>
                                 <td>Mantenimiento anual 2023.pdf</td>
-                                <td style={{textAlign: "center", padding: "5px"}}><Link to={'/Mainteinance/Preview'} state={yourData}><img src={pdf} alt="ver pdf" className='M-Img' style={{cursor: "pointer"}} /></Link></td>
+                                <td style={{textAlign: "center", padding: "5px"}}><Link to={'/Maintenance/Preview'} state={yourData(data)}><img src={pdf} alt="ver pdf" className='M-Img' style={{cursor: "pointer"}} /></Link></td>
                             </tr>
                         </tbody>
                     </table>
@@ -170,22 +168,17 @@ export function MainteinanceSemester() {
                         <tbody>
                             <tr>
                                 <td>Mantenimiento diciembre 2024.pdf</td>
-                                <td style={{textAlign: "center", padding: "5px"}}><Link to={'/Mainteinance/Preview'} state={yourDataS}><img src={pdf} alt="ver pdf" className='M-Img' style={{cursor: "pointer"}} /></Link></td>
+                                <td style={{textAlign: "center", padding: "5px"}}><Link to={'/Maintenance/Preview'} state={yourDataS(data1)}><img src={pdf} alt="ver pdf" className='M-Img' style={{cursor: "pointer"}} /></Link></td>
                             </tr>
                             <tr>
                                 <td>Mantenimiento julio 2023.pdf</td>
-                                <td style={{textAlign: "center", padding: "5px"}}><Link to={'/Mainteinance/Preview'} state={yourDataS}><img src={pdf} alt="ver pdf" className='M-Img' style={{cursor: "pointer"}} /></Link></td>
+                                <td style={{textAlign: "center", padding: "5px"}}><Link to={'/Maintenance/Preview'} state={yourDataS(data1)}><img src={pdf} alt="ver pdf" className='M-Img' style={{cursor: "pointer"}} /></Link></td>
                             </tr>
                         </tbody>
                     </table>
 
                 </>
             }
-            {/*}
-            <PDFGeneratorAnual
-                title="Informe de Mantenimiento Semestral"
-                content={data1}
-            />*/}
         </>
     );
 }

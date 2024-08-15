@@ -5,10 +5,10 @@ import java.util.Date;
 import com.sgcl.demo.models.LaboratoryVO;
 
 public class HoraryGroupResponse {
-    LaboratoryVO laboratoryVO;
-    Date startdate;
-    Date enddate;
-    String subject;
+    private LaboratoryVO laboratoryVO;
+    private Date startdate;
+    private Date enddate;
+    private String subject;
 
     public LaboratoryVO getLaboratoryVO() {
         return laboratoryVO;
