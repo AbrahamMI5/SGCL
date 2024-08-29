@@ -2,26 +2,19 @@ package com.sgcl.demo.models.RequestModels;
 
 import java.util.List;
 
-
 import com.sgcl.demo.models.DatesVO;
 
-public class AnualDocResponse {
+public class AnualDocDTO {
     private Long idAnualdoc;
-    private List<DatesVO> dates;
     private String labName;
+    private List<DatesVO> dates;
     private Long documentsIdDocuments;
-
+    
     public Long getIdAnualdoc() {
         return idAnualdoc;
     }
     public void setIdAnualdoc(Long idAnualdoc) {
         this.idAnualdoc = idAnualdoc;
-    }
-    public Long getDocumentsIdDocuments() {
-        return documentsIdDocuments;
-    }
-    public void setDocumentsIdDocuments(Long documentsIdDocuments) {
-        this.documentsIdDocuments = documentsIdDocuments;
     }
     public String getLabName() {
         return labName;
@@ -35,7 +28,11 @@ public class AnualDocResponse {
     public void setDates(List<DatesVO> dates) {
         this.dates = dates;
     }
+    public Long getDocumentsIdDocuments() {
+        return documentsIdDocuments;
+    }
+    public void setDocumentsIdDocuments(Long documentsIdDocuments) {
+        this.documentsIdDocuments = documentsIdDocuments;
+    }
     
-    
-
 }

@@ -14,7 +14,7 @@ public class SemesterDocVO {
     private Long idSemesterdoc;
     private String action;
     private String observation;
-    private Long laboratoriesIdLaboratories;
+    private String labName;
     private Long documentsId;
 
     public Long getIdSemesterdoc() {
@@ -35,11 +35,11 @@ public class SemesterDocVO {
     public void setObservation(String observation) {
         this.observation = observation;
     }
-    public Long getLaboratoriesIdLaboratories() {
-        return laboratoriesIdLaboratories;
+    public String getLabName() {
+        return labName;
     }
-    public void setLaboratoriesIdLaboratories(Long laboratoriesIdLaboratories) {
-        this.laboratoriesIdLaboratories = laboratoriesIdLaboratories;
+    public void setLabName(String labName) {
+        this.labName = labName;
     }
     public Long getDocumentsId() {
         return documentsId;

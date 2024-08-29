@@ -65,6 +65,9 @@ export const apiUrls = {
   deleteSemester: `${apiUrl}/semester/delete`,
   updateSemester: `${apiUrl}/semester/update`,
   activeSemester: `${apiUrl}/semester/setActive`,
+  getDocument: `${apiUrl}/document/getDocuments`,
+  setAnualDoc: `${apiUrl}/document/createAnual`,
+  setSemesterDoc: `${apiUrl}/document/createSemester`
 
 
 };

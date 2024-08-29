@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { jsPDF } from 'jspdf';
-import { usersApi, apiUrls, security } from "./api/userApi";
 import 'jspdf-autotable';
 import headerImage from './img/Docs/uatxLogo.png';
 
@@ -8,12 +7,32 @@ const PDFGeneratorAnual = ({ content }) => {
     const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null); // Estado para la vista previa
 
     useEffect(() => {
-        generatePDF(content.data); // Generar PDF después de cargar los datos
-    }, []); // Solo se ejecuta una vez al montar el componente
+        console.log(content)
+        generatePDF();
+    }, []);
+
+    function fullMonth(mesAbreviado) {
+        const meses = {
+            ene: "Enero",
+            feb: "Febrero",
+            mar: "Marzo",
+            abr: "Abril",
+            may: "Mayo",
+            jun: "Junio",
+            jul: "Julio",
+            ago: "Agosto",
+            sep: "Septiembre",
+            oct: "Octubre",
+            nov: "Noviembre",
+            dic: "Diciembre"
+        };
+
+        return meses[mesAbreviado] || "Abreviatura de mes inválida";
+    }
 
     const createPDF = () => {
         const doc = new jsPDF('landscape');
-        const laboratories = content.data
+        const laboratories = content.anualDocVO
         // Agregar imagen como encabezado
         if (headerImage) {
             doc.addImage(headerImage, 'JPEG', 13, 14, 12, 20); // Ajustar tamaño y posición según sea necesario
@@ -29,15 +48,15 @@ const PDFGeneratorAnual = ({ content }) => {
 
         // Medir ancho
         const labelWidth = doc.getTextWidth(label); // Calcular el ancho del texto estático
-        const contentWidth = doc.getTextWidth(content.facultad);
+        const contentWidth = doc.getTextWidth("Facultad de ciencias básicas de ingeniería y tecnología.");
 
         // Colocar texto
         doc.text(label, 20, 40); // Ajustar posición
-        doc.text("   " + content.facultad, 20 + labelWidth, 40);
+        doc.text("   " + "Facultad de ciencias básicas de ingeniería y tecnología.", 20 + labelWidth, 40);
         doc.text(label1 + "   " + doc.internal.getCurrentPageInfo().pageNumber, 50 + contentWidth + labelWidth + 40, 40);
-        doc.text(label3 + "   " + content.año, 50 + contentWidth + labelWidth, 40);
-        doc.text(content.responsibleName, 43, 165);
-        doc.text(content.coordinador, 190, 165);
+        doc.text(label3 + "   " + content.documentVO.year, 50 + contentWidth + labelWidth, 40);
+        doc.text(content.documentVO.responsibleName, 43, 165);
+        doc.text(content.documentVO.adminResponsibleName, 190, 165);
 
         doc.setFontSize(10);
         doc.text(responsable, 57, 181)
@@ -58,21 +77,57 @@ const PDFGeneratorAnual = ({ content }) => {
         // Agregar tabla
         const tableData = [
             ['Columna 1', 'Columna 2', 'Columna 3', 'Columna 4', 'Columna 5'],
-            ['Universidad Autonoma de Tlaxcala', '', '', 'Código:', '400e-RG-13'],
-            ['Registro: ', 'PROGRAMA ANUAL DE MANTENIMIENTO PREVENTIVO', '', 'Revisión:', content.revision],
+            ['Universidad Autónoma de Tlaxcala', '', '', 'Código:', '407e-RG-13'],
+            ['Registro: ', 'PROGRAMA ANUAL DE MANTENIMIENTO PREVENTIVO', '', 'Revisión:\n9001:2015', "Agosto 2024\n        02"],
         ];
 
         const tableData1 = [
-            ['Actividad y área', '', 'Ene.', 'Feb.', `Mar.`, `Abr.`, `May.`, `Jun.`, `Jul.`, `Ago.`, `Sep.`, `Oct.`, `Nov.`, `Dic.`, `Responsable del mantenimiento`],
-            ...laboratories.flatMap(laboratory => [
-                [
-                    { content: 'MANTENIMIENTO PREVENTIVO LABORATORIO ' + laboratory.labName.toUpperCase(), rowSpan: 3, styles: { halign: 'center', valign: 'middle', cellPadding: 1 } },
-                    'Programación:', '', '', '', '', '', '', '', '', '', '', '', '', content.responsibleName
-                ],
-                ['Fecha:', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-                ['Firma:', '', '', '', '', '', '', '', '', '', '', '', '', '']
-            ])
+            ['Actividad y área', '', 'Ene.', 'Feb.', 'Mar.', 'Abr.', 'May.', 'Jun.', 'Jul.', 'Ago.', 'Sep.', 'Oct.', 'Nov.', 'Dic.', 'Responsable del mantenimiento'],
+            ...laboratories.flatMap(laboratory => {
+                const row = ['Programación:', '', '', '', '', '', '', '', '', '', '', '', '', content.documentVO.responsibleName];
+
+                const meses = {
+                    ene: 1,
+                    feb: 2,
+                    mar: 3,
+                    abr: 4,
+                    may: 5,
+                    jun: 6,
+                    jul: 7,
+                    ago: 8,
+                    sep: 9,
+                    oct: 10,
+                    nov: 11,
+                    dic: 12
+                };
+
+                // Asignar los días en las posiciones correspondientes a los meses
+                laboratory.dates.forEach(function(date) {
+                    let monthKey = meses[date.month];
+                    if (row[monthKey]) {
+                        row[monthKey] += '\n' + date.days;
+                    } else {
+                        row[monthKey] = date.days;
+                    }
+                });
+                
+
+                // Retornar las filas para el laboratorio
+                return [
+                    [
+                        {
+                            content: 'MANTENIMIENTO PREVENTIVO LABORATORIO ' + laboratory.labName.toUpperCase(),
+                            rowSpan: 3,
+                            styles: { halign: 'center', valign: 'middle', cellPadding: 1 }
+                        },
+                        ...row
+                    ],
+                    ['Fecha:', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                    ['Firma:', '', '', '', '', '', '', '', '', '', '', '', '', '']
+                ];
+            })
         ];
+
 
 
         const footer = [
@@ -138,12 +193,12 @@ const PDFGeneratorAnual = ({ content }) => {
                 fillColor: [255, 255, 255],
                 fontSize: 9,
                 cellPadding: 1
-            },didDrawCell: function(data) {
+            }, didDrawCell: function (data) {
                 // Pintar la columna de "Programación:"
                 if (data.column.index === 1) { // 1 es el índice de la columna de "Programación"
                     doc.setFillColor(212, 212, 212); // Color de fondo (RGB)
                     doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F'); // Rellenar la celda
-        
+
                     // Dibujar el texto en la celda
                     doc.setFontSize(9); // Ajustar tamaño de fuente si es necesario
                     doc.setTextColor(0, 0, 0); // Establecer color del texto
@@ -153,10 +208,10 @@ const PDFGeneratorAnual = ({ content }) => {
 
                     doc.setDrawColor(0, 0, 0); // Color del borde
                     doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height); // Dibujar el borde
-                
+
                 }
             }
-            
+
         };
 
         const tableStyles2 = {
@@ -221,7 +276,7 @@ const PDFGeneratorAnual = ({ content }) => {
 
     const downloadPDF = () => {
         const doc = createPDF(); // Asegurarse de usar el estado actualizado
-        doc.save(`Mantenimiento anual `+ content.año + '.pdf');
+        doc.save(`Mantenimiento anual ` + content.año + '.pdf');
     };
 
     return (
@@ -234,7 +289,7 @@ const PDFGeneratorAnual = ({ content }) => {
                 title="Vista Previa PDF"
             />
             <button onClick={downloadPDF}>Descargar PDF</button>
-            <div style={{height: "50px"}}></div>
+            <div style={{ height: "50px" }}></div>
         </div>
     );
 };

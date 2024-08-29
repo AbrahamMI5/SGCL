@@ -15,7 +15,6 @@ public class DocumentVO {
     private Long idDocuments;
     private String responsibleName;
     private String adminResponsibleName;
-    private String enddate;
     @Column(nullable = true)
     private String month;
     private Integer year;
@@ -31,12 +30,6 @@ public class DocumentVO {
     }
     public void setResponsibleName(String responsibleName) {
         this.responsibleName = responsibleName;
-    }
-    public String getEnddate() {
-        return enddate;
-    }
-    public void setEnddate(String enddate) {
-        this.enddate = enddate;
     }
     public String getMonth() {
         return month;

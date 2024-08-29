@@ -4,16 +4,35 @@ import { usersApi, apiUrls, security } from "./api/userApi";
 import 'jspdf-autotable';
 import headerImage from './img/Docs/uatxLogo.png';
 
-const PDFGenerator = ({ content}) => {
+const PDFGenerator = ({ content }) => {
     const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null); // Estado para la vista previa
 
     useEffect(() => {
-        generatePDF(content.data); // Generar PDF después de cargar los datos
-    }, []); // Solo se ejecuta una vez al montar el componente
+        console.log(content)
+        generatePDF();
+    }, []);
 
+    function fullMonth(mesAbreviado) {
+        const meses = {
+            ene: "Enero",
+            feb: "Febrero",
+            mar: "Marzo",
+            abr: "Abril",
+            may: "Mayo",
+            jun: "Junio",
+            jul: "Julio",
+            ago: "Agosto",
+            sep: "Septiembre",
+            oct: "Octubre",
+            nov: "Noviembre",
+            dic: "Diciembre"
+        };
+
+        return meses[mesAbreviado] || "Abreviatura de mes inválida";
+    }
     const createPDF = () => {
         const doc = new jsPDF('landscape');
-        const laboratories = content.data
+        const laboratories = content.semesterDocVO
         // Agregar imagen como encabezado
         if (headerImage) {
             doc.addImage(headerImage, 'JPEG', 13, 14, 12, 20); // Ajustar tamaño y posición según sea necesario
@@ -30,16 +49,16 @@ const PDFGenerator = ({ content}) => {
 
         // Medir ancho
         const labelWidth = doc.getTextWidth(label); // Calcular el ancho del texto estático
-        const contentWidth = doc.getTextWidth(content.facultad);
+        const contentWidth = doc.getTextWidth("Facultad de ciencias básicas de ingeniería y tecnología. ");
 
         // Colocar texto
         doc.text(label, 20, 40); // Ajustar posición
-        doc.text("   " + content.facultad, 20 + labelWidth, 40);
-        doc.text(label1 + "   " + doc.internal.getCurrentPageInfo().pageNumber, 50 + contentWidth + labelWidth, 40);
-        doc.text(label2 + "   " + content.mes, 20, 47);
-        doc.text(label3 + "   " + content.año, 50 + contentWidth + labelWidth, 47);
-        doc.text(content.responsibleName, 43 , 165);
-        doc.text(content.coordinador, 190, 165);
+        doc.text("   " + "Facultad de Ciencias Básicas Ingeniería y Tecnología", 20 + labelWidth, 40);
+        doc.text(label1 + "   " + doc.internal.getCurrentPageInfo().pageNumber, 163, 40);
+        doc.text(label2 + "   " + fullMonth(content.documentVO.month), 20, 47);
+        doc.text(label3 + "   " + content.documentVO.year, 162, 47);
+        doc.text(content.documentVO.responsibleName, 43, 165);
+        doc.text(content.documentVO.adminResponsibleName, 190, 165);
 
         doc.setFontSize(10);
         doc.text(responsable, 57, 181)
@@ -61,20 +80,20 @@ const PDFGenerator = ({ content}) => {
         // Agregar tabla
         const tableData = [
             ['Columna 1', 'Columna 2', 'Columna 3', 'Columna 4', 'Columna 5'],
-            ['Universidad Autonoma de Tlaxcala', '', '', 'Código:', '400e-RG-17'],
-            ['Registro: ', 'BITÁCORA DE MANTENIMIENTO PREVENTIVO', '', 'Revisión:', content.revision],
+            ['Universidad Autónoma de Tlaxcala', '', '', 'Código:', '407e-RG-13'],
+            ['Registro: ', 'BITÁCORA DE MANTENIMIENTO PREVENTIVO', '', 'Revisión:\n9001:2015', "Agosto 2024\n        02"],
         ];
 
         const tableData1 = [
             ['Actividad', 'Acción Emprendida', 'Responsable', 'Observación'],
             ...laboratories.map(laboratory => (
-                ['MANTENIMIENTO PREVENTIVO A EQUIPOS DE COMPUTO EN EL LABORATORIO ' + laboratory.labName.toUpperCase(), laboratory.action, laboratory.responsibleName, laboratory.observation]
+                ['MANTENIMIENTO PREVENTIVO A EQUIPOS DE COMPUTO EN EL LABORATORIO ' + laboratory.labName.toUpperCase(), laboratory.action, content.documentVO.responsibleName, laboratory.observation]
             ))
         ];
 
         const footer = [
             ['Columna 1', 'Columna 2', 'Columna 3', 'Columna 4'],
-            ['Documento exclusivo para uso de la dependencia responsable o autoridad correspondiente', '', 'Página:', doc.internal.getCurrentPageInfo().pageNumber+' de '+doc.getNumberOfPages()],
+            ['Documento exclusivo para uso de la dependencia responsable o autoridad correspondiente', '', 'Página:', doc.internal.getCurrentPageInfo().pageNumber + ' de ' + doc.getNumberOfPages()],
         ];
 
         const tableStyles = {
@@ -195,7 +214,7 @@ const PDFGenerator = ({ content}) => {
 
     const downloadPDF = () => {
         const doc = createPDF(); // Asegurarse de usar el estado actualizado
-        doc.save(`Mantenimiento semestral `+content.mes+` `+content.año+'.pdf');
+        doc.save(`Mantenimiento semestral ` + fullMonth(content.documentVO.month) + ` ` + content.documentVO.year + '.pdf');
     };
 
     return (

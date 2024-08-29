@@ -117,7 +117,7 @@ export function RequestTechnologyService() {
                 specialFunction: selectedOptionSpecial ? selectedOptionSpecial : null,
                 laboratoriesIdLaboratories: selectedlab,
                 labName: selectedlabName,
-                observations: "Tecnologia: " + document.getElementById("Observation").value + " Laboratorio: " + selectedlabName
+                observations: "Tecnología: " + document.getElementById("Observation").value + " Laboratorio: " + selectedlabName
             };
             console.log(requestServData)
             let token = localStorage.getItem('token');
@@ -127,7 +127,7 @@ export function RequestTechnologyService() {
             window.location.reload();
         } catch (error) {
             console.error('Error al crear el usuario:', error);
-            toast.error("Error al enviaf la solicitar")
+            toast.error("Error al enviar la solicitar")
         }
     };
 
@@ -160,7 +160,7 @@ export function RequestTechnologyService() {
                     <p>Funcionalidad:</p>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <div style={{ width: "50%" }}>
-                            <label htmlFor="">Basica:</label>
+                            <label htmlFor="">Básica:</label>
                             <select value={selectedOptionBasic} name="" id="Basic" style={{ width: "130px" }} onChange={handleChangeBasic}>
                                 <option value="">-Funcionalidad-</option>
                                 <option value="Instalacion de dispositivos">Instalación de dispositivos</option>

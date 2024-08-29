@@ -7,13 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sgcl.demo.models.AnualDocVO;
+import com.sgcl.demo.models.DatesVO;
 import com.sgcl.demo.models.DocumentVO;
 import com.sgcl.demo.models.SemesterDocVO;
+import com.sgcl.demo.models.RequestModels.AnualDocDTO;
 import com.sgcl.demo.models.RequestModels.AnualDocResponse;
 import com.sgcl.demo.models.RequestModels.DocumentRequest;
 import com.sgcl.demo.models.RequestModels.DocumentResponse;
 import com.sgcl.demo.models.RequestModels.SemesterDocResponse;
 import com.sgcl.demo.repositories.AnualDocumentRepository;
+import com.sgcl.demo.repositories.DatesRepository;
 import com.sgcl.demo.repositories.DocumentRepository;
 import com.sgcl.demo.repositories.LaboratoryRepository;
 import com.sgcl.demo.repositories.SemesterDocumentRepository;
@@ -34,13 +37,23 @@ public class DocumentService {
     @Autowired
     LaboratoryRepository laboratoryRepository;
 
-    public DocumentVO createAnualDocument(DocumentVO document, List<AnualDocVO> anualList){
+    @Autowired
+    DatesRepository datesRepository;
+
+    public DocumentVO createAnualDocument(DocumentVO document, List<AnualDocDTO> anualList){
         documentRepository.save(document);
         
-        for (AnualDocVO anual : anualList) {
+        for (AnualDocDTO anual : anualList) {
             try{
-                anual.setDocumentsIdDocuments(document.getIdDocuments());
-                anualDocumentRepository.save(anual);
+                AnualDocVO anualDocVO = new AnualDocVO();
+                anualDocVO.setDocumentsIdDocuments(document.getIdDocuments());
+                anualDocVO.setLabName(anual.getLabName());
+                anualDocumentRepository.save(anualDocVO);
+                List<DatesVO> datesVOs = anual.getDates();
+                for(DatesVO date : datesVOs){
+                    date.setId_anual_doc(anualDocVO.getIdAnualdoc());
+                    datesRepository.save(date);
+                }
             }catch(Exception e){
                 documentRepository.delete(document);
                 throw new IllegalArgumentException("Error en los datos");
@@ -83,13 +96,19 @@ public class DocumentService {
             List<AnualDocVO> anualList = anualDocumentRepository.getAnualDocVOByDocument(documento.getIdDocuments());
             for(AnualDocVO anualdoc : anualList){
                 AnualDocResponse anualresp = new AnualDocResponse();
-                anualresp.setDays1(anualdoc.getDays1());
-                anualresp.setDays2(anualdoc.getDays2());
-                anualresp.setMonth1(anualdoc.getMonth1());
-                anualresp.setMonth2(anualdoc.getMonth2());
+                List<DatesVO> actualdates = new ArrayList<>();
+                List<DatesVO> datesList = datesRepository.getDatesByAnualDocumentId(anualdoc.getIdAnualdoc());
+                for(DatesVO date : datesList){
+                    DatesVO newdate = new DatesVO();
+                    newdate.setDays(date.getDays());
+                    newdate.setMonth(date.getMonth());
+                    newdate.setId_anual_doc(anualdoc.getIdAnualdoc());
+                    actualdates.add(newdate);
+                }
+                anualresp.setDates(actualdates);
                 anualresp.setDocumentsIdDocuments(anualdoc.getDocumentsIdDocuments());
                 anualresp.setIdAnualdoc(anualdoc.getIdAnualdoc());
-                anualresp.setLaboratoriesIdLaboratories(laboratoryRepository.findById(anualdoc.getLaboratoriesIdLaboratories()).get());
+                anualresp.setLabName(anualdoc.getLabName());
                 anualRespList.add(anualresp);
             }
             docresp.setAnualDocVO(anualRespList);
@@ -101,7 +120,7 @@ public class DocumentService {
                 anualresp.setDocumentsId(anualdoc.getDocumentsId());
                 anualresp.setIdSemesterdoc(anualdoc.getIdSemesterdoc());
                 anualresp.setObservation(anualdoc.getObservation());
-                anualresp.setLaboratoriesIdLaboratories(laboratoryRepository.findById(anualdoc.getLaboratoriesIdLaboratories()).get());
+                anualresp.setLabName(anualdoc.getLabName());
                 semesterRespList.add(anualresp);
             }
             docresp.setSemesterDocVO(semesterRespList);

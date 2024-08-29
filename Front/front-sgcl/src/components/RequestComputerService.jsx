@@ -102,7 +102,7 @@ export function RequestComputerService() {
             window.location.reload();
         } catch (error) {
             console.error('Error al enviar la solicitud:', error);
-            toast.error("Error al enviaf la solicitar")
+            toast.error("Error al enviar la solicitar")
         }
     };
 

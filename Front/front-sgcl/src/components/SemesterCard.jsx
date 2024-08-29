@@ -74,8 +74,8 @@ export function SemesterCard(props) {
     const alert = (event)=>{
         event.preventDefault();
         Swal.fire({
-            title: '¿Estas seguro que lo quieres eliminar?',
-            html: '<span style="font-size: 20px;">Al eliminar el semestre se eliminaran sus horarios, solicitudes de laboratorios, estadisticas y todos sus datos relacionados.</span>',
+            title: '¿Estás seguro que lo quieres eliminar?',
+            html: '<span style="font-size: 20px;">Al eliminar el semestre se eliminarán sus horarios, solicitudes de laboratorios, estadísticas y todos sus datos relacionados.</span>',
             icon: 'warning',
             width: '70%',
             customClass: {

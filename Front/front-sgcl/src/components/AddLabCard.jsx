@@ -41,8 +41,8 @@ export function AddLabCard(props) {
     const alert = (event)=>{
         event.preventDefault();
         Swal.fire({
-            title: '¿Estas seguro que lo quieres eliminar?',
-            html: '<span style="font-size: 20px;">Al eliminar el laboratorio se eliminaran sus solicitudes, horarios, estadisticas y todos sus datos relacionados.</span>',
+            title: '¿Estás seguro que lo quieres eliminar?',
+            html: '<span style="font-size: 20px;">Al eliminar el laboratorio se eliminarán sus solicitudes, horarios, estadísticas y todos sus datos relacionados.</span>',
             icon: 'warning',
             width: '70%',
             customClass: {

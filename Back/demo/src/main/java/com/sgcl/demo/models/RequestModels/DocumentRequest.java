@@ -9,7 +9,7 @@ import com.sgcl.demo.models.SemesterDocVO;
 public class DocumentRequest {
     private DocumentVO documentVO;
     private List<SemesterDocVO> semesterDocVO;
-    private List<AnualDocVO> anualDocVO;
+    private List<AnualDocDTO> anualDocVO;
     
     public DocumentVO getDocumentVO() {
         return documentVO;
@@ -23,11 +23,12 @@ public class DocumentRequest {
     public void setSemesterDocVO(List<SemesterDocVO> semesterDocVO) {
         this.semesterDocVO = semesterDocVO;
     }
-    public List<AnualDocVO> getAnualDocVO() {
+    public List<AnualDocDTO> getAnualDocVO() {
         return anualDocVO;
     }
-    public void setAnualDocVO(List<AnualDocVO> anualDocVO) {
+    public void setAnualDocVO(List<AnualDocDTO> anualDocVO) {
         this.anualDocVO = anualDocVO;
     }
+    
     
 }

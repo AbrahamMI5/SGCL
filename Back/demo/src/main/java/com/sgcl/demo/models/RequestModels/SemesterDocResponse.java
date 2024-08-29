@@ -6,7 +6,7 @@ public class SemesterDocResponse {
     private Long idSemesterdoc;
     private String action;
     private String observation;
-    private LaboratoryVO laboratoriesIdLaboratories;
+    private String labName;
     private Long documentsId;
     
     public Long getIdSemesterdoc() {
@@ -27,11 +27,11 @@ public class SemesterDocResponse {
     public void setObservation(String observation) {
         this.observation = observation;
     }
-    public LaboratoryVO getLaboratoriesIdLaboratories() {
-        return laboratoriesIdLaboratories;
+    public String getLabName() {
+        return labName;
     }
-    public void setLaboratoriesIdLaboratories(LaboratoryVO laboratoriesIdLaboratories) {
-        this.laboratoriesIdLaboratories = laboratoriesIdLaboratories;
+    public void setLabName(String labName) {
+        this.labName = labName;
     }
     public Long getDocumentsId() {
         return documentsId;
