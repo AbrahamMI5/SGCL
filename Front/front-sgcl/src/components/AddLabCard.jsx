@@ -67,19 +67,19 @@ export function AddLabCard(props) {
     }
 
     return (
-        <div className="addLab">
+        <form className="addLab" onSubmit={update}>
             <ToastContainer />
             <div className="addLab-Menu">
                 Nombre del laboratorio
             </div>
             <div className="addLab-Input">
-                <input type="text" defaultValue={labName} id={"labName" + idLaboratories} />
+                <input type="text" defaultValue={labName} id={"labName" + idLaboratories} required maxLength={50}/>
             </div>
             <div className="addLab-Buttons">
-                <button className="bt" onClick={update}>Actualizar</button>
+                <button className="bt" type="submit">Actualizar</button>
                 <button className="bt" onClick={alert}>Eliminar</button>
             </div>
-        </div>
+        </form>
     )
 }
 

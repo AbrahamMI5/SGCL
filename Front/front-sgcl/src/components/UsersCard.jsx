@@ -68,7 +68,7 @@ export function UsersCard(props) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     console.log("deleted")
-                    deleteLab();
+                    deleteUser();
                 }
         })
     }
@@ -78,30 +78,30 @@ export function UsersCard(props) {
     return (
         <>
             <ToastContainer/>
-            <form className="usrsCard">
+            <form className="usrsCard" onSubmit={update}>
                 <div>
                     <label htmlFor="Name">Nombre</label>
-                    <input type="text" id={'Name' + userId} placeholder="Nombre completo" defaultValue={userName} />
+                    <input type="text" id={'Name' + userId} placeholder="Nombre completo" defaultValue={userName} required maxLength={50}/>
                 </div>
                 <div>
                     <label htmlFor="Email">Correo</label>
-                    <input type="text" id={"Email" + userId} placeholder="Correo" defaultValue={email} />
+                    <input type="email" id={"Email" + userId} placeholder="Correo" defaultValue={email} required maxLength={50} pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"/>
 
                 </div>
                 <div>
                     <label htmlFor="NoEmployee">No. Empleado</label>
-                    <input type="text" id={"NoEmployee" + userId} placeholder="Numero de empleado" defaultValue={numberEmployee} />
+                    <input type="number" id={"NoEmployee" + userId} placeholder="Numero de empleado" defaultValue={numberEmployee} required/>
 
                 </div>
                 <div>
                     <label htmlFor="Password">Contraseña</label>
-                    <input type="password" id={"Password" + userId} placeholder="Contraseña" defaultValue={password} />
+                    <input type="password" id={"Password" + userId} placeholder="Contraseña" defaultValue={password} minLength={8} required maxLength={16}/>
 
                 </div>
                 <div>
                     <label>Role</label>
-                    <select className='usr-Label' id={"options" + userId} defaultValue={selectedOption} onChange={handleChange}>
-                        <option >-Selecciona un role-</option>
+                    <select className='usr-Label' id={"options" + userId} defaultValue={selectedOption} onChange={handleChange} required>
+                        <option value="">-Selecciona un role-</option>
                         <option value="Teacher">Docente</option>
                         <option value="Managerial">Administrativo</option>
                     </select>
@@ -109,7 +109,7 @@ export function UsersCard(props) {
 
                 </div>
                 <div className="usrs-button">
-                    <button onClick={update}>
+                    <button type='submit'>
                         Actualizar
                     </button>
 

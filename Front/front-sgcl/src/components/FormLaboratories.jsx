@@ -71,16 +71,16 @@ export function FormLaboratory() {
             <ToastContainer />
             <div className='labHeader'>
                 <h1>Laboratorios</h1>
-                <div className="I-AddLab">
+                <form className="I-AddLab" onSubmit={handleSubmit}>
                     <div className="I-AddLab-Title">
                         Agregar laboratorios
                     </div>
                     <div>
                         <label>Nombre del laboratorio:</label><br></br>
                         <input type="text" placeholder='Nombre de laboratorio' className="LabName" id="labName" required />
-                        <button className="bt-create" onClick={handleSubmit}>Crear laboratorio</button>
+                        <button className="bt-create" type="submit">Crear laboratorio</button>
                     </div>
-                </div>
+                </form>
             </div>
             <div className="labBody">
                 {labs.map((lab) => {
@@ -90,6 +90,7 @@ export function FormLaboratory() {
                 })}
 
             </div>
+            <div style={{height: "50px"}}></div>
         </>
     )
 }

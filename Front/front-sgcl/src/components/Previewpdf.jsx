@@ -17,6 +17,7 @@ export function Previewpdf() {
                 <PDFGenerator content={data} />
 
             }
+            <div style={{height: "15%"}}/>
         </>
     )
 }

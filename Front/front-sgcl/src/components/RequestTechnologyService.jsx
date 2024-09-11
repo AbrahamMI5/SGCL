@@ -22,18 +22,18 @@ export function RequestTechnologyService() {
             const toastMessageW = localStorage.getItem('toastMessageW');
 
             console.log(toastMessage)
-            
+
             if (toastMessage) {
                 toast.success(toastMessage)
                 localStorage.removeItem('toastMessage');
             }
-            if(toastMessageW){
+            if (toastMessageW) {
                 toast.warn(toastMessageW)
                 localStorage.removeItem('toastMessageW');
             }
         }, 1000);
         let token = localStorage.getItem('token');
-        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
         const tokenDecod = jwtDecode(token);
         const data = {
             email: tokenDecod.sub,
@@ -58,7 +58,7 @@ export function RequestTechnologyService() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
         if (userId.id != undefined) {
             console.log(userId.id)
             usersApi.get(`${apiUrls.getTechnologyRequest}${userId.id}`)
@@ -85,7 +85,7 @@ export function RequestTechnologyService() {
 
     };
 
-    const handleChangeLab =(event) => {
+    const handleChangeLab = (event) => {
         const value = event.target.value;
         const [selectedLabId, selectedLabName] = value.split(',');
         console.log(selectedLabId)
@@ -100,48 +100,54 @@ export function RequestTechnologyService() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        try {
-            const requestServData = {
-                applicantArea: document.getElementById("SArea").value,
-                position: document.getElementById("SCargo").value,
-                reciverName: document.getElementById("FName").value,
-                reciverEmail: document.getElementById("FEmail").value,
-                reciverArea: document.getElementById("FArea").value,
-                reciverPosition: document.getElementById("FCargo").value,
-                usersIdUsers: userId.id,
-                authorizedName: document.getElementById("AName").value ? document.getElementById("AName").value : null,
-                authorizedEmail: document.getElementById("AEmail").value ? document.getElementById("AEmail").value : null,
-                authorizedArea: document.getElementById("AArea").value ? document.getElementById("AArea").value : null,
-                authorizedPosition: document.getElementById("ACargo").value ? document.getElementById("ACargo").value : null,
-                basicFunction: selectedOptionBasic ? selectedOptionBasic : null,
-                specialFunction: selectedOptionSpecial ? selectedOptionSpecial : null,
-                laboratoriesIdLaboratories: selectedlab,
-                labName: selectedlabName,
-                observations: "Tecnología: " + document.getElementById("Observation").value + " Laboratorio: " + selectedlabName
-            };
-            console.log(requestServData)
-            let token = localStorage.getItem('token');
-            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
-            const response = await usersApi.post(`${apiUrls.createRequestCompService}`, requestServData);
-            localStorage.setItem('toastMessage', 'Solicitud enviada');
-            window.location.reload();
-        } catch (error) {
-            console.error('Error al crear el usuario:', error);
-            toast.error("Error al enviar la solicitar")
+        if (selectedOptionBasic || selectedOptionSpecial) {
+            try {
+                const requestServData = {
+                    applicantArea: document.getElementById("SArea").value,
+                    position: document.getElementById("SCargo").value,
+                    reciverName: document.getElementById("FName").value,
+                    reciverEmail: document.getElementById("FEmail").value,
+                    reciverArea: document.getElementById("FArea").value,
+                    reciverPosition: document.getElementById("FCargo").value,
+                    usersIdUsers: userId.id,
+                    authorizedName: document.getElementById("AName").value ? document.getElementById("AName").value : null,
+                    authorizedEmail: document.getElementById("AEmail").value ? document.getElementById("AEmail").value : null,
+                    authorizedArea: document.getElementById("AArea").value ? document.getElementById("AArea").value : null,
+                    authorizedPosition: document.getElementById("ACargo").value ? document.getElementById("ACargo").value : null,
+                    basicFunction: selectedOptionBasic ? selectedOptionBasic : null,
+                    specialFunction: selectedOptionSpecial ? selectedOptionSpecial : null,
+                    laboratoriesIdLaboratories: selectedlab,
+                    labName: selectedlabName,
+                    observations: "Tecnología: " + document.getElementById("Observation").value + " Laboratorio: " + selectedlabName
+                };
+                console.log(requestServData)
+                let token = localStorage.getItem('token');
+                security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
+                const response = await usersApi.post(`${apiUrls.createRequestCompService}`, requestServData);
+                localStorage.setItem('toastMessage', 'Solicitud enviada');
+                window.location.reload();
+            } catch (error) {
+                console.error('Error al crear el usuario:', error);
+                toast.error("Error al enviar la solicitar")
+            }
+        }else{
+            toast.error("Error al enviar: Funcionalidad requerida")
         }
+
+
     };
 
     return (
 
         <>
-            <ToastContainer/>
+            <ToastContainer />
             <h1>Solicitar servicio de tecnología</h1>
-            <div className="AddRequest RequestService">
+            <form className="AddRequest RequestService" onSubmit={handleSubmit}>
                 <div>
                     <h4>
                         Datos solicitante
                     </h4>
-                    <form className='RequestFormService' action="" style={{ marginBottom: "20px" }}>
+                    <div className='RequestFormService' action="" style={{ marginBottom: "20px" }}>
                         <div className="Row-Space">
                             <label htmlFor="SName">Nombre: </label><br />
                             <label htmlFor="SEmail">Email: </label><br />
@@ -152,11 +158,11 @@ export function RequestTechnologyService() {
                         <div className="Row-Space">
                             <input type="text" id="SName" readOnly value={userId && userId.userName} /><br />
                             <input type="text" id="SEmail" readOnly value={userId && userId.email} /><br />
-                            <input type="text" id="SArea" /><br />
-                            <input type="text" id="SCargo" /><br />
+                            <input type="text" id="SArea" maxLength={30} required /><br />
+                            <input type="text" id="SCargo" maxLength={30} required /><br />
 
                         </div>
-                    </form>
+                    </div>
                     <p>Funcionalidad:</p>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <div style={{ width: "50%" }}>
@@ -182,7 +188,7 @@ export function RequestTechnologyService() {
                     <h4 style={{ marginTop: '30px' }}>
                         Autoriza
                     </h4>
-                    <form className='RequestFormService' action="" style={{ marginBottom: "20px" }}>
+                    <div className='RequestFormService' action="" style={{ marginBottom: "20px" }}>
                         <div className="Row-Space">
                             <label htmlFor="AName">Nombre: </label><br />
                             <label htmlFor="AEmail">Email: </label><br />
@@ -191,20 +197,20 @@ export function RequestTechnologyService() {
 
                         </div>
                         <div className="Row-Space">
-                            <input type="text" id="AName" /><br />
-                            <input type="text" id="AEmail" /><br />
-                            <input type="text" id="AArea" /><br />
-                            <input type="text" id="ACargo" /><br />
+                            <input type="text" id="AName" maxLength={50} /><br />
+                            <input type="text" id="AEmail" maxLength={50} /><br />
+                            <input type="text" id="AArea" maxLength={50} /><br />
+                            <input type="text" id="ACargo" maxLength={50} /><br />
 
                         </div>
-                    </form>
+                    </div>
 
                 </div>
                 <div>
                     <h4>
                         Usuario final
                     </h4>
-                    <form className='RequestFormService' action="">
+                    <div className='RequestFormService' action="">
                         <div className="Row-Space" style={{ marginBottom: "20px" }}>
                             <label htmlFor="FName">Nombre: </label><br />
                             <label htmlFor="FEmail">Email: </label> <br />
@@ -212,23 +218,23 @@ export function RequestTechnologyService() {
                             <label htmlFor="FCargo">Cargo: </label> <br />
                         </div>
                         <div className="Row-Space" style={{ marginBottom: "20px" }}>
-                            <input type="text" id="FName" /><br />
-                            <input type="text" id="FEmail" /><br />
-                            <input type="text" id="FArea" /><br />
-                            <input type="text" id="FCargo" /><br />
+                            <input type="text" id="FName" maxLength={30} required /><br />
+                            <input type="text" id="FEmail" maxLength={30} required /><br />
+                            <input type="text" id="FArea" maxLength={30} required /><br />
+                            <input type="text" id="FCargo" maxLength={30} required /><br />
 
                         </div>
 
-                    </form>
+                    </div>
 
-                    <form className='RequestFormService' action="">
+                    <div className='RequestFormService' action="">
                         <div style={{ marginBottom: "20px" }}>
                             <label htmlFor="Observation">Observación: </label><br /><br /><br />
                             <label style={{ marginTop: '4px' }} htmlFor="">Laboratorio: </label> <br />
                         </div>
                         <div style={{ marginBottom: "20px" }}>
-                            <textarea style={{ resize: 'none' }} name="" id="Observation" rows="3" cols="22" ></textarea><br />
-                            <select name="" id="" style={{ width: "130px" }} onChange={handleChangeLab}>
+                            <textarea type="text" style={{ resize: 'none' }} name="" id="Observation" rows="3" cols="22" maxLength={30} required></textarea><br />
+                            <select name="" id="" style={{ width: "130px" }} onChange={handleChangeLab} required>
                                 <option value="">Laboratorio</option>
                                 {laboratories.map(laboratory => (
                                     <option key={laboratory.idLaboratories} value={`${laboratory.idLaboratories},${laboratory.labName}`}>{laboratory.labName}</option>
@@ -236,21 +242,24 @@ export function RequestTechnologyService() {
                             </select>
 
                         </div>
-                    </form>
+                    </div>
                     <div style={{ display: "flex", justifyContent: "center" }}>
                         <div style={{ display: "flex", width: '70%', justifyContent: "space-between" }}>
-                            <button className='bt' onClick={handleSubmit}>Solicitar</button>
+                            <button className='bt' type="submit">Solicitar</button>
                             <button className='bt' onClick={cancel}>Cancelar</button>
                         </div>
                     </div>
                 </div>
 
 
-            </div>
+            </form>
             <h1>Solicitudes</h1>
             {technologyRequest.map(request => (
-                <RequestServiceStatus key={request.idRequestService} reciverName={request.reciverName} observation={request.observations} usersIdUsers={request.usersIdUsers} status={request.requestServiceStatus}/>
+                <RequestServiceStatus key={request.idRequestService} reciverName={request.reciverName} observation={request.observations} usersIdUsers={request.usersIdUsers} status={request.requestServiceStatus} />
             ))}
+            {technologyRequest.length == 0 && (
+                <h3 style={{ textAlign: "center" }}>Sin solicitudes realizadas</h3>
+            )}
             <div style={{ height: '50px' }}></div>
 
         </>

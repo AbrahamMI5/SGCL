@@ -9,9 +9,9 @@ export function LogIn() {
 
     const navigate = useNavigate();
 
-    const logIn = async () => {
+    const logIn = async (event) => {
+        event.preventDefault();
         try {
-            let token = localStorage.getItem('token');
             security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
             const userData = {
                 email: document.getElementById("email").value,
@@ -37,17 +37,17 @@ export function LogIn() {
                 <div className='LI-data'>
                     <p className='h4'>Iniciar Sesión</p>
                     <ToastContainer />
-                    <form>
+                    <form onSubmit={logIn}>
                         <div>
                             <label className='LI-Input' htmlFor="Email">Usuario</label>
-                            <input type="email" id="email" aria-describedby="emailHelp" placeholder="Correo" />
+                            <input type="email" id="email" aria-describedby="emailHelp" placeholder="Correo" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required/>
                         </div>
                         <div>
                             <label className='LI-Input' htmlFor="Password">Contraseña</label>
-                            <input type="password" id="password" placeholder="Contraseña" />
+                            <input type="password" id="password" placeholder="Contraseña" minLength={8} maxLength={16} required/>
                         </div>
                         <div className='LI-Buttons'>
-                            <button type="button" className='bt' onClick={logIn}>
+                            <button type="submit" className='bt'>
                                 Enviar
                             </button>
                             <button type="button" className='bt btn-cancel' onClick={() => navigate('/')}>

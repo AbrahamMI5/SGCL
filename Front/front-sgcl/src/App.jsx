@@ -17,6 +17,7 @@ import { RequestTechnologyService } from './components/RequestTechnologyService'
 import { SemesterPage } from './components/SemesterPage';
 import { MainteinanceSemester } from './components/MainteinanceSemester'
 import { Previewpdf } from './components/Previewpdf'
+import { Stadistics } from './components/Stadistics'
 
 import bars from './components/img/bars.svg';
 import logo from '/logofcbiyt.png';
@@ -112,6 +113,8 @@ function App() {
         <Route path='/Semester' element={admin ? <div className='I-Usr'> <SemesterPage/> </div> : <Navigate to="/"/>} />
         <Route path='/Maintenance' element={admin ? <div className='I-Usr'> <MainteinanceSemester/> </div> : <Navigate to="/"/>} />
         <Route path='/Maintenance/Preview' element={admin ? <div className='I-Usr'> <Previewpdf/> </div> : <Navigate to="/"/>} />
+        <Route path='/Stadistics' element={admin ? <div className='I-Usr'> <Stadistics/> </div> : <Navigate to="/"/>} />
+
 
 
 

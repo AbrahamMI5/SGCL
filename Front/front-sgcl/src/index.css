@@ -49,7 +49,7 @@ body {
 }
 
 .sidemenu-open {
-  width: 8%;
+  width: 120px;
   height: 100%;
   z-index: 998 !important;
 }
@@ -62,7 +62,7 @@ body {
   background-color: rgb(126.0, 34.0, 19);
   display: inline;
   position: fixed;
-  width: 8%;
+  width: 120px;
   height: 100%;
   padding-top: 2%;
   z-index: 998 !important;
@@ -145,7 +145,7 @@ nav {
   font: verdana;
   position: absolute;
   margin-top: 60px;
-  margin-left: 110px;
+  margin-left: 125px;
 }
 
 .M-button {
@@ -189,14 +189,14 @@ nav {
     background-color: rgb(126.0, 34.0, 19);
     display: inline;
     position: fixed;
-    width: 20%;
+    width: 120px;
     height: 100%;
     padding-top: 2%;
     z-index: 998 !important;
   }
 
   .sidemenu-open {
-    width: 20%;
+    width: 120px;
     height: 100%;
     z-index: 998 !important;
   }

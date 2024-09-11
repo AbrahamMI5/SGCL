@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { apiUrls, usersApi } from './api/userApi';
+import { apiUrls, usersApi, security } from './api/userApi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -47,24 +47,24 @@ export function AddUserCard(props) {
             
             <div>
                 <label htmlFor="Name">Nombre</label>
-                <input type="text" id="Name" name="name" placeholder="Nombre completo" />
+                <input type="text" id="Name" name="name" placeholder="Nombre completo" required maxLength={50} />
             </div>
             <div>
                 <label htmlFor="Email">Correo</label>
-                <input type="text" id="Email" name="email" placeholder="Correo" />
+                <input type="email" id="Email" name="email" placeholder="Correo" required maxLength={35} pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"/>
             </div>
             <div>
                 <label htmlFor="NoEmployee">No. Empleado</label>
-                <input type="text" id="NoEmployee" name="employeeNumber" placeholder="Numero de empleado" />
+                <input type="number" id="NoEmployee" name="employeeNumber" placeholder="Numero de empleado" required />
             </div>
             <div>
                 <label htmlFor="Password">Contraseña</label>
-                <input type="password" id="Password" name="password" placeholder="Contraseña" />
+                <input type="password" id="Password" name="password" placeholder="Contraseña" minLength={8} required maxLength={16}/>
             </div>
             <div>
                 <label>Role</label>
-                <select className="usr-Label" id="options" name="role" onChange={handleChange}>
-                    <option>-Selecciona un role-</option>
+                <select className="usr-Label" id="options" name="role" onChange={handleChange} required>
+                    <option value="">-Selecciona un role-</option>
                     <option value="Teacher">Docente</option>
                     <option value="Managerial">Administrativo</option>
                 </select>

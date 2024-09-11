@@ -19,7 +19,6 @@ export function MainteinanceSemester() {
     const [transicion, setTransicion] = useState(false);
     const [searchS, setSearchS] = useState("");
     const [searchA, setSearchA] = useState("");
-    const [fields, setFields] = useState([{ month: '', days: '' }]);
 
     const [formDataAnual, setFormDataAnual] = useState({
         documentVO: {
@@ -217,7 +216,7 @@ export function MainteinanceSemester() {
             };
         });
     };
-    
+
 
     const handleLaboratoryChangeSemestral = (index, field, value) => {
         const updatedLaboratories = formDataSemestral.semesterDocVO.map((lab, i) =>
@@ -323,6 +322,7 @@ export function MainteinanceSemester() {
                                         placeholder="Nombre del responsable"
                                         value={formDataAnual.documentVO.responsibleName}
                                         onChange={handleChangeAnual}
+                                        required
                                     />
                                 </div>
                                 <div>
@@ -334,6 +334,7 @@ export function MainteinanceSemester() {
                                         placeholder="Nombre del coordinador"
                                         value={formDataAnual.documentVO.adminResponsibleName}
                                         onChange={handleChangeAnual}
+                                        required
                                     />
                                 </div>
                                 <div>
@@ -347,6 +348,7 @@ export function MainteinanceSemester() {
                                         min={1900}
                                         value={formDataAnual.documentVO.year}
                                         onChange={handleChangeAnual}
+                                        required
                                     />
                                 </div>
                                 <br />
@@ -363,6 +365,7 @@ export function MainteinanceSemester() {
                                                         style={{ height: "26px", width: "100%" }}
                                                         value={date.month}
                                                         onChange={(e) => handleLaboratoryChangeAnual(labIndex, index, 'month', e.target.value)}
+                                                        required
                                                     >
                                                         <option value="" />
                                                         {months.map((month) => (
@@ -376,10 +379,12 @@ export function MainteinanceSemester() {
                                                     <label>Días</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="Días"
+                                                        placeholder="20-23"
                                                         value={date.days}
                                                         onChange={(e) => handleLaboratoryChangeAnual(labIndex, index, 'days', e.target.value)}
                                                         style={{ width: "100%" }}
+                                                        maxLength={5}
+                                                        required
                                                     />
                                                 </div>
                                             </React.Fragment>
@@ -406,35 +411,48 @@ export function MainteinanceSemester() {
                             </tr>
                         </thead>
                         <tbody>
-                            {anualDoc.map(document => {
-                                if (searchA == "") {
-                                    return (
-                                        <tr key={document.documentVO.idDocuments}>
-                                            <td>Mantenimiento anual {document.documentVO.year}.pdf</td>
-                                            <td style={{ textAlign: "center", padding: "5px" }}>
-                                                <Link to={'/Maintenance/Preview'} state={yourData(document)}>
-                                                    <img src={pdf} alt="ver pdf" className='M-Img' style={{ cursor: "pointer" }} />
-                                                </Link>
-                                            </td>
-                                        </tr>
-                                    )
-                                } else {
-                                    if (document.documentVO.year.toString().toLowerCase().includes(searchA.toLowerCase())) {
-                                        return (
-                                            <tr key={document.documentVO.idDocuments}>
-                                                <td>Mantenimiento anual {document.documentVO.year}.pdf</td>
-                                                <td style={{ textAlign: "center", padding: "5px" }}>
-                                                    <Link to={'/Maintenance/Preview'} state={yourData(document)}>
-                                                        <img src={pdf} alt="ver pdf" className='M-Img' style={{ cursor: "pointer" }} />
-                                                    </Link>
-                                                </td>
-                                            </tr>
-                                        )
-                                    }
-                                }
+                            {anualDoc.length === 0 ? (
+                                <tr>
+                                    <td colSpan="2" style={{ textAlign: "center" }}>Sin documentos</td>
+                                </tr>
+                            ) : (
+                                (() => {
+                                    let find = false;
 
-                            })}
+                                    const rows = anualDoc.map(document => {
+                                        const match = searchA === "" || document.documentVO.year.toString().toLowerCase().includes(searchA.toLowerCase());
+
+                                        if (match) {
+                                            find = true;
+                                            return (
+                                                <tr key={document.documentVO.idDocuments}>
+                                                    <td>Mantenimiento anual {document.documentVO.year}.pdf</td>
+                                                    <td style={{ textAlign: "center", padding: "5px" }}>
+                                                        <Link to={'/Maintenance/Preview'} state={yourData(document)}>
+                                                            <img src={pdf} alt="ver pdf" className='M-Img' style={{ cursor: "pointer" }} />
+                                                        </Link>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        }
+
+                                        return null;
+                                    });
+
+                                    if (!find) {
+                                        rows.push(
+                                            <tr key="no-results">
+                                                <td colSpan="2" style={{ textAlign: "center" }}>Sin coincidencias para la búsqueda actual</td>
+                                            </tr>
+                                        );
+                                    }
+
+                                    return rows;
+                                })()
+                            )}
                         </tbody>
+
+
                     </table>
                 </>
             ) : (
@@ -459,6 +477,7 @@ export function MainteinanceSemester() {
                                         placeholder="Nombre del responsable"
                                         value={formDataSemestral.documentVO.responsibleName}
                                         onChange={handleChangeSemestral}
+                                        required
                                     />
                                 </div>
                                 <div>
@@ -470,6 +489,7 @@ export function MainteinanceSemester() {
                                         placeholder="Nombre del coordinador"
                                         value={formDataSemestral.documentVO.adminResponsibleName}
                                         onChange={handleChangeSemestral}
+                                        required
                                     />
                                 </div>
                                 <div>
@@ -482,6 +502,7 @@ export function MainteinanceSemester() {
                                         max="2100-12"
                                         placeholder="YYYY-MM"
                                         onChange={handleChangeSemestralDate}
+                                        required
                                     />
                                 </div>
                                 <br />
@@ -495,6 +516,7 @@ export function MainteinanceSemester() {
                                                 placeholder="Acción emprendida"
                                                 value={laboratory.action}
                                                 onChange={(e) => handleLaboratoryChangeSemestral(index, 'action', e.target.value)}
+                                                required
                                             />
                                         </div>
                                         <div>
@@ -504,6 +526,7 @@ export function MainteinanceSemester() {
                                                 placeholder="Observación"
                                                 value={laboratory.observation}
                                                 onChange={(e) => handleLaboratoryChangeSemestral(index, 'observation', e.target.value)}
+                                                required
                                             />
                                         </div>
                                     </React.Fragment>
@@ -523,35 +546,42 @@ export function MainteinanceSemester() {
                             </tr>
                         </thead>
                         <tbody>
-                            {semesterDoc.map(document => {
-                                if (searchS == "") {
-                                    { console.log("busqueda vacia", document) }
-                                    return (
-                                        <tr key={document.documentVO.idDocuments}>
-                                            <td>Mantenimiento semestral {fullMonth(document.documentVO.month)} {document.documentVO.year}.pdf</td>
-                                            <td style={{ textAlign: "center", padding: "5px" }}>
-                                                <Link to={'/Maintenance/Preview'} state={yourDataS(document)}>
-                                                    <img src={pdf} alt="ver pdf" className='M-Img' style={{ cursor: "pointer" }} />
-                                                </Link>
-                                            </td>
-                                        </tr>)
-                                } else {
-                                    if (fullMonth(document.documentVO.month).toLowerCase().includes(searchS.toLowerCase()) || document.documentVO.year.toString().toLowerCase().includes(searchS.toLowerCase())) {
+                            {(() => {
+                                let find = false;
+
+                                const rows = semesterDoc.map(document => {
+                                    const monthName = fullMonth(document.documentVO.month);
+                                    const match = searchS === "" || monthName.toLowerCase().includes(searchS.toLowerCase()) || document.documentVO.year.toString().toLowerCase().includes(searchS.toLowerCase());
+
+                                    if (match) {
+                                        find = true;
                                         return (
                                             <tr key={document.documentVO.idDocuments}>
-                                                <td>Mantenimiento semestral {fullMonth(document.documentVO.month)} {document.documentVO.year}.pdf</td>
+                                                <td>Mantenimiento semestral {monthName} {document.documentVO.year}.pdf</td>
                                                 <td style={{ textAlign: "center", padding: "5px" }}>
                                                     <Link to={'/Maintenance/Preview'} state={yourDataS(document)}>
                                                         <img src={pdf} alt="ver pdf" className='M-Img' style={{ cursor: "pointer" }} />
                                                     </Link>
                                                 </td>
                                             </tr>
-                                        )
+                                        );
                                     }
+
+                                    return null;
+                                });
+
+                                if (!find) {
+                                    rows.push(
+                                        <tr key="no-results">
+                                            <td colSpan="2" style={{ textAlign: "center" }}>Sin coincidencias para la búsqueda actual</td>
+                                        </tr>
+                                    );
                                 }
 
-                            })}
+                                return rows;
+                            })()}
                         </tbody>
+
                     </table>
                 </>
             )

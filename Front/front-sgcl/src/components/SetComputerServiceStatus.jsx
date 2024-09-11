@@ -29,10 +29,6 @@ export function SetComputerServiceStatus(props) {
         }
     };
 
-    useEffect(() => {
-        console.log(compr);
-    }, [compr]);
-
     return (
         <>
             <div className="AddRequest RequestService">

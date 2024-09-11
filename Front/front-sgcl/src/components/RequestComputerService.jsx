@@ -17,18 +17,18 @@ export function RequestComputerService() {
             const toastMessageW = localStorage.getItem('toastMessageW');
 
             console.log(toastMessage)
-            
+
             if (toastMessage) {
                 toast.success(toastMessage)
                 localStorage.removeItem('toastMessage');
             }
-            if(toastMessageW){
+            if (toastMessageW) {
                 toast.warn(toastMessageW)
                 localStorage.removeItem('toastMessageW');
             }
         }, 1000);
         let token = localStorage.getItem('token');
-        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
         const tokenDecod = jwtDecode(token);
         const data = {
             email: tokenDecod.sub,
@@ -45,7 +45,7 @@ export function RequestComputerService() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
         if (userId.id != undefined) {
             usersApi.get(`${apiUrls.getComputerRequest}${userId.id}`)
                 .then(response => {
@@ -77,47 +77,52 @@ export function RequestComputerService() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        try {
-            const requestServData = {
-                applicantArea: document.getElementById("SArea").value,
-                position: document.getElementById("SCargo").value,
-                reciverName: document.getElementById("FName").value,
-                reciverEmail: document.getElementById("FEmail").value,
-                reciverArea: document.getElementById("FArea").value,
-                reciverPosition: document.getElementById("FCargo").value,
-                usersIdUsers: userId.id,
-                authorizedName: document.getElementById("AName").value ? document.getElementById("AName").value : null,
-                authorizedEmail: document.getElementById("AEmail").value ? document.getElementById("AEmail").value : null,
-                authorizedArea: document.getElementById("AArea").value ? document.getElementById("AArea").value : null,
-                authorizedPosition: document.getElementById("ACargo").value ? document.getElementById("ACargo").value : null,
-                basicFunction: selectedOptionBasic ? selectedOptionBasic : null,
-                specialFunction: selectedOptionSpecial ? selectedOptionSpecial : null,
-                observations: "Computo: " + document.getElementById("Observation").value + " Descripcion: " + document.getElementById("Description").value + " No. inventario: " + document.getElementById("NoInv").value + " Modelo: " + document.getElementById("Model").value + " Marca: " + document.getElementById("Brand").value + " Numero de serie: " + document.getElementById("SeriNu").value
+        if (selectedOptionBasic || selectedOptionSpecial) {
+            try {
+                const requestServData = {
+                    applicantArea: document.getElementById("SArea").value,
+                    position: document.getElementById("SCargo").value,
+                    reciverName: document.getElementById("FName").value,
+                    reciverEmail: document.getElementById("FEmail").value,
+                    reciverArea: document.getElementById("FArea").value,
+                    reciverPosition: document.getElementById("FCargo").value,
+                    usersIdUsers: userId.id,
+                    authorizedName: document.getElementById("AName").value ? document.getElementById("AName").value : null,
+                    authorizedEmail: document.getElementById("AEmail").value ? document.getElementById("AEmail").value : null,
+                    authorizedArea: document.getElementById("AArea").value ? document.getElementById("AArea").value : null,
+                    authorizedPosition: document.getElementById("ACargo").value ? document.getElementById("ACargo").value : null,
+                    basicFunction: selectedOptionBasic ? selectedOptionBasic : null,
+                    specialFunction: selectedOptionSpecial ? selectedOptionSpecial : null,
+                    observations: "Computo: " + document.getElementById("Observation").value + " Descripcion: " + document.getElementById("Description").value + " No. inventario: " + document.getElementById("NoInv").value + " Modelo: " + document.getElementById("Model").value + " Marca: " + document.getElementById("Brand").value + " Numero de serie: " + document.getElementById("SeriNu").value
 
-            };
-            let token = localStorage.getItem('token');
-            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
-            const response = await usersApi.post(`${apiUrls.createRequestCompService}`, requestServData);
-            localStorage.setItem('toastMessage', 'Solicitud enviada');
-            window.location.reload();
-        } catch (error) {
-            console.error('Error al enviar la solicitud:', error);
-            toast.error("Error al enviar la solicitar")
+                };
+                let token = localStorage.getItem('token');
+                security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
+                const response = await usersApi.post(`${apiUrls.createRequestCompService}`, requestServData);
+                localStorage.setItem('toastMessage', 'Solicitud enviada');
+                window.location.reload();
+            } catch (error) {
+                console.error('Error al enviar la solicitud:', error);
+                toast.error("Error al enviar la solicitar")
+            }
+        }else{
+            toast.error("Error al enviar: Funcionalidad requerida")
         }
+
     };
 
     //TODO: validacion de los datos de entrada y no crer petticiones vacias
 
     return (
         <>
-            <ToastContainer/>
+            <ToastContainer />
             <h1>Solicitar servicio de cómputo</h1>
-            <div className="AddRequest RequestService">
+            <form className="AddRequest RequestService" onSubmit={handleSubmit}>
                 <div>
-                    <h4>
+                    <h4 title="Datos de la persona que realiza la solicitud">
                         Datos solicitante
                     </h4>
-                    <form className='RequestFormService' action="" style={{ marginBottom: "20px" }}>
+                    <div className='RequestFormService' action="" style={{ marginBottom: "20px" }}>
                         <div className="Row-Space">
                             <label htmlFor="SName"  >Nombre: </label><br />
                             <label htmlFor="SEmail">Email: </label><br />
@@ -127,12 +132,11 @@ export function RequestComputerService() {
                         </div>
                         <div className="Row-Space">
                             <input type="text" id="SName" readOnly value={userId && userId.userName} /><br />
-                            <input type="text" id="SName" readOnly value={userId && userId.email} /><br />
-                            <input type="area" id="SArea" /><br />
-                            <input type="cargo" id="SCargo" /><br />
-
+                            <input type="text" id="SEmail" readOnly value={userId && userId.email} /><br />
+                            <input type="text" id="SArea" maxLength={30} required /><br />
+                            <input type="text" id="SCargo" maxLength={30} required /><br />
                         </div>
-                    </form>
+                    </div>
                     <p>Funcionalidad:</p>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <div style={{ width: "50%" }}>
@@ -157,7 +161,7 @@ export function RequestComputerService() {
                     <h4 style={{ marginTop: '30px' }}>
                         Autoriza
                     </h4>
-                    <form className='RequestFormService' action="" style={{ marginBottom: "20px" }}>
+                    <div className='RequestFormService' action="" style={{ marginBottom: "20px" }}>
                         <div className="Row-Space">
                             <label htmlFor="AName">Nombre: </label><br />
                             <label htmlFor="AEmail">Email: </label><br />
@@ -166,20 +170,20 @@ export function RequestComputerService() {
 
                         </div>
                         <div className="Row-Space">
-                            <input type="text" id="AName" /><br />
-                            <input type="text" id="AEmail" /><br />
-                            <input type="text" id="AArea" /><br />
-                            <input type="text" id="ACargo" /><br />
+                            <input type="text" id="AName" maxLength={50} /><br />
+                            <input type="text" id="AEmail" maxLength={50} /><br />
+                            <input type="text" id="AArea" maxLength={30} /><br />
+                            <input type="text" id="ACargo" maxLength={30} /><br />
 
                         </div>
-                    </form>
+                    </div>
 
                 </div>
                 <div>
                     <h4>
                         Usuario final
                     </h4>
-                    <form className='RequestFormService' action="">
+                    <div className='RequestFormService' action="">
                         <div className="Row-Space" style={{ marginBottom: "20px" }}>
                             <label htmlFor="FName">Nombre: </label><br />
                             <label htmlFor="FEmail">Email: </label> <br />
@@ -187,16 +191,16 @@ export function RequestComputerService() {
                             <label htmlFor="FCargo">Cargo: </label> <br />
                         </div>
                         <div className="Row-Space" style={{ marginBottom: "20px" }}>
-                            <input type="text" id="FName" /><br />
-                            <input type="text" id="FEmail" /><br />
-                            <input type="text" id="FArea" /><br />
-                            <input type="text" id="FCargo" /><br />
+                            <input type="text" id="FName" maxLength={30} required /><br />
+                            <input type="text" id="FEmail" maxLength={30} required /><br />
+                            <input type="text" id="FArea" maxLength={50} required /><br />
+                            <input type="text" id="FCargo" maxLength={50} required /><br />
 
                         </div>
 
-                    </form>
+                    </div>
 
-                    <form className='RequestFormService' action="">
+                    <div className='RequestFormService' action="">
                         <div className="Row-Space" style={{ marginBottom: "20px" }}>
                             <label htmlFor="Observation">Observación: </label><br />
                             <label htmlFor="Description">Descripción: </label> <br />
@@ -206,30 +210,33 @@ export function RequestComputerService() {
                             <label htmlFor="SeriNu">No. Serie: </label> <br />
                         </div>
                         <div className="Row-Space" style={{ marginBottom: "20px" }}>
-                            <input type="text" id="Observation" /><br />
-                            <input type="text" id="Description" /><br />
-                            <input type="text" id="NoInv" /><br />
-                            <input type="text" id="Model" /><br />
-                            <input type="text" id="Brand" /><br />
-                            <input type="text" id="SeriNu" /><br />
+                            <input type="text" id="Observation" maxLength={30} required /><br />
+                            <input type="text" id="Description" maxLength={20} /><br />
+                            <input type="text" id="NoInv" maxLength={20} /><br />
+                            <input type="text" id="Model" maxLength={20} /><br />
+                            <input type="text" id="Brand" maxLength={20} /><br />
+                            <input type="text" id="SeriNu" maxLength={20} /><br />
 
                         </div>
-                    </form>
+                    </div>
                     <div style={{ display: "flex", justifyContent: "center" }}>
                         <div style={{ display: "flex", width: '70%', justifyContent: "space-between" }}>
-                            <button className='bt' onClick={handleSubmit}>Solicitar</button>
+                            <button className='bt' type="submit">Solicitar</button>
                             <button className='bt' onClick={cancel}>Cancelar</button>
                         </div>
                     </div>
                 </div>
 
 
-            </div>
+            </form>
             <h1>Solicitudes</h1>
 
             {computerRequest.map(request => (
-                <RequestServiceStatus key={request.idRequestService} reciverName={request.reciverName} observation={request.observations} usersIdUsers={request.usersIdUsers} status={request.requestServiceStatus}/>
+                <RequestServiceStatus key={request.idRequestService} reciverName={request.reciverName} observation={request.observations} usersIdUsers={request.usersIdUsers} status={request.requestServiceStatus} />
             ))}
+            {computerRequest.length == 0 && (
+                <h3 style={{ textAlign: "center" }}>Sin solicitudes realizadas</h3>
+            )}
             <div style={{ height: '50px' }}></div>
 
 

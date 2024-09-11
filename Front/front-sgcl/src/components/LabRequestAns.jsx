@@ -10,7 +10,7 @@ export function LabRequestAns() {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
+        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
         usersApi.get(apiUrls.getRequestLabInProcess)
             .then(respLabResq => {
                 setLabResp(respLabResq.data);
@@ -37,6 +37,9 @@ export function LabRequestAns() {
                 {labResp.map(request => (
                     <RequestLabCard key={request.idRequestLaboratory} startHorary={request.startHorary} endHorary={request.endHorary} day={request.day} idteacher={request.usersIdUsers} idLaboratory={request.laboratoriesIdLaboratories} requiredsoft={request.requiredSoftware} idRequestLab={request.idRequestLaboratory} status={request.status} />
                 ))}
+                {labResp.length == 0 && (
+                    <h3 style={{ textAlign: "center" }}>Sin solicitudes pendientes</h3>
+                )}
             </div>
             <div style={{ height: '10%' }}></div>
 
@@ -45,6 +48,9 @@ export function LabRequestAns() {
                 {labRespAnswered.map(request => (
                     <RequestLabCard key={request.idRequestLaboratory} startHorary={request.startHorary} endHorary={request.endHorary} day={request.day} idteacher={request.usersIdUsers} idLaboratory={request.laboratoriesIdLaboratories} requiredsoft={request.requiredSoftware} idRequestLab={request.idRequestLaboratory} status={request.status} />
                 ))}
+                {labRespAnswered.length == 0 &&(
+                    <h3 style={{textAlign: "center"}}>Sin solicitudes resueltas</h3>
+                )}
             </div>
             <div style={{ height: '10%' }}></div>
         </>

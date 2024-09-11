@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sgcl.demo.models.RequestLaboratoryVO;
+import com.sgcl.demo.models.RequestModels.Stadistics;
 import com.sgcl.demo.services.RequestLaboratoryService;
 
 
@@ -68,6 +69,11 @@ public class RequestLaboratoryController {
     @GetMapping("/getRequestAnswered")
     public Optional<List<RequestLaboratoryVO>> getRequestAnswered() {
         return this.requestLaboratoryService.getRequestAnswered();
+    }
+
+    @GetMapping("/stadistics{idSemester}")
+    public Stadistics getStadistics(@PathVariable Long idSemester){
+        return requestLaboratoryService.getStadistics(idSemester);
     }
 
     

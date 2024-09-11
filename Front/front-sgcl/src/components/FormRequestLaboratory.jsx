@@ -95,7 +95,7 @@ export function FormRequestLaboratory() {
         const laboratoryId = document.getElementById("laboratory").value;
         const startHorary = document.getElementById("startHorary").value;
         const day = selectedOptionDay; // Asegúrate de que esto esté definido
-    
+
         try {
             const horaryResp = await usersApi.get(apiUrls.getLabHorarybyLab + laboratoryId);
             const data = horaryResp.data;
@@ -107,20 +107,20 @@ export function FormRequestLaboratory() {
                 "Ju": 12,
                 "Vi": 16
             };
-    
+
             const hourIndices = {
                 "12:00": 0,
                 "14:00": 1,
                 "16:00": 2,
                 "18:00": 3
             };
-    
+
             const dayIndex = dayIndices[day];
             const hourIndex = hourIndices[startHorary];
-    
+
             if (dayIndex !== undefined && hourIndex !== undefined) {
-                const dataIndex = dayIndex + hourIndex; 
-    
+                const dataIndex = dayIndex + hourIndex;
+
                 if (dataIndex < data.length) {
                     console.log(!data[dataIndex].startdate);
                     return !data[dataIndex].startdate;
@@ -137,38 +137,38 @@ export function FormRequestLaboratory() {
             return false;
         }
     };
-    
+
 
     const createRequest = async (event) => {
         event.preventDefault();
         const result = await freeLab();
-            if (result) {
-                try {
-                    const requestData = {
-                        startHorary: document.getElementById("startHorary").value + ':00',
-                        endHorary: document.getElementById("endHorary").value + ':00',
-                        day: selectedOptionDay,
-                        subject: document.getElementById("materia").value,
-                        groups: selectedOptionGroup,
-                        studentNumber: document.getElementById("student").value,
-                        laboratoriesIdLaboratories: document.getElementById("laboratory").value,
-                        usersIdUsers: userId,
-                        semesterIdSemester: 1,
-                        requiredSoftware: document.getElementById("software").value
-                    };
-                    console.log(requestData)
-                    let token = localStorage.getItem('token');
-                    security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
-                    const response = await usersApi.post(`${apiUrls.creageRequestLaboratory}`, requestData);
-                    localStorage.setItem('toastMessage', 'Solicitud realizada');
-                    window.location.reload()
-                } catch (error) {
-                    console.error('Error al solicitar laboratorio:', error);
-                    toast.error("Error al solicitar laboratorio")
-                }
-            } else {
-                toast.error("Horario no disponible")
+        if (result) {
+            try {
+                const requestData = {
+                    startHorary: document.getElementById("startHorary").value + ':00',
+                    endHorary: document.getElementById("endHorary").value + ':00',
+                    day: selectedOptionDay,
+                    subject: document.getElementById("materia").value,
+                    groups: selectedOptionGroup,
+                    studentNumber: document.getElementById("student").value,
+                    laboratoriesIdLaboratories: document.getElementById("laboratory").value,
+                    usersIdUsers: userId,
+                    semesterIdSemester: 1,
+                    requiredSoftware: document.getElementById("software").value
+                };
+                console.log(requestData)
+                let token = localStorage.getItem('token');
+                security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
+                const response = await usersApi.post(`${apiUrls.creageRequestLaboratory}`, requestData);
+                localStorage.setItem('toastMessage', 'Solicitud realizada');
+                window.location.reload()
+            } catch (error) {
+                console.error('Error al solicitar laboratorio:', error);
+                toast.error("Error al solicitar laboratorio")
             }
+        } else {
+            toast.error("Horario no disponible")
+        }
 
     }
 
@@ -176,11 +176,11 @@ export function FormRequestLaboratory() {
         <>
             <ToastContainer />
             <h1 className="RequestLab">Solicitar laboratorios</h1>
-            <div className="AddRequest">
+            <form className="AddRequest" onSubmit={createRequest}>
                 <div className="RequestLabInput">
                     <div className="RequestLabMid">
                         <label htmlFor="laboratory">Laboratorio</label>
-                        <select name="laboratory" id="laboratory" className="RequestLabInput-L">
+                        <select name="laboratory" id="laboratory" className="RequestLabInput-L" required>
                             <option></option>
                             {laboratories.map(laboratory => (
                                 <option key={laboratory.labName} value={laboratory.idLaboratories}>{laboratory.labName}</option>
@@ -189,7 +189,7 @@ export function FormRequestLaboratory() {
                     </div>
                     <div className="RequestLabSm">
                         <label htmlFor="day">Hora inicio</label>
-                        <select value={startHorary} name="startHorary" id="startHorary" className="RequestLabInput-L" onChange={handleChangeStartHorary}>
+                        <select value={startHorary} name="startHorary" id="startHorary" className="RequestLabInput-L" onChange={handleChangeStartHorary} required>
                             <option value=""></option>
                             <option value="12:00">12:00</option>
                             <option value="14:00">02:00</option>
@@ -199,7 +199,7 @@ export function FormRequestLaboratory() {
                     </div>
                     <div className="RequestLabSm">
                         <label htmlFor="day">Hora fin</label>
-                        <select value={endHorary} name="endHorary" id="endHorary" className="RequestLabInput-L" onChange={handleChangeEndHorary}>
+                        <select value={endHorary} name="endHorary" id="endHorary" className="RequestLabInput-L" onChange={handleChangeEndHorary} required>
                             <option value=""></option>
                             <option value="14:00">02:00</option>
                             <option value="16:00">04:00</option>
@@ -209,7 +209,7 @@ export function FormRequestLaboratory() {
                     </div>
                     <div className="RequestLabSm">
                         <label htmlFor="day">Dia</label>
-                        <select name="day" id="day" className="RequestLabInput-S" style={{ marginTop: "-6%" }} onChange={handleChangeDay}>
+                        <select name="day" id="day" className="RequestLabInput-S" style={{ marginTop: "-6%" }} onChange={handleChangeDay} required>
                             <option ></option>
                             <option value="Lu">Lunes</option>
                             <option value="Ma">Martes</option>
@@ -223,12 +223,12 @@ export function FormRequestLaboratory() {
                 <div className="RequestLabInput" style={{ marginTop: '2%' }}>
                     <div className="RequestLabMid" >
                         <label htmlFor="materia">Materia</label>
-                        <input name="materia" id="materia" className="RequestLabInput-L">
+                        <input name="materia" id="materia" className="RequestLabInput-L" required maxLength={50}>
                         </input>
                     </div>
                     <div className="RequestLabMed">
                         <label htmlFor="group">Grupos</label>
-                        <select name="group" id="group" className="RequestLabInput-M" onChange={handleChangeGroup}>
+                        <select name="group" id="group" className="RequestLabInput-M" onChange={handleChangeGroup} required>
                             <option ></option>
                             <option value="1a">1 "A"</option>
                             <option value="1b">1 "B"</option>
@@ -261,7 +261,7 @@ export function FormRequestLaboratory() {
                     </div>
                     <div className="RequestLabMed">
                         <label htmlFor="">No. alumnos</label>
-                        <input type="number" name="students" id="student" className="RequestLabInput-M">
+                        <input type="number" name="students" id="student" className="RequestLabInput-M" min={1} max={99}>
                         </input>
                     </div>
 
@@ -271,14 +271,17 @@ export function FormRequestLaboratory() {
                     <textarea name="software" id="software" cols="15" rows="4" className="RequestLabTextArea"></textarea>
                 </div>
                 <div className="RequesLabButtons ">
-                    <button className="bt" onClick={createRequest}> Solicitar </button>
+                    <button className="bt" type="submit"> Solicitar </button>
                     <button className="bt" onClick={() => window.location.reload()}> Cancelar </button>
                 </div>
-            </div>
+            </form>
             <h1 className="RequestLab">Solicitados</h1>
             {requests.map(request => (
                 <RequestLaboratoryCard key={request.idRequestLaboratory} labId={request.laboratoriesIdLaboratories} subject={request.subject} day={request.day} startHorary={request.startHorary} endHorary={request.endHorary} />
             ))}
+            {requests.length == 0 &&(
+                <h3 style={{textAlign: "center"}}>Sin solicitudes realizadas</h3>
+            )}
             <div style={{ height: '50px' }}></div>
         </>
     )

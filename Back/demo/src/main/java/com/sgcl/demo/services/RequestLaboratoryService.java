@@ -1,5 +1,6 @@
 package com.sgcl.demo.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,10 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sgcl.demo.models.LabHoraryVO;
+import com.sgcl.demo.models.LaboratoryVO;
 import com.sgcl.demo.models.NotificationVO;
 import com.sgcl.demo.models.RequestLaboratoryVO;
+import com.sgcl.demo.models.RequestModels.Stadistics;
+import com.sgcl.demo.models.RequestModels.StadisticsLaboratory;
 import com.sgcl.demo.repositories.RequestLaboratoryRepository;
 import com.sgcl.demo.repositories.LabHoraryRepository;
+import com.sgcl.demo.repositories.LaboratoryRepository;
 import com.sgcl.demo.repositories.SemesterRepository;;
 
 @Service
@@ -26,6 +31,9 @@ public class RequestLaboratoryService {
 
     @Autowired
     private LabHoraryRepository labHoraryRepository;
+
+    @Autowired
+    private LaboratoryRepository laboratoryRepository;
 
     public List<RequestLaboratoryVO> getRequestLaboratories() {
         return (List<RequestLaboratoryVO>) requestLaboratoryRepository.findAll();
@@ -91,6 +99,39 @@ public class RequestLaboratoryService {
 
     public Optional<List<RequestLaboratoryVO>> getRequestAnswered(){
         return requestLaboratoryRepository.getRequestLabAnswered(semesterRepository.getActiveSemester().get().getIdSemester());
+    }
+
+    public Integer countPeticionesByLaboratoryAndSemester(long idLaboratory, long idSemester){
+        return requestLaboratoryRepository.countPeticionesByLaboratoryAndSemester(idLaboratory, idSemester);
+    }
+
+    public Integer countHorasDeUsoByLaboratoryAndSemester(long idLaboratory, long idSemester){
+        return requestLaboratoryRepository.countHorasDeUsoByLaboratoryAndSemester(idLaboratory, idSemester);
+    }
+
+    public Integer countAsistentesSemanalesByLaboratoryAndSemester(long idLaboratory, long idSemester){
+        return requestLaboratoryRepository.countAsistentesSemanalesByLaboratoryAndSemester(idLaboratory, idSemester);
+    }
+
+    public Stadistics getStadistics(long idSemester){
+        Stadistics stadisticslab = new Stadistics();
+        stadisticslab.setSemester(semesterRepository.findById(idSemester).get());
+        List<LaboratoryVO> laboratoryList = laboratoryRepository.findAll();
+        List<StadisticsLaboratory> stadisticsLaboratories = new ArrayList<>();
+        for (LaboratoryVO lab : laboratoryList){
+            StadisticsLaboratory stadisticsLaboratory = new StadisticsLaboratory();
+            stadisticsLaboratory.setLabName(lab.getLabName());
+            if(countAsistentesSemanalesByLaboratoryAndSemester(lab.getIdLaboratories(), idSemester) != null){
+                stadisticsLaboratory.setAttendants(countAsistentesSemanalesByLaboratoryAndSemester(lab.getIdLaboratories(), idSemester));
+            }else{
+                stadisticsLaboratory.setAttendants(0);
+            }
+            stadisticsLaboratory.setSemanalHours(countHorasDeUsoByLaboratoryAndSemester(lab.getIdLaboratories(), idSemester));
+            stadisticsLaboratory.setUserRequest(countPeticionesByLaboratoryAndSemester(lab.getIdLaboratories(), idSemester));
+            stadisticsLaboratories.add(stadisticsLaboratory);
+        }
+        stadisticslab.setLaboratory(stadisticsLaboratories);
+        return stadisticslab;
     }
 
 }

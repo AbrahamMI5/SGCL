@@ -58,6 +58,9 @@ export function Notifications() {
             {requests.map(request => (
                 <NotificationReqLab key={request.requestLaboratoryIdRequestLaboratory} msg={request.notifyMenssage} reqLabId={request.requestLaboratoryIdRequestLaboratory} idNotifications={request.idNotifications} />
             ))}
+            {requests.length == 0 &&(
+                <h3 style={{textAlign: "center"}}>Sin notificaciones</h3>
+            )}
             <div style={{ height: '10%' }}></div>
         </>
     );

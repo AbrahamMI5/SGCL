@@ -27,12 +27,12 @@ Registrar estado de servicio de tecnologia y computo Listo
 
 Modulo 3
 
-Documentos de planeacion de mantenimiento anual 
-Documento de planeacion de mantenimiento semestral 
-Registrar uso de laboratorios 
+* Documentos de planeacion de mantenimiento anual Listo
+* Documento de planeacion de mantenimiento semestral Listo
+* Registrar uso de laboratorios [Eliminar]
 *Visualizar horarios Listo
-Generar reporte de uso de laboratorios 
-* Cambiar semestre 
+* Generar reporte de uso de laboratorios 
+* Cambiar semestre Listo
 
 
 Pendientes post presentacion
@@ -43,8 +43,21 @@ Pendientes post presentacion
 *Notificaciones y afirmaciones de eliminar, crear autualizar etc Listo
 Peticiones que tengan los objetos dentro para no resolicitarlos (creando nuevas respuestas)
 *Buscador en solicitudes de computo Listo
-*buscador en solicitudes de tecnologia Listo
+*buscador en solicitudes de tecnología Listo
 *Cifrar contraseña cuando se actualiza
 
 
-Revision general de requerimientos
+*Revision general de requerimientos
+
+
+*Laboratorios de ingenieria en computacion
+*Agregar sin resultados
+*Asistentes por periodo
+*No. Solicitudes por periodo
+
+
+Documento
+*Modificar diagrama de CU
+*Diagrama de clases?
+*Diagrama de secuencia
+*Diagrama bd

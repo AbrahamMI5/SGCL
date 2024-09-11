@@ -18,10 +18,10 @@ export function RequestService() {
     const [search, setSearch] = useState("");
 
     const handleStatusChangeT = (newStatus) => {
-        toast.success("Estado actualizado")
+        toast.success("Estado actualizado");
         const toastMessageW = localStorage.getItem('toastMessage');
         if (toastMessageW) {
-            toast.error(toastMessageW)
+            toast.error(toastMessageW);
             localStorage.removeItem('toastMessage');
         }
     };
@@ -33,53 +33,38 @@ export function RequestService() {
             const data = {
                 email: tokenDecod.sub,
             };
-            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;
             usersApi.get(apiUrls.getComputerServiceWithStatus)
-                .then(response =>
-                    setResponseCompWS(response.data)
-                ).catch(e => {
-                    console.log(`Error al obtener solicitudes de computo con estatus`, e)
-                });
+                .then(response => setResponseCompWS(response.data))
+                .catch(e => console.log(`Error al obtener solicitudes de cómputo con estatus`, e));
             usersApi.get(apiUrls.getComputerServiceWithoutStatus)
-                .then(response =>
-                    setResponseCompWOS(response.data)
-
-                ).catch(e => {
-                    console.log(`Error al obtener solicitudes de computo con estatus`, e)
-                });
+                .then(response => setResponseCompWOS(response.data))
+                .catch(e => console.log(`Error al obtener solicitudes de cómputo sin estatus`, e));
 
             usersApi.get(apiUrls.getTechnologyServiceWithStatus)
-                .then(response =>
-                    setResponseTechWS(response.data)
-                ).catch(e => {
-                    console.log(`Error al obtener solicitudes de computo con estatus`, e)
-                });
+                .then(response => setResponseTechWS(response.data))
+                .catch(e => console.log(`Error al obtener solicitudes de tecnología con estatus`, e));
             usersApi.get(apiUrls.getTechnologyServiceWithoutStatus)
-                .then(response =>
-                    setResponseTechWOS(response.data)
-                ).catch(e => {
-                    console.log(`Error al obtener solicitudes de computo con estatus`, e)
-                });
-
+                .then(response => setResponseTechWOS(response.data))
+                .catch(e => console.log(`Error al obtener solicitudes de tecnología sin estatus`, e));
         }
     }, []);
 
     const handleComputer = () => {
-        setComputerS(true)
-        setBgcolorC('#FFF')
-        setBgcolorT('#D9D9D9')
-    }
+        setComputerS(true);
+        setBgcolorC('#FFF');
+        setBgcolorT('#D9D9D9');
+    };
 
     const handleTechnology = () => {
-        setComputerS(false)
-        setBgcolorC('#D9D9D9')
-        setBgcolorT('#FFF')
-    }
+        setComputerS(false);
+        setBgcolorC('#D9D9D9');
+        setBgcolorT('#FFF');
+    };
 
     const filter = (event) => {
-        console.log(event.target.value)
-        setSearch(event.target.value)
-    }
+        setSearch(event.target.value);
+    };
 
     return (
         <>
@@ -96,82 +81,99 @@ export function RequestService() {
             {computerS &&
                 <>
                     <h2>Servicio de cómputo</h2>
-                    <h3>Pendientes</h3>
-                    {responseCompWOS.map((comp) => {
-                        if (search == "") {
-                            console.log("Total")
-                            return (
-                                <SetComputerServiceStatus key={comp.idRequestService} compr={comp} onStatusChange={handleStatusChangeT}/>
-                            );
 
-                        } else {
-                            if (comp.usersIdUsers.userName.toLowerCase().includes(search.toLowerCase()) || comp.reciverName.toLowerCase().includes(search.toLowerCase()) || comp.usersIdUsers.email.toLowerCase().includes(search.toLowerCase()) || comp.reciverEmail.toLowerCase().includes(search.toLowerCase())) {
-                                console.log("Datos con filtro", search)
-                                return (
-                                    <SetComputerServiceStatus key={comp.idRequestService} compr={comp} onStatusChange={handleStatusChangeT}/>
-                                );
-                            }
+                    <h3>Pendientes</h3>
+                    {(() => {
+                        let hasResults = false;
+                        const filteredWOS = responseCompWOS.filter((comp) => {
+                            if (search === "") return true;
+                            return comp.usersIdUsers.userName.toLowerCase().includes(search.toLowerCase()) ||
+                                   comp.reciverName.toLowerCase().includes(search.toLowerCase()) ||
+                                   comp.usersIdUsers.email.toLowerCase().includes(search.toLowerCase()) ||
+                                   comp.reciverEmail.toLowerCase().includes(search.toLowerCase());
+                        });
+
+                        if (filteredWOS.length > 0) {
+                            hasResults = true;
+                            return filteredWOS.map((comp) => (
+                                <SetComputerServiceStatus key={comp.idRequestService} compr={comp} onStatusChange={handleStatusChangeT} />
+                            ));
                         }
 
-                    })}
+                        return !hasResults && <h3 style={{ textAlign: "center" }}>Sin solicitudes pendientes</h3>;
+                    })()}
 
                     <h3>Resueltas</h3>
-                    {responseCompWS.map((comp) => {
-                        if (search == "") {
-                            return (
-                                <SetComputerServiceStatus key={comp.idRequestService} compr={comp} onStatusChange={handleStatusChangeT}/>
-                            );
+                    {(() => {
+                        let hasResults = false;
+                        const filteredWS = responseCompWS.filter((comp) => {
+                            if (search === "") return true;
+                            return comp.usersIdUsers.userName.toLowerCase().includes(search.toLowerCase()) ||
+                                   comp.reciverName.toLowerCase().includes(search.toLowerCase()) ||
+                                   comp.usersIdUsers.email.toLowerCase().includes(search.toLowerCase()) ||
+                                   comp.reciverEmail.toLowerCase().includes(search.toLowerCase());
+                        });
 
-                        } else {
-                            if (comp.usersIdUsers.userName.toLowerCase().includes(search.toLowerCase()) || comp.reciverName.toLowerCase().includes(search.toLowerCase()) || comp.usersIdUsers.email.toLowerCase().includes(search.toLowerCase()) || comp.reciverEmail.toLowerCase().includes(search.toLowerCase())) {
-                                
-                                return (
-                                    <SetComputerServiceStatus key={comp.idRequestService} compr={comp} onStatusChange={handleStatusChangeT}/>
-                                );
-                            }
+                        if (filteredWS.length > 0) {
+                            hasResults = true;
+                            return filteredWS.map((comp) => (
+                                <SetComputerServiceStatus key={comp.idRequestService} compr={comp} onStatusChange={handleStatusChangeT} />
+                            ));
                         }
-                    })}
-                </>}
+
+                        return !hasResults && <h3 style={{ textAlign: "center" }}>Sin solicitudes resueltas</h3>;
+                    })()}
+                </>
+            }
+
             {!computerS &&
                 <>
                     <h2>Servicio de tecnología</h2>
+
                     <h3>Pendientes</h3>
-                    {responseTechWOS.map((tech) => {
-                        if (search == "") {
-                            console.log("Total")
-                            return (
-                                <SetTechnologyServiceStatus key={tech.idRequestService} techr={tech} onStatusChange={handleStatusChangeT} />
-                            );
+                    {(() => {
+                        let hasResults = false;
+                        const filteredTechWOS = responseTechWOS.filter((tech) => {
+                            if (search === "") return true;
+                            return tech.usersIdUsers.userName.toLowerCase().includes(search.toLowerCase()) ||
+                                   tech.reciverName.toLowerCase().includes(search.toLowerCase()) ||
+                                   tech.usersIdUsers.email.toLowerCase().includes(search.toLowerCase()) ||
+                                   tech.reciverEmail.toLowerCase().includes(search.toLowerCase());
+                        });
 
-                        } else {
-                            if (tech.usersIdUsers.userName.toLowerCase().includes(search.toLowerCase()) || tech.reciverName.toLowerCase().includes(search.toLowerCase()) || tech.usersIdUsers.email.toLowerCase().includes(search.toLowerCase()) || tech.reciverEmail.toLowerCase().includes(search.toLowerCase())) {
-                                console.log("Datos con filtro", search)
-                                return (
-                                    <SetTechnologyServiceStatus key={tech.idRequestService} techr={tech} onStatusChange={handleStatusChangeT} />
-                                );
-                            }
+                        if (filteredTechWOS.length > 0) {
+                            hasResults = true;
+                            return filteredTechWOS.map((tech) => (
+                                <SetTechnologyServiceStatus key={tech.idRequestService} techr={tech} onStatusChange={handleStatusChangeT} />
+                            ));
                         }
 
-                    })}
+                        return !hasResults && <h3 style={{ textAlign: "center" }}>Sin solicitudes pendientes</h3>;
+                    })()}
+
                     <h3>Resueltas</h3>
-                    {responseTechWS.map((tech) => {
-                        if (search == "") {
-                            console.log("Total")
-                            return (
-                                <SetTechnologyServiceStatus key={tech.idRequestService} techr={tech} onStatusChange={handleStatusChangeT} />
-                            );
+                    {(() => {
+                        let hasResults = false;
+                        const filteredTechWS = responseTechWS.filter((tech) => {
+                            if (search === "") return true;
+                            return tech.usersIdUsers.userName.toLowerCase().includes(search.toLowerCase()) ||
+                                   tech.reciverName.toLowerCase().includes(search.toLowerCase()) ||
+                                   tech.usersIdUsers.email.toLowerCase().includes(search.toLowerCase()) ||
+                                   tech.reciverEmail.toLowerCase().includes(search.toLowerCase());
+                        });
 
-                        } else {
-                            if (tech.usersIdUsers.userName.toLowerCase().includes(search.toLowerCase()) || tech.reciverName.toLowerCase().includes(search.toLowerCase()) || tech.usersIdUsers.email.toLowerCase().includes(search.toLowerCase()) || tech.reciverEmail.toLowerCase().includes(search.toLowerCase())) {
-                                console.log("Datos con filtro", search)
-                                return (
-                                    <SetTechnologyServiceStatus key={tech.idRequestService} techr={tech} onStatusChange={handleStatusChangeT} />
-                                );
-                            }
+                        if (filteredTechWS.length > 0) {
+                            hasResults = true;
+                            return filteredTechWS.map((tech) => (
+                                <SetTechnologyServiceStatus key={tech.idRequestService} techr={tech} onStatusChange={handleStatusChangeT} />
+                            ));
                         }
-                    })}
-                </>}
+
+                        return !hasResults && <h3 style={{ textAlign: "center" }}>Sin solicitudes resueltas</h3>;
+                    })()}
+                </>
+            }
         </>
-    )
+    );
 }
 export default RequestService;

@@ -11,6 +11,7 @@ import rtechnology from './img/rtechnology.svg'
 import rservice from './img/rservice.svg'
 import semester from './img/semester.svg'
 import Maintenance from './img/Maintenance.svg'
+import stadistics from './img/stadistics.svg'
 
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
@@ -46,6 +47,8 @@ export function Icon(prop) {
             return 'Semestre'
         }if ( name == 'Maintenance'){
             return 'Mantenimiento'
+        }if (name == `Stadistics`){
+            return `Estadísticas`
         }
          else {
             console.log("null")
@@ -80,6 +83,8 @@ export function Icon(prop) {
             return semester
         }if ( name == 'Maintenance'){
             return Maintenance
+        }if (name == `Stadistics`){
+            return stadistics
         }
     }
 
@@ -108,6 +113,8 @@ export function Icon(prop) {
             return '/Semester'
         }if ( name == 'Maintenance'){
             return '/Maintenance'
+        }if (name == `Stadistics`){
+            return '/Stadistics'
         }
     }
 
