@@ -93,7 +93,7 @@ export function SemesterPage() {
                     </div>
                     <div style={{ marginTop: "10px" }}>
                         <label>Semestre:</label><br></br>
-                        <input type="text" placeholder='Nombre del laboratorio' className="LabName" id="semName" required />
+                        <input type="text" placeholder='Nombre del laboratorio' className="LabName" id="semName" required maxLength={45}/>
                     </div>
                     <div className="addSem-Buttons" style={{ marginTop: "10px" }}>
                         <div>

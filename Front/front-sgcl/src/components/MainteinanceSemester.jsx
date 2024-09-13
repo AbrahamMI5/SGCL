@@ -234,8 +234,8 @@ export function MainteinanceSemester() {
         security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;
         usersApi.post(`${apiUrls.setAnualDoc}`, formDataAnual)
             .then(response => {
+                console.log(response)
                 localStorage.setItem('toastMessage', 'Documento creado');
-                window.location.reload();
                 window.location.reload();
             }).catch(error => {
                 console.log("Error al crear documento anual", error)
@@ -379,7 +379,7 @@ export function MainteinanceSemester() {
                                                     <label>Días</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="20-23"
+                                                        placeholder="dd-dd"
                                                         value={date.days}
                                                         onChange={(e) => handleLaboratoryChangeAnual(labIndex, index, 'days', e.target.value)}
                                                         style={{ width: "100%" }}

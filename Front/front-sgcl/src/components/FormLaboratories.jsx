@@ -77,7 +77,7 @@ export function FormLaboratory() {
                     </div>
                     <div>
                         <label>Nombre del laboratorio:</label><br></br>
-                        <input type="text" placeholder='Nombre de laboratorio' className="LabName" id="labName" required />
+                        <input type="text" placeholder='Nombre de laboratorio' className="LabName" id="labName" required maxLength={50}/>
                         <button className="bt-create" type="submit">Crear laboratorio</button>
                     </div>
                 </form>

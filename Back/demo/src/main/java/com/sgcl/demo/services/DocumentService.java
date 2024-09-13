@@ -49,10 +49,17 @@ public class DocumentService {
                 anualDocVO.setDocumentsIdDocuments(document.getIdDocuments());
                 anualDocVO.setLabName(anual.getLabName());
                 anualDocumentRepository.save(anualDocVO);
-                List<DatesVO> datesVOs = anual.getDates();
-                for(DatesVO date : datesVOs){
-                    date.setId_anual_doc(anualDocVO.getIdAnualdoc());
-                    datesRepository.save(date);
+                int validation = 0;
+                if(anual.getDates() != null){
+                    validation =+ 1;
+                    List<DatesVO> datesVOs = anual.getDates();
+                    for(DatesVO date : datesVOs){
+                        date.setId_anual_doc(anualDocVO.getIdAnualdoc());
+                        datesRepository.save(date);
+                    }
+                }
+                if (validation == 0){
+                    throw new IllegalArgumentException("Validación fallida, datos inválidos");
                 }
             }catch(Exception e){
                 documentRepository.delete(document);
