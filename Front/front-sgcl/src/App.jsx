@@ -56,7 +56,6 @@ function App() {
         });
     } else {
       setRoleLoaded(true);
-      console.log('Error sin token')
     }
   }, []);
 

@@ -118,6 +118,14 @@ nav {
   color: #e2e2e2;
 }
 
+.V-Menu>li {
+  margin-left: -40px;
+  width: auto;
+  padding-right: 30px;
+  padding-left: 15px;
+  padding-top: 2px;
+}
+
 .V-Menu>li:hover {
   background-color: rgb(126.0, 34.0, 19);
   border-radius: 4px;
@@ -130,11 +138,9 @@ nav {
   display: none;
   list-style: none;
   width: auto;
-  background-color: rgba(51, 51, 51, 0.5);
-  padding-right: 10px;
+  background-color: rgba(51, 51, 51, 0.8);
   cursor: pointer;
   border-radius: 4px;
-
 }
 
 .H-Menu>li:hover .V-Menu {

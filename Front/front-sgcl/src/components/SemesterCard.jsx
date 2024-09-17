@@ -93,7 +93,6 @@ export function SemesterCard(props) {
             denyButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    console.log("deleted")
                     deleteSem();
                 }
         })

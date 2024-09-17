@@ -47,17 +47,13 @@ export function FormRequestLaboratory() {
             const toastMessage = localStorage.getItem('toastMessage');
             const toastMessageW = localStorage.getItem('toastMessageW');
 
-            console.log(toastMessage)
-
             if (toastMessage) {
                 toast.success(toastMessage)
                 localStorage.removeItem('toastMessage');
-                console.log('Toast notification displayed');
             }
             if (toastMessageW) {
                 toast.warn(toastMessageW)
                 localStorage.removeItem('toastMessageW');
-                console.log('Toast notification displayed');
             }
         }, 1000);
 
@@ -83,7 +79,6 @@ export function FormRequestLaboratory() {
                     console.error('Error fetching data:', error);
                     setLoading(false);
                 }
-                console.log(requests)
             }
         };
 
@@ -91,7 +86,6 @@ export function FormRequestLaboratory() {
     }, []);
 
     const freeLab = async () => {
-        console.log()
         const laboratoryId = document.getElementById("laboratory").value;
         const startHorary = document.getElementById("startHorary").value;
         const day = selectedOptionDay; // Asegúrate de que esto esté definido
@@ -122,7 +116,6 @@ export function FormRequestLaboratory() {
                 const dataIndex = dayIndex + hourIndex;
 
                 if (dataIndex < data.length) {
-                    console.log(!data[dataIndex].startdate);
                     return !data[dataIndex].startdate;
                 } else {
                     console.error('Índice fuera de rango:', dataIndex);
@@ -156,7 +149,6 @@ export function FormRequestLaboratory() {
                     semesterIdSemester: 1,
                     requiredSoftware: document.getElementById("software").value
                 };
-                console.log(requestData)
                 let token = localStorage.getItem('token');
                 security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
                 const response = await usersApi.post(`${apiUrls.creageRequestLaboratory}`, requestData);

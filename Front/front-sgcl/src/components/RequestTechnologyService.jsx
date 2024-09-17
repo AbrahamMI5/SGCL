@@ -21,8 +21,6 @@ export function RequestTechnologyService() {
             const toastMessage = localStorage.getItem('toastMessage');
             const toastMessageW = localStorage.getItem('toastMessageW');
 
-            console.log(toastMessage)
-
             if (toastMessage) {
                 toast.success(toastMessage)
                 localStorage.removeItem('toastMessage');
@@ -40,7 +38,6 @@ export function RequestTechnologyService() {
         };
         usersApi.post(apiUrls.getUserByEmail, data)
             .then(response => {
-                console.log(response.data);
                 setUserId(response.data);
             })
             .catch(error => {
@@ -60,10 +57,8 @@ export function RequestTechnologyService() {
         let token = localStorage.getItem('token');
         security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
         if (userId.id != undefined) {
-            console.log(userId.id)
             usersApi.get(`${apiUrls.getTechnologyRequest}${userId.id}`)
                 .then(response => {
-                    console.log(response.data);
                     setTechnologyRequest(response.data);
                 })
                 .catch(error => {
@@ -88,8 +83,6 @@ export function RequestTechnologyService() {
     const handleChangeLab = (event) => {
         const value = event.target.value;
         const [selectedLabId, selectedLabName] = value.split(',');
-        console.log(selectedLabId)
-        console.log(selectedLabName)
         setSelectedlab(selectedLabId);
         setSelectedlabName(selectedLabName);
     }
@@ -120,7 +113,6 @@ export function RequestTechnologyService() {
                     labName: selectedlabName,
                     observations: "Tecnología: " + document.getElementById("Observation").value + " Laboratorio: " + selectedlabName
                 };
-                console.log(requestServData)
                 let token = localStorage.getItem('token');
                 security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
                 const response = await usersApi.post(`${apiUrls.createRequestCompService}`, requestServData);

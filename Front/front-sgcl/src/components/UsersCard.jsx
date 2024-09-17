@@ -67,7 +67,6 @@ export function UsersCard(props) {
             denyButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    console.log("deleted")
                     deleteUser();
                 }
         })

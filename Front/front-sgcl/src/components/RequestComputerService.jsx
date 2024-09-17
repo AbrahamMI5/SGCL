@@ -16,8 +16,6 @@ export function RequestComputerService() {
             const toastMessage = localStorage.getItem('toastMessage');
             const toastMessageW = localStorage.getItem('toastMessageW');
 
-            console.log(toastMessage)
-
             if (toastMessage) {
                 toast.success(toastMessage)
                 localStorage.removeItem('toastMessage');
@@ -35,7 +33,6 @@ export function RequestComputerService() {
         };
         usersApi.post(apiUrls.getUserByEmail, data)
             .then(response => {
-                console.log(response.data);
                 setUserId(response.data);
             })
             .catch(error => {
@@ -49,7 +46,6 @@ export function RequestComputerService() {
         if (userId.id != undefined) {
             usersApi.get(`${apiUrls.getComputerRequest}${userId.id}`)
                 .then(response => {
-                    console.log(response.data);
                     setComputerRequest(response.data);
                 })
                 .catch(error => {

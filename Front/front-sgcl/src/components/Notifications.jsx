@@ -30,8 +30,6 @@ export function Notifications() {
                         const toastMessage = localStorage.getItem('toastMessage');
                         const toastMessageW = localStorage.getItem('toastMessageW');
 
-                        console.log(toastMessage)
-
                         if (toastMessage) {
                             toast.success(toastMessage)
                             localStorage.removeItem('toastMessage');

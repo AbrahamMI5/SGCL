@@ -51,7 +51,7 @@ export function LogIn() {
                                 Enviar
                             </button>
                             <button type="button" className='bt btn-cancel' onClick={() => navigate('/')}>
-                                Cancelar
+                                Regresar
                             </button>
                         </div>
                     </form>

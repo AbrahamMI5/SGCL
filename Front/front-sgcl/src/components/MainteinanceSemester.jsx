@@ -97,17 +97,13 @@ export function MainteinanceSemester() {
             const toastMessage = localStorage.getItem('toastMessage');
             const toastMessageW = localStorage.getItem('toastMessageW');
 
-            console.log(toastMessage)
-
             if (toastMessage) {
                 toast.success(toastMessage)
                 localStorage.removeItem('toastMessage');
-                console.log('Toast notification displayed');
             }
             if (toastMessageW) {
                 toast.warn(toastMessageW)
                 localStorage.removeItem('toastMessageW');
-                console.log('Toast notification displayed');
             }
         }, 1000);
 
@@ -167,12 +163,10 @@ export function MainteinanceSemester() {
     };
 
     const filterS = (event) => {
-        console.log(event.target.value)
         setSearchS(event.target.value)
     }
 
     const filterA = (event) => {
-        console.log(event.target.value)
         setSearchA(event.target.value)
     }
 
@@ -190,7 +184,6 @@ export function MainteinanceSemester() {
     const handleChangeSemestralDate = (e) => {
         const [year, monthNumber] = e.target.value.split('-');
         const month = monthNames[parseInt(monthNumber, 10) - 1];
-        console.log(month)
         setFormDataSemestral((prevData) => ({
             ...prevData,
             documentVO: {
@@ -230,11 +223,9 @@ export function MainteinanceSemester() {
 
     const handleSubmitAnual = (e) => {
         e.preventDefault();
-        console.log('Form Data Anual:', formDataAnual);
         security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;
         usersApi.post(`${apiUrls.setAnualDoc}`, formDataAnual)
             .then(response => {
-                console.log(response)
                 localStorage.setItem('toastMessage', 'Documento creado');
                 window.location.reload();
             }).catch(error => {
@@ -245,11 +236,9 @@ export function MainteinanceSemester() {
 
     const handleSubmitSemestral = (e) => {
         e.preventDefault();
-        console.log('Form Data Semestral:', formDataSemestral);
         security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;
         usersApi.post(`${apiUrls.setSemesterDoc}`, formDataSemestral)
             .then(response => {
-                console.log(response)
                 localStorage.setItem('toastMessage', 'Documento creado')
                 window.location.reload();
             }).catch(error => {

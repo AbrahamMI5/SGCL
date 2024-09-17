@@ -26,7 +26,6 @@ export function Sidebar() {
                     console.error('Error fetching role:', error);
                 });
         } else {
-            console.log('Error sin token')
         }
 
     }, []);

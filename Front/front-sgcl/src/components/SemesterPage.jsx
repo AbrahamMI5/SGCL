@@ -55,17 +55,13 @@ export function SemesterPage() {
             const toastMessage = localStorage.getItem('toastMessage');
             const toastMessageW = localStorage.getItem('toastMessageW');
 
-            console.log(toastMessage)
-
             if (toastMessage) {
                 toast.success(toastMessage)
                 localStorage.removeItem('toastMessage');
-                console.log('Toast notification displayed');
             }
             if (toastMessageW) {
                 toast.warn(toastMessageW)
                 localStorage.removeItem('toastMessageW');
-                console.log('Toast notification displayed');
             }
         }, 1000);
     }, []);

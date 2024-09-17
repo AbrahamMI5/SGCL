@@ -13,7 +13,6 @@ export function Stadistics() {
 
     const handleOnChangeSemester=(event)=>{
         setIdSemester(event.target.value)
-        console.log(event.target.value)
     }
 
     useEffect(() => {

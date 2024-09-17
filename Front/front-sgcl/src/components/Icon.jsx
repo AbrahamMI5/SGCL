@@ -51,7 +51,6 @@ export function Icon(prop) {
             return `Estadísticas`
         }
          else {
-            console.log("null")
             return null
         }
     }
@@ -119,7 +118,6 @@ export function Icon(prop) {
     }
 
     function handleLogoutClick() {
-        console.log("Log Out")
         if (name.name === 'LogOut') {
             localStorage.clear();
             window.location.reload();

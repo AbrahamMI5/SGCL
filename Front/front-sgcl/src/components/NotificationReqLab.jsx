@@ -39,15 +39,12 @@ export function NotificationReqLab(props) {
 
     useEffect(() => {
         let token = localStorage.getItem('token');
-        console.log(reqLabId)
         security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         usersApi.get(apiUrls.getRequestLab + reqLabId)
             .then(response => {
-                console.log(response.data);
                 setRequest(response.data); 
                 usersApi.get(`${apiUrls.getLab}${response.data.laboratoriesIdLaboratories}`)
                     .then(responselab => {
-                        console.log(responselab.data);
                         setLabName(responselab.data.labName);
                     })
                     .catch(error => {

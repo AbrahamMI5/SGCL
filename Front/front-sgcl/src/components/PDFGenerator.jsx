@@ -8,7 +8,6 @@ const PDFGenerator = ({ content }) => {
     const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null); // Estado para la vista previa
 
     useEffect(() => {
-        console.log(content)
         generatePDF();
     }, []);
 

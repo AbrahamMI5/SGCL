@@ -58,9 +58,6 @@ export function RequestLabCard(props) {
         try {
             const horaryResp = await usersApi.get(apiUrls.getLabHorarybyLab + laboratoryId);
             const data = horaryResp.data;
-            console.log(data)
-            console.log(day)
-            console.log(startHorary)
             const dayIndices = {
                 "Lu": 0,
                 "Ma": 4,
@@ -79,14 +76,10 @@ export function RequestLabCard(props) {
             const dayIndex = dayIndices[day];
             const hourIndex = hourIndices[startHorary];
 
-            console.log(dayIndex)
-            console.log(hourIndex)
-
             if (dayIndex !== undefined && hourIndex !== undefined) {
                 const dataIndex = dayIndex + hourIndex;
 
                 if (dataIndex < data.length) {
-                    console.log(!data[dataIndex].startdate);
                     return !data[dataIndex].startdate;
                 } else {
                     console.error('Índice fuera de rango:', dataIndex);
@@ -157,12 +150,10 @@ export function RequestLabCard(props) {
             if (toastMessage) {
                 toast.success(toastMessage)
                 localStorage.removeItem('toastMessage');
-                console.log('Toast notification displayed');
             }
             if (toastMessageW) {
                 toast.warn(toastMessageW)
                 localStorage.removeItem('toastMessageW');
-                console.log('Toast notification displayed');
             }
         }, 1000);
     });

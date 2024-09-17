@@ -14,7 +14,6 @@ export function LabRequestAns() {
         usersApi.get(apiUrls.getRequestLabInProcess)
             .then(respLabResq => {
                 setLabResp(respLabResq.data);
-                console.log(labResp)
             })
             .catch(error => {
                 console.error('Error fetching RequestLab:', error);
@@ -23,7 +22,6 @@ export function LabRequestAns() {
         usersApi.get(apiUrls.getRequestLabAnswered)
             .then(respLabResq => {
                 setLabRespAnswered(respLabResq.data);
-                console.log(labResp)
             })
             .catch(error => {
                 console.error('Error fetching RequestLab:', error);
