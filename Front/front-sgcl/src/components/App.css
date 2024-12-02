@@ -177,6 +177,11 @@
     width: 120px;
 }
 
+.adAuth {
+    width: 120px;
+    margin-bottom: 5px;
+}
+
 .ursHeader {
     display: flex;
     flex-direction: row;
@@ -259,6 +264,7 @@
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 5px;
 }
+
 .addLab {
     background-color: white;
     padding: 5px;
@@ -266,7 +272,23 @@
     -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+}
 
+.addLabView {
+    border: none;
+    background-color: white;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.addLabView:hover {
+    border: none;
+    cursor: pointer;
+    background-color: rgb(200, 200, 200);
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 .addLab-Menu {
@@ -388,6 +410,7 @@
 
 .RequestLabTextArea {
     width: 100%;
+    resize: none;
 }
 
 .RequesLabButtons {
@@ -532,19 +555,30 @@
 }
 
 .custom-popup {
-    height: 60vh; 
-    max-height: 60vh; 
-    overflow-y: auto; 
-    
+    height: 60vh;
+    max-height: 60vh;
+    overflow-y: auto;
+
 }
 
-.custom-confirm-button, .custom-deny-button {
-    font-size: 1.5em; 
-    padding: 10px 20px; 
+.custom-confirm-button,
+.custom-deny-button {
+    font-size: 1.5em;
+    padding: 10px 20px;
 }
 
 .custom-popup .swal2-icon {
-    font-size: 145%; 
+    font-size: 145%;
+}
+
+.info {
+    width: 25px;
+    cursor: pointer;
+}
+
+.info-sm {
+    width: 20px;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 900px) {
@@ -559,8 +593,30 @@
         grid-template-columns: 1fr 1fr;
     }
 
-    .semBody{
+    .semBody {
         grid-template-columns: 1fr 1fr;
     }
 
+    * {
+        font-size: calc(100% - 0.8px);
+    }
+    .margin-cell{
+        margin-top: 100px;
+    }
+
+}
+
+.react-tooltip {
+    max-width: 90vw;
+    white-space: normal;
+}
+
+@media only screen and (max-width: 600px) {
+    .react-tooltip {
+        font-size: 14px;
+        padding: 10px;
+    }
+    .margin-cell{
+        margin-top: 100px;
+    }
 }

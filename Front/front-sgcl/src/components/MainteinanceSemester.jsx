@@ -19,6 +19,7 @@ export function MainteinanceSemester() {
     const [transicion, setTransicion] = useState(false);
     const [searchS, setSearchS] = useState("");
     const [searchA, setSearchA] = useState("");
+    const [authorizers, setAuthorizers] = useState();
 
     const [formDataAnual, setFormDataAnual] = useState({
         documentVO: {
@@ -92,7 +93,14 @@ export function MainteinanceSemester() {
             .catch(error => {
                 console.error('Error fetching laboratories:', error);
             });
-
+        usersApi.get(apiUrls.getAllAuthorizers)
+            .then(respAuth => {
+                setAuthorizers(respAuth.data)
+                console.log(respAuth.data)
+            })
+            .catch(error => {
+                console.error('Error fetching authorizers:', error);
+            })
         setTimeout(() => {
             const toastMessage = localStorage.getItem('toastMessage');
             const toastMessageW = localStorage.getItem('toastMessageW');
@@ -283,7 +291,7 @@ export function MainteinanceSemester() {
     return (
         <>
             <ToastContainer />
-            <h1>Mantenimientos de laboratorios</h1>
+            <h1 className='margin-cell'>Mantenimientos de laboratorios</h1>
             <div>
                 <button onClick={handleAnual} style={{ backgroundColor: bgcolorC }}>Anual</button>
                 <button onClick={handleSemester} style={{ backgroundColor: bgcolorT }}>Semestral</button>
@@ -309,7 +317,8 @@ export function MainteinanceSemester() {
                                         id="responsibleName"
                                         name="responsibleName"
                                         placeholder="Nombre del responsable"
-                                        value={formDataAnual.documentVO.responsibleName}
+                                        value={formDataAnual.documentVO.responsibleName = authorizers[3].name}
+                                        readOnly
                                         onChange={handleChangeAnual}
                                         required
                                     />
@@ -321,7 +330,8 @@ export function MainteinanceSemester() {
                                         id="adminResponsibleName"
                                         name="adminResponsibleName"
                                         placeholder="Nombre del coordinador"
-                                        value={formDataAnual.documentVO.adminResponsibleName}
+                                        value={formDataAnual.documentVO.adminResponsibleName = authorizers[1].name}
+                                        readOnly
                                         onChange={handleChangeAnual}
                                         required
                                     />
@@ -464,7 +474,7 @@ export function MainteinanceSemester() {
                                         id="responsibleName"
                                         name="responsibleName"
                                         placeholder="Nombre del responsable"
-                                        value={formDataSemestral.documentVO.responsibleName}
+                                        value={formDataSemestral.documentVO.responsibleName = authorizers[3].name}
                                         onChange={handleChangeSemestral}
                                         required
                                     />
@@ -476,7 +486,7 @@ export function MainteinanceSemester() {
                                         id="adminResponsibleName"
                                         name="adminResponsibleName"
                                         placeholder="Nombre del coordinador"
-                                        value={formDataSemestral.documentVO.adminResponsibleName}
+                                        value={formDataSemestral.documentVO.adminResponsibleName = authorizers[1].name}
                                         onChange={handleChangeSemestral}
                                         required
                                     />
@@ -515,7 +525,7 @@ export function MainteinanceSemester() {
                                                 placeholder="Observación"
                                                 value={laboratory.observation}
                                                 onChange={(e) => handleLaboratoryChangeSemestral(index, 'observation', e.target.value)}
-                                                required
+
                                             />
                                         </div>
                                     </React.Fragment>

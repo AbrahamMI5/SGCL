@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 export function Previewpdf() {
     const location = useLocation(); 
     const {anual, data} = location.state || {};
+    console.log(data)
     return (
         <>
             {anual ?

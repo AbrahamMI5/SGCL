@@ -4,6 +4,9 @@ import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from "react"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import question from './img/question.svg'
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from 'react-tooltip';
 
 export function RequestTechnologyService() {
 
@@ -14,6 +17,8 @@ export function RequestTechnologyService() {
     const [selectedlab, setSelectedlab] = useState();
     const [selectedlabName, setSelectedlabName] = useState();
     const [technologyRequest, setTechnologyRequest] = useState([]);
+    const [finalUser, setFinalUser] = useState(false);
+
 
 
     useEffect(() => {
@@ -98,20 +103,17 @@ export function RequestTechnologyService() {
                 const requestServData = {
                     applicantArea: document.getElementById("SArea").value,
                     position: document.getElementById("SCargo").value,
-                    reciverName: document.getElementById("FName").value,
-                    reciverEmail: document.getElementById("FEmail").value,
-                    reciverArea: document.getElementById("FArea").value,
-                    reciverPosition: document.getElementById("FCargo").value,
+                    reciverName: finalUser ? document.getElementById("FName").value : userId && userId.userName,
+                    reciverEmail: finalUser ? document.getElementById("FEmail").value : userId && userId.email,
+                    reciverArea: finalUser ? document.getElementById("FArea").value : document.getElementById("SArea").value,
+                    reciverPosition: finalUser ? document.getElementById("FCargo").value : document.getElementById("SCargo").value,
                     usersIdUsers: userId.id,
-                    authorizedName: document.getElementById("AName").value ? document.getElementById("AName").value : null,
-                    authorizedEmail: document.getElementById("AEmail").value ? document.getElementById("AEmail").value : null,
-                    authorizedArea: document.getElementById("AArea").value ? document.getElementById("AArea").value : null,
-                    authorizedPosition: document.getElementById("ACargo").value ? document.getElementById("ACargo").value : null,
                     basicFunction: selectedOptionBasic ? selectedOptionBasic : null,
                     specialFunction: selectedOptionSpecial ? selectedOptionSpecial : null,
                     laboratoriesIdLaboratories: selectedlab,
                     labName: selectedlabName,
-                    observations: "Tecnología: " + document.getElementById("Observation").value + " Laboratorio: " + selectedlabName
+                    observations: 
+                        (document.getElementById("Observation").value ? "TECNOLOGÍA: " + document.getElementById("Observation").value : "")
                 };
                 let token = localStorage.getItem('token');
                 security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
@@ -132,8 +134,9 @@ export function RequestTechnologyService() {
     return (
 
         <>
+            <Tooltip id="my-tooltip" type="dark" delayShow={200} border={true} place="bottom"/>
             <ToastContainer />
-            <h1>Solicitar servicio de tecnología</h1>
+            <h1 className='margin-cell'>Solicitar servicio de tecnología <img className="info" src={question} data-tooltip-id="my-tooltip" data-tooltip-content="Solicitar servicios de mantenimiento y adecuaciones a los laboratorios"/></h1>
             <form className="AddRequest RequestService" onSubmit={handleSubmit}>
                 <div>
                     <h4>
@@ -149,16 +152,41 @@ export function RequestTechnologyService() {
                         </div>
                         <div className="Row-Space">
                             <input type="text" id="SName" readOnly value={userId && userId.userName} /><br />
-                            <input type="text" id="SEmail" readOnly value={userId && userId.email} /><br />
+                            <input type="email" id="SEmail" aria-describedby="emailHelp" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}" readOnly value={userId && userId.email} /><br />
                             <input type="text" id="SArea" maxLength={30} required /><br />
                             <input type="text" id="SCargo" maxLength={30} required /><br />
 
                         </div>
                     </div>
+                    <div style={{marginBottom: "20px"}}>
+                        <label htmlFor="checkbx" style={{ marginRight: "20px" }}>¿El servicio es para alguien más?</label>
+                        <input type="checkbox" id="checkbx" onChange={() => { setFinalUser(!finalUser) }} />
+                        <div style={{ display: finalUser ? "inline" : "none" }}>
+                            <h4>
+                                Usuario final <img className="info-sm" src={question} data-tooltip-id="my-tooltip" data-tooltip-content="Datos del usuario que recibirá el servicio" />
+                            </h4>
+                            <div className='RequestFormService' action="">
+                                <div className="Row-Space" style={{ marginBottom: "20px" }}>
+                                    <label htmlFor="FName" >Nombre: </label><br />
+                                    <label htmlFor="FEmail">Email: </label> <br />
+                                    <label htmlFor="FArea">Área: </label><br />
+                                    <label htmlFor="FCargo">Cargo: </label> <br />
+                                </div>
+                                <div className="Row-Space" style={{ marginBottom: "20px" }}>
+                                    <input type="text" id="FName" maxLength={30}  disabled={!finalUser} required={!!finalUser}/><br />
+                                    <input type="email" id="FEmail" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}" aria-describedby="emailHelp" maxLength={30} disabled={!finalUser} required={!!finalUser} /><br />
+                                    <input type="text" id="FArea" maxLength={50} disabled={!finalUser} required={!!finalUser} /><br />
+                                    <input type="text" id="FCargo" maxLength={50} disabled={!finalUser} required={!!finalUser} /><br />
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                     <p>Funcionalidad:</p>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <div style={{ width: "50%" }}>
-                            <label htmlFor="">Básica:</label>
+                            <label htmlFor="">Básica: <img className="info-sm" src={question} data-tooltip-id="my-tooltip" data-tooltip-content="Esta funcionalidad NO requiere de aprobación por parte de un directivo"/></label>
                             <select value={selectedOptionBasic} name="" id="Basic" style={{ width: "130px" }} onChange={handleChangeBasic}>
                                 <option value="">-Funcionalidad-</option>
                                 <option value="Instalacion de dispositivos">Instalación de dispositivos</option>
@@ -168,7 +196,7 @@ export function RequestTechnologyService() {
                             </select>
                         </div>
                         <div style={{ width: "50%" }}>
-                            <label htmlFor="">Especial: </label>
+                            <label htmlFor="">Especial: <img className="info-sm" src={question} data-tooltip-id="my-tooltip" data-tooltip-content="Esta funcionalidad REQUIERE de aprobación por parte de un directivo, esta aprobación la solicitara el administrador de los laboratorios"/></label>
                             <select value={selectedOptionSpecial} name="" id="Special" style={{ width: "130px" }} onChange={handleChangeSpecial}>
                                 <option value="">-Funcionalidad-</option>
                                 <option value="Adecuaciones Electricas y electronicas">Adecuaciones Eléctricas y electrónicas</option>
@@ -177,48 +205,9 @@ export function RequestTechnologyService() {
                             </select>
                         </div>
                     </div>
-                    <h4 style={{ marginTop: '30px' }}>
-                        Autoriza
-                    </h4>
-                    <div className='RequestFormService' action="" style={{ marginBottom: "20px" }}>
-                        <div className="Row-Space">
-                            <label htmlFor="AName">Nombre: </label><br />
-                            <label htmlFor="AEmail">Email: </label><br />
-                            <label htmlFor="AArea">Área: </label><br />
-                            <label htmlFor="ACargo">Cargo: </label><br />
-
-                        </div>
-                        <div className="Row-Space">
-                            <input type="text" id="AName" maxLength={50} /><br />
-                            <input type="text" id="AEmail" maxLength={50} /><br />
-                            <input type="text" id="AArea" maxLength={50} /><br />
-                            <input type="text" id="ACargo" maxLength={50} /><br />
-
-                        </div>
-                    </div>
 
                 </div>
                 <div>
-                    <h4>
-                        Usuario final
-                    </h4>
-                    <div className='RequestFormService' action="">
-                        <div className="Row-Space" style={{ marginBottom: "20px" }}>
-                            <label htmlFor="FName">Nombre: </label><br />
-                            <label htmlFor="FEmail">Email: </label> <br />
-                            <label htmlFor="FArea">Área: </label><br />
-                            <label htmlFor="FCargo">Cargo: </label> <br />
-                        </div>
-                        <div className="Row-Space" style={{ marginBottom: "20px" }}>
-                            <input type="text" id="FName" maxLength={30} required /><br />
-                            <input type="text" id="FEmail" maxLength={30} required /><br />
-                            <input type="text" id="FArea" maxLength={30} required /><br />
-                            <input type="text" id="FCargo" maxLength={30} required /><br />
-
-                        </div>
-
-                    </div>
-
                     <div className='RequestFormService' action="">
                         <div style={{ marginBottom: "20px" }}>
                             <label htmlFor="Observation">Observación: </label><br /><br /><br />
@@ -247,7 +236,7 @@ export function RequestTechnologyService() {
             </form>
             <h1>Solicitudes</h1>
             {technologyRequest.map(request => (
-                <RequestServiceStatus key={request.idRequestService} reciverName={request.reciverName} observation={request.observations} usersIdUsers={request.usersIdUsers} status={request.requestServiceStatus} />
+                <RequestServiceStatus key={request.idRequestService} reciverName={request.reciverName} observation={request.observations} usersIdUsers={request.usersIdUsers} status={request.requestServiceStatus} rejection={request.rejection} />
             ))}
             {technologyRequest.length == 0 && (
                 <h3 style={{ textAlign: "center" }}>Sin solicitudes realizadas</h3>

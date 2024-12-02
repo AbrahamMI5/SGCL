@@ -12,6 +12,7 @@ import com.sgcl.demo.services.LabHoraryService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 
@@ -39,4 +40,9 @@ public class LabHoraryController {
         return this.labHoraryService.getHoraryByLab(lab);
     }
     
+    @PostMapping("/delete{idRequestLaboratory}")
+    public Boolean deleteRequest(@PathVariable Integer idRequestLaboratory) {
+        return this.labHoraryService.deleteLabHorary(idRequestLaboratory);
+    }
+
 }

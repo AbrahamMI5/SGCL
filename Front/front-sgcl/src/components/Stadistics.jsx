@@ -42,7 +42,7 @@ export function Stadistics() {
 
     return (
         <>
-            <h1>Estadísticas</h1>
+            <h1 className='margin-cell'>Estadísticas</h1>
             <form onSubmit={generatePDF}>
                 <select style={{height: "30px"}} onChange={handleOnChangeSemester} required>
                     <option />

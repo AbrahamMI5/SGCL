@@ -68,5 +68,9 @@ export const apiUrls = {
   getDocument: `${apiUrl}/document/getDocuments`,
   setAnualDoc: `${apiUrl}/document/createAnual`,
   setSemesterDoc: `${apiUrl}/document/createSemester`,
-  getStadistics: `${apiUrl}/requestLaboratory/stadistics`
+  getStadistics: `${apiUrl}/requestLaboratory/stadistics`,
+  deleteRequestLabHorary: `${apiUrl}/labHorary/delete`,
+  updateAuthorizers: `${apiUrl}/authorizers/createUpdate`,
+  getAllAuthorizers: `${apiUrl}/authorizers/getAll`
+
 };

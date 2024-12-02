@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { usersApi, apiUrls, security } from "./api/userApi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
 
 export function RequestLabCard(props) {
-    const { startHorary, endHorary, day, idteacher, idLaboratory, requiredsoft, idRequestLab, status } = props;
+    const { startHorary, endHorary, day, idteacher, idLaboratory, requiredsoft, idRequestLab, status, deleted } = props;
 
     const [teachername, setTeacherName] = useState('');
     const [labname, setLabName] = useState('');
@@ -158,6 +159,48 @@ export function RequestLabCard(props) {
         }, 1000);
     });
 
+    const alert = (event)=>{
+        event.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro que lo quieres eliminar?',
+            html: '<span style="font-size: 20px;">Al eliminar la solicitud aprobada dejara de aparecer en los horarios y no se podrá reactivar.</span>',
+            icon: 'warning',
+            width: '70%',
+            customClass: {
+                title: 'custom-title',
+                htmlContainer: 'custom-html-container',
+                popup: 'custom-popup',
+                confirmButton: 'custom-confirm-button',
+                denyButton: 'custom-deny-button',
+                icon: 'custom-icon'
+            },
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            showDenyButton: true,
+            confirmButtonText: 'Eliminar',
+            denyButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteRequest()
+                }
+        })
+    }
+
+    const deleteRequest=()=>{
+        usersApi.post(apiUrls.deleteRequestLabHorary+idRequestLab)
+        .then((response)=>{
+            if(response){
+            localStorage.setItem('toastMessage', 'Eliminado correctamente');
+            window.location.reload()
+            }else{
+            localStorage.setItem('toastMessageW', 'Error al eliminar');
+            }
+        })
+        .catch(error => {
+            console.error('Error to delete requestlabhorary:', error);
+        });
+    }
+
     return (
         <>
             <ToastContainer />
@@ -190,11 +233,26 @@ export function RequestLabCard(props) {
                         </div>
                     </>
                 )}
-                {(status === true || status === false) && (
+
+                {deleted ? (
+                    <h4 style={{ color: "red" }}>Eliminado</h4>
+                ) : status === true ? (
+                    <>
+                        <div style={{ width: '63%' }}>
+                            <label style={{ color }}>{statusText}</label>
+                        </div>
+                        <div className="usrs-button">
+                            <button onClick={alert}>
+                                Eliminar
+                            </button>
+                        </div>
+                    </>
+                ) : status === false ? (
                     <div style={{ width: '63%' }}>
                         <label style={{ color }}>{statusText}</label>
                     </div>
-                )}
+                ) : null}
+
             </form>
         </>
     );

@@ -18,6 +18,7 @@ import { SemesterPage } from './components/SemesterPage';
 import { MainteinanceSemester } from './components/MainteinanceSemester'
 import { Previewpdf } from './components/Previewpdf'
 import { Stadistics } from './components/Stadistics'
+import {RequestServiceComp} from './components/RequestServiceComp'
 
 import bars from './components/img/bars.svg';
 import logo from '/logofcbiyt.png';
@@ -99,8 +100,8 @@ function App() {
       </div>
       <Routes>
         <Route path="/" element={<div className='I-Horary'><Horary /></div>} />
-        <Route path="/LogIn" element={role == '' ? <div className='I-LogIn'><LogIn /></div> : <Navigate to="/"/>}/>
-        <Route path="/Admin" element={admin ? <h1>Hi</h1> : <Navigate to="/LogIn" />} />
+        <Route path="/Login" element={role == '' ? <div className='I-LogIn'><LogIn /></div> : <Navigate to="/"/>}/>
+        <Route path="/Admin" element={admin ? <h1>Hi</h1> : <Navigate to="/Login" />} />
         <Route path="/Users" element={admin ? <div className='I-Usr'><GridUser /> </div> : <Navigate to="/"/>} />
         <Route path="/Laboratories" element={admin ? <div className='I-Usr'> <FormLaboratory /> </div> : <Navigate to="/"/>} />
         <Route path="/RequestLaboratory" element={teacher ? <div className='I-Usr'> <FormRequestLaboratory /> </div> : <Navigate to="/"/>} />
@@ -113,7 +114,7 @@ function App() {
         <Route path='/Maintenance' element={admin ? <div className='I-Usr'> <MainteinanceSemester/> </div> : <Navigate to="/"/>} />
         <Route path='/Maintenance/Preview' element={admin ? <div className='I-Usr'> <Previewpdf/> </div> : <Navigate to="/"/>} />
         <Route path='/Stadistics' element={admin ? <div className='I-Usr'> <Stadistics/> </div> : <Navigate to="/"/>} />
-
+        <Route path='/RequestService/Semester' element={admin ? <div className='I-Usr'> <RequestServiceComp/> </div> : <Navigate to="/"/>}/>
 
 
 

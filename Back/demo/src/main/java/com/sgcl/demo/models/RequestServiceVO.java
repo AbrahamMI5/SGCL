@@ -37,7 +37,9 @@ public class RequestServiceVO {
     private Date requestDate;
     private Date answerDate;
     private Date finishDate;
+    private Long semesterIdSemester;
 
+    
     public Date getRequestDate() {
         return requestDate;
     }
@@ -169,6 +171,12 @@ public class RequestServiceVO {
     }
     public void setLaboratoriesIdLaboratories(BigInteger laboratoriesIdLaboratories) {
         this.laboratoriesIdLaboratories = laboratoriesIdLaboratories;
+    }
+    public Long getSemesterIdSemester() {
+        return semesterIdSemester;
+    }
+    public void setSemesterIdSemester(Long semesterIdSemester) {
+        this.semesterIdSemester = semesterIdSemester;
     }
 
 }

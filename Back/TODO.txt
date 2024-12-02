@@ -61,3 +61,30 @@ Documento
 *Diagrama de clases?
 *Diagrama de secuencia
 *Diagrama bd
+
+
+Revision de usabilidad
+*Autorizacion por parte de administrador (guardar copia de los datos en la tabla)
+    Tabla en base de datos
+*Explicaciones de apartados con iconos de duda (1)
+*Solicitudes de servicios de tecnologia y computo variables dependiendo de las elecciones
+*Validacion al solicitar laboratorios (1)
+*Color en las notificaciones de aprobacion (1)
+*Agregar motivo de rechazo debajo de las solicitudes (de los estados)
+*Dividir las solicitudes de tecnologia y computo por semestre (Agregar en la tabla en que semestre se realizo)
+    Se agrego llave foranea de semestre para saber de que semestre viene
+*Undefined en el nombre de los documentos que se descargan (1)
+*Observaciones en mantenimiento volverlas opcionales (1)
+*Eliminar solicitudes de laboratorio ya aceptadas (en horarios)(Contemplar estadísticas)
+    Se agrego a la bd fecha de creacion y eliminacion para tener en cuenta en las estadisticas los que se agregan a medio semestre y poder eliminar sin afectar a estas estadisticas.
+*Tamaño de las letras en moviles
+*Observaciones en solicitudes de servicio cuando no tenga numero de serie, etc etc que no aparezca.
+*Ampliar margen superior en version movil
+*Separar el botón de visualizar
+
+*Se necesita por lo menos una fecha para la creacion de mantenimiento
+-Agregar autorización a los de tecnología
+*Acomodar titulo de usuarios
+*Agregar titulo a administrar autorizadores
+
+-Error al mostrar vista previa

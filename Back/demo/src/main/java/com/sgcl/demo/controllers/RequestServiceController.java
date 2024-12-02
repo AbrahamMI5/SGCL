@@ -58,27 +58,27 @@ public class RequestServiceController {
     
     @PostMapping("/setStatus")
     public RequestServiceVO setStatus(@RequestBody RequestServiceVO requestServiceVO){
-        return requestServService.setStatus(requestServiceVO.getIdRequestService(), requestServiceVO.getRequestServiceStatus(), requestServiceVO.getRejection());
+        return requestServService.setStatus(requestServiceVO.getIdRequestService(), requestServiceVO.getRequestServiceStatus(), requestServiceVO.getRejection(), requestServiceVO.getAuthorizedName(), requestServiceVO.getAuthorizedEmail(), requestServiceVO.getAuthorizedArea(), requestServiceVO.getAuthorizedPosition());
     }
 
-    @GetMapping("/getComputerWithStatus")
-    public List<ServiceResponse> getComputerWithStatus() {
-        return requestServService.findComputerServiceWithStatus();
+    @GetMapping("/getComputerWithStatus{idSemester}")
+    public List<ServiceResponse> getComputerWithStatus(@PathVariable Integer idSemester) {
+        return requestServService.findComputerServiceWithStatus(idSemester);
     }
 
-    @GetMapping("/getComputerWithoutStatus")
-    public List<ServiceResponse> getComputerWithoutStatus() {
-        return requestServService.findComputerServiceWithoutStatus();
+    @GetMapping("/getComputerWithoutStatus{idSemester}")
+    public List<ServiceResponse> getComputerWithoutStatus(@PathVariable Integer idSemester) {
+        return requestServService.findComputerServiceWithoutStatus(idSemester);
     }
 
-    @GetMapping("/getTechnologyWithStatus")
-    public List<ServiceResponse> getTechnologyWithStatus() {
-        return requestServService.findTechnologyServiceWithStatus();
+    @GetMapping("/getTechnologyWithStatus{idSemester}")
+    public List<ServiceResponse> getTechnologyWithStatus(@PathVariable Integer idSemester) {
+        return requestServService.findTechnologyServiceWithStatus(idSemester);
     }
 
-    @GetMapping("/getTechnologyWithoutStatus")
-    public List<ServiceResponse> getTechnologyWithoutStatus() {
-        return requestServService.findTechnologyServiceWithoutStatus();
+    @GetMapping("/getTechnologyWithoutStatus{idSemester}")
+    public List<ServiceResponse> getTechnologyWithoutStatus(@PathVariable Integer idSemester) {
+        return requestServService.findTechnologyServiceWithoutStatus(idSemester);
     }
     
 

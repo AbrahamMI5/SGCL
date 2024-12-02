@@ -4,6 +4,10 @@ import { jwtDecode } from 'jwt-decode';
 import { RequestLaboratoryCard } from './RequestLaboratoryCard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
+import question from './img/question.svg';
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from 'react-tooltip';
 
 export function FormRequestLaboratory() {
     const [loading, setLoading] = useState(true);
@@ -23,19 +27,13 @@ export function FormRequestLaboratory() {
     const handleChangeStartHorary = (event) => {
         setStartHorary(event.target.value);
         let [hours, minutes, seconds] = event.target.value.split(":");
-
         setEndHorary(parseInt(hours) + 2 + ":" + minutes)
-
-
     };
 
     const handleChangeEndHorary = (event) => {
         setEndHorary(event.target.value);
         let [hours, minutes, seconds] = event.target.value.split(":");
-
         setStartHorary(parseInt(hours) - 2 + ":" + minutes)
-
-
     };
 
     const handleChangeGroup = (event) => {
@@ -88,12 +86,11 @@ export function FormRequestLaboratory() {
     const freeLab = async () => {
         const laboratoryId = document.getElementById("laboratory").value;
         const startHorary = document.getElementById("startHorary").value;
-        const day = selectedOptionDay; // Asegúrate de que esto esté definido
+        const day = selectedOptionDay;
 
         try {
             const horaryResp = await usersApi.get(apiUrls.getLabHorarybyLab + laboratoryId);
             const data = horaryResp.data;
-
             const dayIndices = {
                 "Lu": 0,
                 "Ma": 4,
@@ -101,20 +98,16 @@ export function FormRequestLaboratory() {
                 "Ju": 12,
                 "Vi": 16
             };
-
             const hourIndices = {
                 "12:00": 0,
                 "14:00": 1,
                 "16:00": 2,
                 "18:00": 3
             };
-
             const dayIndex = dayIndices[day];
             const hourIndex = hourIndices[startHorary];
-
             if (dayIndex !== undefined && hourIndex !== undefined) {
                 const dataIndex = dayIndex + hourIndex;
-
                 if (dataIndex < data.length) {
                     return !data[dataIndex].startdate;
                 } else {
@@ -130,10 +123,38 @@ export function FormRequestLaboratory() {
             return false;
         }
     };
-
-
-    const createRequest = async (event) => {
+    
+    const alert = (event)=>{
         event.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro que quieres solicitar este laboratorio?',
+            html: `<span style="font-size: 20px;">Laboratorio: <b>${document.getElementById("laboratory").options[document.getElementById("laboratory").selectedIndex].text}</b> <br>
+             Horario: <b>${document.getElementById("day").options[document.getElementById("day").selectedIndex].text+" "+document.getElementById("startHorary").value+' - '+document.getElementById("endHorary").value}</b> <br>
+              Materia: <b>${document.getElementById("materia").value}</b></span>`,
+            icon: 'warning',
+            width: '70%',
+            customClass: {
+                title: 'custom-title',
+                htmlContainer: 'custom-html-container',
+                popup: 'custom-popup',
+                confirmButton: 'custom-confirm-button',
+                denyButton: 'custom-deny-button',
+                icon: 'custom-icon'
+            },
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            showDenyButton: true,
+            confirmButtonText: 'Solicitar',
+            denyButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    createRequest();
+                }
+        })
+    }
+
+
+    const createRequest = async () => {
         const result = await freeLab();
         if (result) {
             try {
@@ -166,9 +187,10 @@ export function FormRequestLaboratory() {
 
     return (
         <>
+            <Tooltip id="my-tooltip" type="dark" delayShow={200} border={true} place="bottom"/>
             <ToastContainer />
-            <h1 className="RequestLab">Solicitar laboratorios</h1>
-            <form className="AddRequest" onSubmit={createRequest}>
+            <h1 className="RequestLab margin-cell">Solicitar laboratorios <img className="info" src={question} data-tooltip-id="my-tooltip" data-tooltip-content="En este apartado se realizan las solicitudes para usar un laboratorio, la hora de inicio y fin son pares y de 12 a 20 hrs"/></h1>
+            <form className="AddRequest" onSubmit={alert}>
                 <div className="RequestLabInput">
                     <div className="RequestLabMid">
                         <label htmlFor="laboratory">Laboratorio</label>

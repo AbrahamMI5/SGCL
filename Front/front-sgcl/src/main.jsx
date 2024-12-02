@@ -8,6 +8,10 @@ import { BrowserRouter } from 'react-router-dom';
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
 root.render(
+  /* 
+    MADE BY:
+     Carlos Abraham M.I. 
+  */
   <BrowserRouter>
     <App />
   </BrowserRouter>

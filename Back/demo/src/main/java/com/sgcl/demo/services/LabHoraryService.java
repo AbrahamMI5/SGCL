@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sgcl.demo.models.LabHoraryVO;
 import com.sgcl.demo.models.RequestModels.HoraryGroupResponse;
 import com.sgcl.demo.models.RequestModels.HoraryLaboratoryResponse;
 import com.sgcl.demo.models.RequestModels.HoraryResponse;
@@ -26,16 +28,18 @@ public class LabHoraryService {
     @Autowired
     SemesterService semesterService;
 
-    public List<String> getClassrooms(){
+    public List<String> getClassrooms() {
         return (labHoraryRepository.getClassrooms(semesterService.getActiveSemester().getIdSemester()));
     }
 
-    public List<HoraryResponse> getHoraryByGroup(String group){
-        List<Object[]> objectList = labHoraryRepository.getHoraryByGroup(group, semesterService.getActiveSemester().getIdSemester());
-        List<HoraryResponse> response =  new ArrayList<>();;
+    public List<HoraryResponse> getHoraryByGroup(String group) {
+        List<Object[]> objectList = labHoraryRepository.getHoraryByGroup(group,
+                semesterService.getActiveSemester().getIdSemester());
+        List<HoraryResponse> response = new ArrayList<>();
+        ;
 
         List<String> timeStrings = List.of("12:00:00", "14:00:00", "16:00:00", "18:00:00");
-        
+
         List<Date> expectedTimes = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         for (String timeString : timeStrings) {
@@ -46,23 +50,24 @@ public class LabHoraryService {
                 e.printStackTrace();
             }
         }
-        
+
         for (String day : List.of("Lu", "Ma", "Mi", "Ju", "Vi")) {
             for (String timeString : timeStrings) {
                 boolean found = false;
-                HoraryResponse horaryGroupResponse= new HoraryResponse();
-        
+                HoraryResponse horaryGroupResponse = new HoraryResponse();
+
                 for (Object[] row : objectList) {
                     Long laboratoriesId = (Long) row[0];
                     Date startHorary = (Date) row[1];
                     Date endHorary = (Date) row[2];
                     String subject = (String) row[3];
                     String rowDay = (String) row[4];
-        
+
                     String startTimeString = sdf.format(startHorary);
-        
+
                     if (timeString.equals(startTimeString) && day.equals(rowDay)) {
-                        horaryGroupResponse.setHeader(laboratoryService.getLaboratoryById(laboratoriesId).get().getLabName());
+                        horaryGroupResponse
+                                .setHeader(laboratoryService.getLaboratoryById(laboratoriesId).get().getLabName());
                         horaryGroupResponse.setEnddate(endHorary);
                         horaryGroupResponse.setStartdate(startHorary);
                         horaryGroupResponse.setSubject(subject);
@@ -71,7 +76,7 @@ public class LabHoraryService {
                         break;
                     }
                 }
-        
+
                 if (!found) {
                     response.add(new HoraryResponse()); // Agregar un elemento en blanco
                 }
@@ -81,12 +86,14 @@ public class LabHoraryService {
         return response;
     }
 
-    public List<HoraryResponse> getHoraryByLab(Long lab){
-        List<Object[]> objectList = labHoraryRepository.getHoraryByLab(lab, semesterService.getActiveSemester().getIdSemester());
-        List<HoraryResponse> response =  new ArrayList<>();;
+    public List<HoraryResponse> getHoraryByLab(Long lab) {
+        List<Object[]> objectList = labHoraryRepository.getHoraryByLab(lab,
+                semesterService.getActiveSemester().getIdSemester());
+        List<HoraryResponse> response = new ArrayList<>();
+        ;
 
         List<String> timeStrings = List.of("12:00:00", "14:00:00", "16:00:00", "18:00:00");
-        
+
         List<Date> expectedTimes = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         for (String timeString : timeStrings) {
@@ -97,21 +104,21 @@ public class LabHoraryService {
                 e.printStackTrace();
             }
         }
-        
+
         for (String day : List.of("Lu", "Ma", "Mi", "Ju", "Vi")) {
             for (String timeString : timeStrings) {
                 boolean found = false;
-                HoraryResponse horaryGroupResponse= new HoraryResponse();
-        
+                HoraryResponse horaryGroupResponse = new HoraryResponse();
+
                 for (Object[] row : objectList) {
                     String group = (String) row[0];
                     Date startHorary = (Date) row[1];
                     Date endHorary = (Date) row[2];
                     String subject = (String) row[3];
                     String rowDay = (String) row[4];
-        
+
                     String startTimeString = sdf.format(startHorary);
-        
+
                     if (timeString.equals(startTimeString) && day.equals(rowDay)) {
                         horaryGroupResponse.setHeader(group);
                         horaryGroupResponse.setEnddate(endHorary);
@@ -122,7 +129,7 @@ public class LabHoraryService {
                         break;
                     }
                 }
-        
+
                 if (!found) {
                     response.add(new HoraryResponse()); // Agregar un elemento en blanco
                 }
@@ -130,5 +137,14 @@ public class LabHoraryService {
         }
 
         return response;
+    }
+
+    public Boolean deleteLabHorary(Integer idRequestLaboratory) {
+        int rowsUpdated = labHoraryRepository.deleteRequest(idRequestLaboratory);
+        if (rowsUpdated > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -91,7 +91,7 @@ export function Icon(prop) {
         if (name == 'Home') {
             return '/'
         } if (name == 'LogInIcon') {
-            return '/LogIn'
+            return '/Login'
         } if (name == 'Laboratories') {
             return '/Laboratories'
         } if (name == 'RequestLab') {

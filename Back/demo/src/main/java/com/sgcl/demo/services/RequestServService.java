@@ -25,6 +25,9 @@ public class RequestServService {
     @Autowired
     LaboratoryRepository laboratoryRepository;
 
+    @Autowired
+    SemesterService semesterService;
+
     public List<RequestServiceVO> getAllRequestService() {
         return requestServiceRepository.findAll();
     }
@@ -35,6 +38,7 @@ public class RequestServService {
 
     public RequestServiceVO createRequestServ(RequestServiceVO requestServiceVO) {
         requestServiceVO.setRequestDate(new Date(System.currentTimeMillis()));
+        requestServiceVO.setSemesterIdSemester(semesterService.getActiveSemester().getIdSemester());
         return requestServiceRepository.save(requestServiceVO);
     }
 
@@ -56,7 +60,7 @@ public class RequestServService {
         return requestServiceRepository.findTechnologyServiceById(id);
     }
 
-    public RequestServiceVO setStatus(Long id, Long status, String rejection) {
+    public RequestServiceVO setStatus(Long id, Long status, String rejection, String authName, String authEmail, String authArea, String authPosition) {
         RequestServiceVO requestServiceVO = requestServiceRepository.findById(id).get();
         if (status == 1){
             requestServiceVO.setAnswerDate(new Date(System.currentTimeMillis()));
@@ -69,14 +73,18 @@ public class RequestServService {
         }
         requestServiceVO.setRequestServiceStatus(status);
         requestServiceVO.setRejection(rejection);
+        requestServiceVO.setAuthorizedName(authName);
+        requestServiceVO.setAuthorizedEmail(authEmail);
+        requestServiceVO.setAuthorizedArea(authArea);
+        requestServiceVO.setAuthorizedPosition(authPosition);
 
         return requestServiceRepository.save(requestServiceVO);
     }
 
-    public List<ServiceResponse> findComputerServiceWithoutStatus() {
+    public List<ServiceResponse> findComputerServiceWithoutStatus(Integer idSemester) {
         List<RequestServiceVO> requestservice = new ArrayList<>();
         List<ServiceResponse> requestServiceresponse = new ArrayList<>();
-        requestservice = requestServiceRepository.findComputerServiceWithoutStatus();
+        requestservice = requestServiceRepository.findComputerServiceWithoutStatus(idSemester);
 
         for (RequestServiceVO requestServiceVO : requestservice) {
             ServiceResponse serviceResponse = new ServiceResponse();
@@ -109,10 +117,10 @@ public class RequestServService {
         return requestServiceresponse;
     }
 
-    public List<ServiceResponse> findComputerServiceWithStatus() {
+    public List<ServiceResponse> findComputerServiceWithStatus(Integer idSemester) {
         List<RequestServiceVO> requestservice = new ArrayList<>();
         List<ServiceResponse> requestServiceresponse = new ArrayList<>();
-        requestservice = requestServiceRepository.findComputerServiceWithStatus();
+        requestservice = requestServiceRepository.findComputerServiceWithStatus(idSemester);
 
         for (RequestServiceVO requestServiceVO : requestservice) {
             ServiceResponse serviceResponse = new ServiceResponse();
@@ -145,10 +153,10 @@ public class RequestServService {
         return requestServiceresponse;
     }
 
-    public List<ServiceResponse> findTechnologyServiceWithoutStatus() {
+    public List<ServiceResponse> findTechnologyServiceWithoutStatus(Integer idSemester) {
         List<RequestServiceVO> requestservice = new ArrayList<>();
         List<ServiceResponse> requestServiceresponse = new ArrayList<>();
-        requestservice = requestServiceRepository.findTechnologyServiceWithoutStatus();
+        requestservice = requestServiceRepository.findTechnologyServiceWithoutStatus(idSemester);
 
         for (RequestServiceVO requestServiceVO : requestservice) {
             ServiceResponse serviceResponse = new ServiceResponse();
@@ -181,10 +189,10 @@ public class RequestServService {
         return requestServiceresponse;
     }
 
-    public List<ServiceResponse> findTechnologyServiceWithStatus() {
+    public List<ServiceResponse> findTechnologyServiceWithStatus(Integer idSemester) {
         List<RequestServiceVO> requestservice;
         List<ServiceResponse> requestServiceresponse = new ArrayList<>();
-        requestservice = requestServiceRepository.findTechnologyServiceWithStatus();
+        requestservice = requestServiceRepository.findTechnologyServiceWithStatus(idSemester);
 
         for (RequestServiceVO requestServiceVO : requestservice) {
             ServiceResponse serviceResponse = new ServiceResponse();

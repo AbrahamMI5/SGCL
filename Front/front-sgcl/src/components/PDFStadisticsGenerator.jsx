@@ -165,13 +165,14 @@ const PDFStadisticsGenerator = ({ content }) => {
     };
 
     const generatePDF = () => {
-        const doc = createPDF(); // Pasar los laboratorios cargados
-        const pdfData = doc.output('datauristring');
-        setPdfPreviewUrl(pdfData);
+        const doc = createPDF(); 
+        const blob = doc.output('blob'); 
+        const pdfBlobUrl = URL.createObjectURL(blob);
+        setPdfPreviewUrl(pdfBlobUrl);
     };
 
     const downloadPDF = () => {
-        const doc = createPDF(); // Asegurarse de usar el estado actualizado
+        const doc = createPDF(); 
         doc.save(`Estadísticas ` + content.semester.name +'.pdf');
     };
 

@@ -26,10 +26,16 @@ public interface RequestLaboratoryRepository extends JpaRepository<RequestLabora
     Integer countPeticionesByLaboratoryAndSemester(@Param("labId") Long labId, @Param("semesterId") Long semesterId);
 
     // Horas de uso por laboratorio por semana
-    @Query(value = "SELECT COUNT(*)*2 FROM lab_horary JOIN request_laboratory ON request_laboratory.id_request_laboratory = lab_horary.request_laboratory_id_request_laboratory WHERE request_laboratory.semester_id_semester = :semesterId AND request_laboratory.laboratories_id_laboratories = :labId", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*)*2 FROM lab_horary JOIN request_laboratory ON request_laboratory.id_request_laboratory = lab_horary.request_laboratory_id_request_laboratory WHERE request_laboratory.semester_id_semester = :semesterId AND request_laboratory.laboratories_id_laboratories = :labId AND lab_horary.deleted_at IS NULL", nativeQuery = true)
     Integer countHorasDeUsoByLaboratoryAndSemester(@Param("labId") Long labId, @Param("semesterId") Long semesterId);
 
     // Asistentes semestrales por laboratorio
-    @Query(value = "SELECT SUM(request_laboratory.student_number) * CEIL(DATEDIFF(semester.end_date, semester.start_date) / 7) AS Asistentes_Semestrales FROM lab_horary JOIN request_laboratory ON request_laboratory.id_request_laboratory = lab_horary.request_laboratory_id_request_laboratory JOIN semester ON request_laboratory.semester_id_semester = semester.id_semester WHERE request_laboratory.semester_id_semester = :semesterId AND request_laboratory.laboratories_id_laboratories = :labId", nativeQuery = true)
-    Integer countAsistentesSemanalesByLaboratoryAndSemester(@Param("labId") Long labId, @Param("semesterId") Long semesterId);
+    @Query(value = "SELECT SUM(request_laboratory.student_number) * CEIL(DATEDIFF(LEAST(IFNULL(lab_horary.deleted_at, semester.end_date), semester.end_date), GREATEST(lab_horary.create_at, semester.start_date)) / 7) AS Asistentes_Semestrales FROM lab_horary JOIN request_laboratory ON request_laboratory.id_request_laboratory = lab_horary.request_laboratory_id_request_laboratory JOIN semester ON request_laboratory.semester_id_semester = semester.id_semester WHERE request_laboratory.semester_id_semester = :semesterId AND request_laboratory.laboratories_id_laboratories = :labId AND lab_horary.create_at <= semester.end_date AND (lab_horary.deleted_at IS NULL OR lab_horary.deleted_at >= semester.start_date)", nativeQuery = true)
+    Integer countAsistentesSemanalesByLaboratoryAndSemester(@Param("labId") Long labId,
+            @Param("semesterId") Long semesterId);
+
+    @Query(value = "SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END FROM request_laboratory JOIN lab_horary ON request_laboratory.id_request_laboratory = lab_horary.request_laboratory_id_request_laboratory WHERE request_laboratory.id_request_laboratory = ? AND lab_horary.deleted_at IS NOT NULL", nativeQuery = true)
+    Integer isDeleted(@Param("idRequestLaboratory") Long idRequestLaboratory);
+
+
 }

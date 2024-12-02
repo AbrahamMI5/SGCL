@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { usersApi, apiUrls, security } from "./api/userApi";
 
 export function RequestServiceStatus(props) {
-    const {reciverName, observation, usersIdUsers, status} = props
+    const {reciverName, observation, usersIdUsers, status, rejection} = props
     const [userName, setUserName] = useState();
     
     useEffect(()=>{
+        console.log(props)
+        console.log(rejection)
         security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}`: null;;
         usersApi.get(`${apiUrls.getUserById}${usersIdUsers}`)
             .then(response => {
@@ -59,7 +61,15 @@ export function RequestServiceStatus(props) {
                 </div>
                 <div>
                     <label htmlFor="">Observaciones:</label>
-                    <textarea readOnly value={observation} name="" id="" style={{width: '300%'}}></textarea>
+                    <textarea readOnly value={observation} name="" id="" style={{width: '300%', resize: "none"}}></textarea>
+                    {rejection ? rejection != null ? 
+                    <>
+                        <label htmlFor="">Motivo de rechazo:</label>
+                        <textarea  readOnly value={rejection} type="text" id={"Rejection"} style={{width: '300%', resize: "none"}} /> 
+                    </>
+                    : "" : ""}
+                    
+
                 </div>
             </div>
         </>

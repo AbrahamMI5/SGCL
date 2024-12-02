@@ -4,6 +4,9 @@ import { jwtDecode } from 'jwt-decode';
 import { usersApi, apiUrls, security } from './api/userApi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import question from './img/question.svg';
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from 'react-tooltip';
 
 export function Notifications() {
     const [userId, setUserId] = useState([]);
@@ -50,9 +53,9 @@ export function Notifications() {
 
     return (
         <>
+            <Tooltip id="my-tooltip" type="dark" delayShow={200} border={true} place="bottom"/>
             <ToastContainer />
-            <h1>Notificaciones</h1>
-            <h2>Solicitudes de laboratorio</h2>
+            <h1 className='margin-cell'>Notificaciones <img className='info' src={question} data-tooltip-id="my-tooltip" data-tooltip-content="En este apartado se muestran las notificaciones de aprobación y rechazo de las solicitudes de uso de laboratorios"/></h1>
             {requests.map(request => (
                 <NotificationReqLab key={request.requestLaboratoryIdRequestLaboratory} msg={request.notifyMenssage} reqLabId={request.requestLaboratoryIdRequestLaboratory} idNotifications={request.idNotifications} />
             ))}

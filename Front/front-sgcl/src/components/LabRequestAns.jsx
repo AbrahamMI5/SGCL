@@ -22,6 +22,7 @@ export function LabRequestAns() {
         usersApi.get(apiUrls.getRequestLabAnswered)
             .then(respLabResq => {
                 setLabRespAnswered(respLabResq.data);
+                console.log(respLabResq.data)
             })
             .catch(error => {
                 console.error('Error fetching RequestLab:', error);
@@ -30,7 +31,7 @@ export function LabRequestAns() {
 
     return (
         <>
-            <h1>Solicitudes pendientes</h1>
+            <h1 className='margin-cell'>Solicitudes pendientes</h1>
             <div>
                 {labResp.map(request => (
                     <RequestLabCard key={request.idRequestLaboratory} startHorary={request.startHorary} endHorary={request.endHorary} day={request.day} idteacher={request.usersIdUsers} idLaboratory={request.laboratoriesIdLaboratories} requiredsoft={request.requiredSoftware} idRequestLab={request.idRequestLaboratory} status={request.status} />
@@ -44,7 +45,7 @@ export function LabRequestAns() {
             <h1>Solicitudes resueltas</h1>
             <div>
                 {labRespAnswered.map(request => (
-                    <RequestLabCard key={request.idRequestLaboratory} startHorary={request.startHorary} endHorary={request.endHorary} day={request.day} idteacher={request.usersIdUsers} idLaboratory={request.laboratoriesIdLaboratories} requiredsoft={request.requiredSoftware} idRequestLab={request.idRequestLaboratory} status={request.status} />
+                    <RequestLabCard key={request.idRequestLaboratory} startHorary={request.startHorary} endHorary={request.endHorary} day={request.day} idteacher={request.usersIdUsers} idLaboratory={request.laboratoriesIdLaboratories} requiredsoft={request.requiredSoftware} idRequestLab={request.idRequestLaboratory} status={request.status} deleted={request.deleted}/>
                 ))}
                 {labRespAnswered.length == 0 &&(
                     <h3 style={{textAlign: "center"}}>Sin solicitudes resueltas</h3>

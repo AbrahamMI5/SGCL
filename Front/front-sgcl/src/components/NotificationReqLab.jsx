@@ -64,9 +64,8 @@ export function NotificationReqLab(props) {
             <form className="usrsCard">
                 <button className="N-LabReqBt" onClick={deleteNotification}>X</button>
                 <div style={{ width: '100%' }}>
-                    <p>
-                        {msg}
-                    </p>
+                    {msg.includes("rechazada") ? <p style={{color: "red"}}>{msg}</p> : <p style={{color: "green"}}>{msg}</p>}
+                    
                 </div>
 
                 <div>

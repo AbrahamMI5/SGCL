@@ -51,7 +51,7 @@ export function AddUserCard(props) {
             </div>
             <div>
                 <label htmlFor="Email">Correo</label>
-                <input type="email" id="Email" name="email" placeholder="Correo" required maxLength={35} pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"/>
+                <input type="email" id="Email" name="email" placeholder="Correo" required maxLength={35} pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}"/>
             </div>
             <div>
                 <label htmlFor="NoEmployee">No. Empleado</label>

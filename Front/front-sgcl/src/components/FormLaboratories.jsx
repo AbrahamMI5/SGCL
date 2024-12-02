@@ -65,7 +65,7 @@ export function FormLaboratory() {
     return (
         <>  
             <ToastContainer />
-            <div className='labHeader'>
+            <div className='labHeader margin-cell'>
                 <h1>Laboratorios</h1>
                 <form className="I-AddLab" onSubmit={handleSubmit}>
                     <div className="I-AddLab-Title">

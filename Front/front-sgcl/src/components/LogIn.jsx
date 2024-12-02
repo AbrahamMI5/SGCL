@@ -40,7 +40,7 @@ export function LogIn() {
                     <form onSubmit={logIn}>
                         <div>
                             <label className='LI-Input' htmlFor="Email">Usuario</label>
-                            <input type="email" id="email" aria-describedby="emailHelp" placeholder="Correo" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required/>
+                            <input type="email" id="email" aria-describedby="emailHelp" placeholder="Correo" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}" required/>
                         </div>
                         <div>
                             <label className='LI-Input' htmlFor="Password">Contraseña</label>

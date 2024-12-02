@@ -268,18 +268,19 @@ const PDFGeneratorAnual = ({ content }) => {
     };
 
     const generatePDF = () => {
-        const doc = createPDF(); // Pasar los laboratorios cargados
-        const pdfData = doc.output('datauristring');
-        setPdfPreviewUrl(pdfData);
+        const doc = createPDF(); 
+        const blob = doc.output('blob'); // Genera el PDF como un Blob
+        const pdfBlobUrl = URL.createObjectURL(blob); // Crea una URL temporal
+        setPdfPreviewUrl(pdfBlobUrl); // Actualiza la vista previa
     };
 
     const downloadPDF = () => {
         const doc = createPDF(); // Asegurarse de usar el estado actualizado
-        doc.save(`Mantenimiento anual ` + content.año + '.pdf');
+        doc.save(`Mantenimiento anual ` + content.documentVO.year + '.pdf');
     };
 
     return (
-        <div>
+        <div className='margin-cell'>
             <h2>Vista Previa del PDF:</h2>
             <iframe
                 src={pdfPreviewUrl}

@@ -1,52 +1,89 @@
-import { useEffect, useState } from "react";
-
+import { SetComputerServiceStatus } from "./SetComputerServiceStatus";
 import { SetTechnologyServiceStatus } from "./SetTechnologyServiceStatus";
-import { apiUrls, usersApi, security } from './api/userApi';
+import { usersApi, apiUrls, security } from "./api/userApi";
+import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { SemesterCardView } from './SemesterCardView';
+import { useLocation } from 'react-router-dom';
 
 
-export function RequestService() {
+export function RequestServiceComp() {
+    const location = useLocation();
+    const { labName, idLaboratories } = location.state || { labName: "Sin semestre", idLaboratories: 0 }
 
-    const [sem, setSem] = useState([]);
+    const [responseCompWS, setResponseCompWS] = useState([]);
+    const [responseCompWOS, setResponseCompWOS] = useState([]);
+    const [responseTechWS, setResponseTechWS] = useState([]);
+    const [responseTechWOS, setResponseTechWOS] = useState([]);
+    const [bgcolorC, setBgcolorC] = useState('#FFF');
+    const [bgcolorT, setBgcolorT] = useState('#D9D9D9');
+    const [search, setSearch] = useState("");
+    const [computerS, setComputerS] = useState(true);
+
+
 
     useEffect(() => {
-        security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;;
-        usersApi.get(apiUrls.getAllSemester)
-            .then(respSem => {
-                setSem(respSem.data);
-            })
-            .catch(error => {
-                console.error('Error fetching semesters:', error);
-            });
+        let token = localStorage.getItem('token');
+        if (token) {
+            const tokenDecod = jwtDecode(token);
+            const data = {
+                email: tokenDecod.sub,
+            };
+            security() ? usersApi.defaults.headers.common['Authorization'] = `Bearer ${security()}` : null;
+            usersApi.get(apiUrls.getComputerServiceWithStatus + idLaboratories)
+                .then(response => setResponseCompWS(response.data))
+                .catch(e => console.log(`Error al obtener solicitudes de cómputo con estatus`, e));
+            usersApi.get(apiUrls.getComputerServiceWithoutStatus + idLaboratories)
+                .then(response => setResponseCompWOS(response.data))
+                .catch(e => console.log(`Error al obtener solicitudes de cómputo sin estatus`, e));
+
+            usersApi.get(apiUrls.getTechnologyServiceWithStatus+ idLaboratories)
+                .then(response => setResponseTechWS(response.data))
+                .catch(e => console.log(`Error al obtener solicitudes de tecnología con estatus`, e));
+            usersApi.get(apiUrls.getTechnologyServiceWithoutStatus+ idLaboratories)
+                .then(response => setResponseTechWOS(response.data))
+                .catch(e => console.log(`Error al obtener solicitudes de tecnología sin estatus`, e));
+        }
     }, []);
+
+    const handleStatusChangeT = (newStatus) => {
+        toast.success("Estado actualizado");
+        const toastMessageW = localStorage.getItem('toastMessage');
+        if (toastMessageW) {
+            toast.error(toastMessageW);
+            localStorage.removeItem('toastMessage');
+        }
+    };
+
+    const handleComputer = () => {
+        setComputerS(true);
+        setBgcolorC('#FFF');
+        setBgcolorT('#D9D9D9');
+    };
+
+    const handleTechnology = () => {
+        setComputerS(false);
+        setBgcolorC('#D9D9D9');
+        setBgcolorT('#FFF');
+    };
+
+    const filter = (event) => {
+        setSearch(event.target.value);
+    };
 
     return (
         <>
-            <ToastContainer />
-            <h1 className='margin-cell'>Solicitudes de servicio</h1>
-            <div className="semBody">
-                {sem.map((semester) => {
-                    return (
-                        <SemesterCardView key={semester.idSemester} labName={semester.name} idLaboratories={semester.idSemester} startDate={semester.startDate} endDate={semester.endDate} isActive={semester.isActive} />
 
-                    );
-                })}
-            </div>
-            {/*<div>
+            <div className='margin-cell'>
                 <button style={{ backgroundColor: `${bgcolorC}`, border: '1px solid black' }} onClick={handleComputer}>Cómputo</button>
                 <button style={{ backgroundColor: `${bgcolorT}`, border: '1px solid black' }} onClick={handleTechnology}>Tecnología</button>
             </div>
             <div style={{ marginTop: "2%", paddingBottom: "2%" }} className="AddRequest">
                 <input type="Buscar" style={{ width: "100%" }} placeholder="Buscar por nombre o correo de solicitante o usuario final" onChange={filter} />
-            </div>*/}
+            </div>
 
-            {/*computerS &&
+            {computerS &&
                 <>
-                    <h2>Servicio de cómputo</h2>
-
+                    <h2>Servicio de cómputo: {labName}</h2>
                     <h3>Pendientes</h3>
                     {(() => {
                         let hasResults = false;
@@ -89,11 +126,11 @@ export function RequestService() {
                         return !hasResults && <h3 style={{ textAlign: "center" }}>Sin solicitudes resueltas</h3>;
                     })()}
                 </>
-            */}
+            }
 
-            {/*!computerS &&
+            {!computerS &&
                 <>
-                    <h2>Servicio de tecnología</h2>
+                    <h2>Servicio de tecnología: {labName}</h2>
 
                     <h3>Pendientes</h3>
                     {(() => {
@@ -101,9 +138,9 @@ export function RequestService() {
                         const filteredTechWOS = responseTechWOS.filter((tech) => {
                             if (search === "") return true;
                             return tech.usersIdUsers.userName.toLowerCase().includes(search.toLowerCase()) ||
-                                   tech.reciverName.toLowerCase().includes(search.toLowerCase()) ||
-                                   tech.usersIdUsers.email.toLowerCase().includes(search.toLowerCase()) ||
-                                   tech.reciverEmail.toLowerCase().includes(search.toLowerCase());
+                                tech.reciverName.toLowerCase().includes(search.toLowerCase()) ||
+                                tech.usersIdUsers.email.toLowerCase().includes(search.toLowerCase()) ||
+                                tech.reciverEmail.toLowerCase().includes(search.toLowerCase());
                         });
 
                         if (filteredTechWOS.length > 0) {
@@ -122,9 +159,9 @@ export function RequestService() {
                         const filteredTechWS = responseTechWS.filter((tech) => {
                             if (search === "") return true;
                             return tech.usersIdUsers.userName.toLowerCase().includes(search.toLowerCase()) ||
-                                   tech.reciverName.toLowerCase().includes(search.toLowerCase()) ||
-                                   tech.usersIdUsers.email.toLowerCase().includes(search.toLowerCase()) ||
-                                   tech.reciverEmail.toLowerCase().includes(search.toLowerCase());
+                                tech.reciverName.toLowerCase().includes(search.toLowerCase()) ||
+                                tech.usersIdUsers.email.toLowerCase().includes(search.toLowerCase()) ||
+                                tech.reciverEmail.toLowerCase().includes(search.toLowerCase());
                         });
 
                         if (filteredTechWS.length > 0) {
@@ -137,8 +174,8 @@ export function RequestService() {
                         return !hasResults && <h3 style={{ textAlign: "center" }}>Sin solicitudes resueltas</h3>;
                     })()}
                 </>
-            */}
+            }
+
         </>
     );
-}
-export default RequestService;
+} export default RequestServiceComp;

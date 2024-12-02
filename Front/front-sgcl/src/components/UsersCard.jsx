@@ -84,7 +84,7 @@ export function UsersCard(props) {
                 </div>
                 <div>
                     <label htmlFor="Email">Correo</label>
-                    <input type="email" id={"Email" + userId} placeholder="Correo" defaultValue={email} required maxLength={50} pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"/>
+                    <input type="email" id={"Email" + userId} placeholder="Correo" defaultValue={email} required maxLength={50} pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}"/>
 
                 </div>
                 <div>

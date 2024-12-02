@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { jsPDF } from 'jspdf';
-import { usersApi, apiUrls, security } from "./api/userApi";
 import 'jspdf-autotable';
 import headerImage from './img/Docs/uatxLogo.png';
 
 const PDFGenerator = ({ content }) => {
+    console.log("datos: ",content)
     const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null); // Estado para la vista previa
 
     useEffect(() => {
         generatePDF();
-    }, []);
+    }, [content]);
 
     function fullMonth(mesAbreviado) {
         const meses = {
@@ -206,9 +206,10 @@ const PDFGenerator = ({ content }) => {
     };
 
     const generatePDF = () => {
-        const doc = createPDF(); // Pasar los laboratorios cargados
-        const pdfData = doc.output('datauristring');
-        setPdfPreviewUrl(pdfData);
+        const doc = createPDF(); 
+        const blob = doc.output('blob'); // Genera el PDF como un Blob
+        const pdfBlobUrl = URL.createObjectURL(blob); // Crea una URL temporal
+        setPdfPreviewUrl(pdfBlobUrl); // Actualiza la vista previa
     };
 
     const downloadPDF = () => {
@@ -217,17 +218,21 @@ const PDFGenerator = ({ content }) => {
     };
 
     return (
-        <div>
-            <h2>Vista Previa del PDF:</h2>
+    <div className='margin-cell'>
+        <h2>Vista Previa del PDF:</h2>
+        {pdfPreviewUrl ? (
             <iframe
                 src={pdfPreviewUrl}
                 width="100%"
                 height="500px"
                 title="Vista Previa PDF"
             />
-            <button onClick={downloadPDF}>Descargar PDF</button>
-        </div>
-    );
+        ) : (
+            <p>Cargando vista previa...</p>
+        )}
+        <button onClick={downloadPDF}>Descargar PDF</button>
+    </div>
+);
 };
 
 export default PDFGenerator;

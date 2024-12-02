@@ -81,7 +81,7 @@ export function SemesterPage() {
     return (
         <>
             <ToastContainer />
-            <div className='labHeader'>
+            <div className='labHeader margin-cell'>
                 <h1>Semestres</h1>
                 <form className="I-AddSem" onSubmit={handleSubmit}>
                     <div className="I-AddLab-Title">
